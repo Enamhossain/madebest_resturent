@@ -1,0 +1,12 @@
+.background-container {
+    background-image: url("https://img.freepik.com/free-photo/top-view-raw-pasta-tomatoes_23-2150690633.jpg?t=st=1706205200~exp=1706208800~hmac=07a45d61c341676f16ea7519e9c8be2f12a0a3988f905e500842f3b8685b7315&w=826");
+    background-repeat: no-repeat;
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-size: cover;
+
+  }
+  
