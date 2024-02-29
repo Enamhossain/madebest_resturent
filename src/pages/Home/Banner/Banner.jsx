@@ -32,10 +32,12 @@ const Banner = () => {
 
     <>
       <div className="mx-auto h-[320px] md:h-[640px] flex flex-col lg:flex-row items-center overflow-hidden gap-5 lg:gap-10  cursor-auto">
+   
+       
         {/* slider container */}
         <div className="">
           {/* arrow */}
-          <div className="absolute w-full h-full flex items-center justify-between z-50 px-5">
+          <div className="absolute w-full h-full flex items-center justify-between z-20 px-5">
             {/* arrow left */}
             <button onClick={prevSlider} className="flex justify-center items-center bg-white rounded-full w-6 h-6 md:w-8 md:h-8">
               <svg viewBox="0 0 1024 1024" className="w-4 h-4 md:w-6 md:h-6 icon" xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -58,7 +60,7 @@ const Banner = () => {
             </button>
           </div>
           {/* dots */}
-          <div className="flex justify-center items-center rounded-full z-50 absolute bottom-7 w-full gap-1">
+          <div className=" hidden md:flex justify-center items-center rounded-full z-50 absolute bottom-1/3  w-full gap-1">
             {sliders.map((_, inx) => (
               <button
                 key={inx}
@@ -107,7 +109,7 @@ const Banner = () => {
 </div>
 
         </div>
-
+     
 
       </div>
       {/* slider container */}
@@ -123,6 +125,7 @@ const Banner = () => {
           />
         ))}
       </div>
+     
     </>
 
 

@@ -1,14 +1,16 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Footer from '../shared/Footer/Footer'
 import Navbar from '../shared/Navbar/Navbar'
 
 function Main() {
+  const location = useLocation()
+  const removeheaderfooter = location.pathname.includes('login') ||  location.pathname.includes('singup')
   return (
     <div>
-         <Navbar/>
+        { removeheaderfooter || <Navbar/> }
         <Outlet></Outlet>
-        <Footer></Footer>
+        { removeheaderfooter ||  <Footer></Footer> }
 
     </div>
   )

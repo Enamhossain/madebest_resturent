@@ -6,8 +6,9 @@ import Discount from './Discount/Discount'
 import DiseMenu from './Menu/DiseMenu'
 import Service from './Service/Service'
 // import Contact from './Contact/Contact'
-import ReserverBooking from './Reserve/ReserverBooking'
+// import ReserverBooking from './Reserve/ReserverBooking'
 import Tastomonial from './Tastomonial/Tastomonial'
+
 
 
  function Home() {
