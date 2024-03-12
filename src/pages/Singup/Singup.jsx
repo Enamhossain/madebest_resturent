@@ -4,8 +4,14 @@ import { useForm } from 'react-hook-form'
 import { Helmet } from 'react-helmet-async';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import swal from 'sweetalert';
+import useAxiosPublic from '../../hooks/axiosPublic';
+
 
 function Singup() {
+       
+
+    const axiosPublic = useAxiosPublic();
+
     const {
         register,
         handleSubmit,
@@ -13,16 +19,19 @@ function Singup() {
         watch,
         reset
     } = useForm();
-    const { createUser} = useContext(AuthContext)
-
+    const { createUser,googleSignIn} = useContext(AuthContext)
+    const from = location.state?.from?.pathname || "/"
     const navigate = useNavigate()
     const password = watch('password', '');
     const confirmPassword = watch('confirmPassword', '');
-     
+  
  
 
     const onSubmit = (data) => {
-        console.log(data);
+        const { first_name, last_name, email } = data; // Destructure form data
+
+      
+      
         if (data.password !== data.confirmPassword) {
             // Passwords do not match, handle accordingly
             return;
@@ -31,10 +40,24 @@ function Singup() {
         createUser(data.email, data.password)
         
             .then(result => {
-                const loggedUser = result.user;
-                console.log(loggedUser)
-                swal("Good job!", "You clicked the button!", "success");
-                navigate('/')
+                const userInfo = {
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                   
+                }
+                axiosPublic.post('/users',userInfo)
+                 .then(res => {
+                     if(res.data.insertedId){
+                        console.log('user add to the database')
+                        reset()
+                        const loggedUser = result.user;
+                        console.log(loggedUser)
+                        swal("Good job!", "You clicked the button!", "success");
+                    }
+                    navigate('/')
+                 })
+              
             })
             .catch(error => {
                 // Handle sign-up errors
@@ -43,7 +66,26 @@ function Singup() {
     };
 
 
-
+    const handleGoogleSingIn = () =>{
+        googleSignIn().then((result) => {
+          // Google Sign-In successful, handle user data
+          const user = result.user;
+          const userInfo = {
+            email: result.user?.email,
+            name: result.user?.displayName
+          }
+          axiosPublic.post('users',userInfo)
+        .then(res =>{
+             console.log(res.data)
+             navigate(from, { replace: true });
+        })
+         
+      })
+      .catch((error) => {
+          // Handle errors
+          console.error(error);
+      });
+      }
 
 
     return (
@@ -130,7 +172,7 @@ function Singup() {
                                 <p className=" text-center mt-2 text-md font-semibold bg-white "> continue with</p>
                             </div>
                             <div className="grid grid-cols-3 gap-x-3">
-                                <button className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
+                                <button onClick={() => handleGoogleSingIn()} className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
                                     <svg className="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <g clip-path="url(#clip0_17_40)">
                                             <path d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z" fill="#4285F4" />

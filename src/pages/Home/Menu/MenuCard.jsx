@@ -2,22 +2,21 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
-import AxiosSecure from '../../../hooks/AxiosSecure';
+import useAxiosSecure from '../../../hooks/AxiosSecure';
+import useCart from '../../../hooks/useCart';
+
 
 
 
 function MenuCard({ title, price, description, image, _id }) {
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const food = {  title, price, description, image }
-
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const axiosSecure = AxiosSecure()
+  const axiosSecure = useAxiosSecure()
+  const [, refetch ] = useCart()
 
   const handleAddToCart = () => {
-    console.log("Attempting to add to cart...");
-    console.log("User:", user);
 
     if (user && user.email) {
       console.log("User is logged in. Adding to cart...");
@@ -40,11 +39,12 @@ function MenuCard({ title, price, description, image, _id }) {
                 timer:1500,
                 name:`${title}`
             });
-            
+           
+
            }
+            // refetch cart to update cart items count
+            refetch()
        })
-
-
     } 
     else {
       console.log("User is not logged in. Showing validation popup...");

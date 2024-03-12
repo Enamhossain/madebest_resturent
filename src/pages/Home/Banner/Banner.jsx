@@ -6,7 +6,8 @@ import img3 from '../../../assets/Banner/grilled-seafood-paella-gourmet-healthy-
 import img4 from '../../../assets/Banner/freshly-italian-pizza-with-mozzarella-cheese-slice-generative-ai.jpg'
 import img5 from '../../../assets/Banner/arabic-shaurma-with-stuffings-lavash.jpg'
 
-const Banner = () => {
+
+const Banner = ({handleButtonClick}) => {
   const [currentSlider, setCurrentSlider] = useState(0);
 
   const sliders = [
@@ -27,6 +28,8 @@ const Banner = () => {
     const intervalId = setInterval(() => setCurrentSlider((currentSlider) => (currentSlider === sliders.length - 1 ? 0 : currentSlider + 1)), 5000);
     return () => clearInterval(intervalId);
   }, [currentSlider, sliders.length]);
+
+ 
 
   return (
 
@@ -95,7 +98,7 @@ const Banner = () => {
             >
               Order Now
             </a>
-            <a
+            <a 
               href="#reserve"
               className="bg-yellow-500 text-gray-800 hover:bg-yellow-400 py-2 px-4 rounded-full uppercase tracking-wide font-semibold transition duration-300"
             >

@@ -1,13 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import img from '../../assets/Banner/banner.png';
-import UseText from '../../Component/HeadingText/UseText';
 import MenuCard from '../Home/Menu/MenuCard';
 import useMenu from '../../hooks/useMenu';
 
 function Ourmenu() {
   const [menu] = useMenu();
-  console.log(menu);
+  
 
   const sections = [
     { title: 'Main Dish', category: 'Main' },
@@ -38,7 +36,7 @@ function Ourmenu() {
 
       {/* Banner */}
       <div className="p-6 py-12 " style={{
-        backgroundImage: `url(${img})`,
+        backgroundImage: 'url(https://i.ibb.co/Y2B7YpJ/Black-Orange-Modern-Food-Promotion-Banner.png)',
         backgroundSize: 'cover',
         width: '100%',
         height: '80vh',
@@ -54,9 +52,8 @@ function Ourmenu() {
       </div>
 
       {/* Menu Sections */}
-      <div className="py-12" id="menu-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+         <div>
+         <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
               Delicious Food Menu Gallery
             </h2>
@@ -64,9 +61,45 @@ function Ourmenu() {
               Check out our mouth-watering dishes.
             </p>
           </div>
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 container mx-auto">
+            {/* Sample food images */}
+            <div className="relative">
+              <img
+                className="w-full h-64 object-cover rounded-lg shadow-lg"
+                src='https://i.ibb.co/ZTS6kZh/condiment-craze-collage-design.jpg'
+                alt="Delicious Food 1"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <p className="text-white text-2xl font-extrabold ">Seasonal Special</p>
+              </div>
+            </div>
+            <div className="relative">
+              <img
+                className="w-full h-64 object-cover rounded-lg shadow-lg"
+                src='https://i.ibb.co/sqvpYJg/ready-eat-meals-arrangement.jpg'
+                alt="Delicious Food 2"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <p className="text-white text-2xl font-extrabold">50% OFF Today</p>
+              </div>
+            </div>
+            <div className="relative col-span-1 lg:col-span-2">
+              <img
+                className="w-full h-64 object-cover rounded-lg shadow-lg"
+                src='https://i.ibb.co/6gfLQgy/side-view-people-with-menus-restaurant.jpg'
+                alt="Delicious Food 3"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <p className="text-white text-4xl font-extrabold">Special Menu</p>
+              </div>
+              </div>
+              </div>
+         </div>
+          
 
           {/* Render Menu Sections */}
-          {sections.map((section, index) => (
+        <div id='menu-section'>
+        {sections.map((section, index) => (
             <div key={index} className="mt-10">
               <h2 className="text-3xl font-extrabold text-center text-orange-500 uppercase border-orange-500 pb-4">
                 {section.title}
@@ -90,8 +123,9 @@ function Ourmenu() {
             </div>
           ))}
         </div>
-      </div>
-    </div>
+        </div>
+      
+
   );
 }
 

@@ -1,7 +1,9 @@
+// Navbar.js
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import ShoppingCart from '../../Component/ShoppingCart';
+import useCart from '../../hooks/useCart';
 
 function Navbar() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -9,10 +11,11 @@ function Navbar() {
 
   const { user, logOut } = useContext(AuthContext)
 
+  const [cart] = useCart();
+
   const navigation = [
     { title: 'Home', path: '/' },
-    { title: 'Contact Us', path: '#' },
-    { title: 'Dashboard', path: '#' },
+    { title: 'Contact Us', path: 'contact' },
     { title: 'Our Menu', path: 'ourmenu' },
     { title: 'Our Shop', path: 'order' },
   ];
@@ -103,23 +106,29 @@ function Navbar() {
                 </Link>
               </li>
             ))}
-            <li   className='text-black md:text-white cursor-pointer  hover:bg-orange-500 rounded-lg   hover:text-orange-600 uppercase font-semibold'> <div class="relative">
+
+{user && (
+              <li className="text-black md:text-white    hover:text-orange-600 uppercase font-semibold">
+                <Link to="dashboard" className=" hover:text-orange-600">
+                  Dashboard
+                </Link>
+              </li>
+            )}
+            <li className='text-black md:text-white cursor-pointer  hover:bg-orange-500 rounded-lg   hover:text-orange-600 uppercase font-semibold'> <div class="relative">
 
               <svg onClick={toggleCart} width="44px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 
-              <span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">3</span>
+              <span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">{cart.length}</span>
             </div></li>
-            {isCartOpen && <ShoppingCart />} 
+            {isCartOpen && <ShoppingCart cart={cart} />}
 
-            
+           
+
             <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
             <div className="space-y-3 items-center gap-x-6 md:flex md:space-y-0 font-semibold">
 
               <div className="space-y-3 items-center gap-x-6 md:flex md:space-y-0 font-semibold">
                 {user ? (
-
-
-
                   <button
                     onClick={handleSignOut}
                     className="block py-3 text-center text-gray-100 bg-orange-500 p-2 hover:text-black border rounded-lg md:border-none"

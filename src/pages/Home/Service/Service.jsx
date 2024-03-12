@@ -6,8 +6,11 @@ import img3 from '../../../assets/Service/crop-man-eating-dessert-cafe.jpg';
 import './Service.css'
 
 function Service() {
+
+
+
   return (
-    <div className='p-8 service  '  >
+    <div className='p-8 service  '  id='reserver' >
          <UseText heading={'Our Service'} subheading={'Services'}></UseText>
     <article className="flex flex-wrap container mx-auto  bg-white transition drop-shadow-xl ">
  

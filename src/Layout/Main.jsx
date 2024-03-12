@@ -5,13 +5,13 @@ import Navbar from '../shared/Navbar/Navbar'
 
 function Main() {
   const location = useLocation()
-  const removeheaderfooter = location.pathname.includes('login') ||  location.pathname.includes('singup')
+  const hideHeaderFooter = location.pathname.includes('login') ||  location.pathname.includes('signup')
+  
   return (
     <div>
-        { removeheaderfooter || <Navbar/> }
-        <Outlet></Outlet>
-        { removeheaderfooter ||  <Footer></Footer> }
-
+      {!hideHeaderFooter && <Navbar />}
+      <Outlet />
+      {!hideHeaderFooter && <Footer />}
     </div>
   )
 }
