@@ -3,13 +3,16 @@ import UseText from '../../../Component/HeadingText/UseText';
 import MenuCard from './MenuCard';
 import {Link} from 'react-router-dom'
 import useMenu from '../../../hooks/useMenu';
+import Loading from '../../../Component/Loading';
 
 
 function DiseMenu() {
-  const [menu] = useMenu();
+  const [menu,loading] = useMenu();
   const popular = menu.filter(item => item.category === 'popular');
 
-  
+  if (loading) {
+    return  <Loading/>
+  }
 
 
   return (

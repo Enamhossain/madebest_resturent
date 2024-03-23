@@ -1,9 +1,16 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
 function Discount() {
+  useEffect(() => {
+    AOS.init();
+}, []);
+
   return (
 
- <div className='grid md:grid-cols-2 gap-3 mx-auto container mt-16 mb-20'>
+ <div  data-aos="fade-down"
+ data-aos-easing="linear"
+ data-aos-duration="1500" className='grid md:grid-cols-2 gap-3 mx-auto container mt-16 mb-20'>
 
 <div className="relative bg-cover bg-center    md:rounded-xl h-64 md:h-80  shadow-lg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1520201163981-8cc95007dd2a?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",filter: 'grayscale(0%) brightness(80%) contrast(140%) '} }>
   <div className="absolute inset-0 flex items-center justify-center">

@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import UseText from '../../../Component/HeadingText/UseText';
 import './Service.css'
 import { Link } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
 
 function Service() {
+  useEffect(() => {
+    AOS.init();
+}, []);
+
   return (
-    <div className='p-8 service  '  id='reserver' >
+    <div  className='p-8 service  '  id='reserver' >
       <UseText heading={'Our Service'} subheading={'Services'}></UseText>
-      <article className="flex flex-wrap container mx-auto  bg-white transition drop-shadow-xl ">
+      <article data-aos="fade-up-left" className="flex flex-wrap container mx-auto  bg-white transition drop-shadow-xl ">
         <div className="md:basis-1/2">
           <img alt="Guitar" src='https://i.ibb.co/RTpf1ZJ/crop-man-eating-dessert-cafe.jpg' className="h-60 w-full object-cover" />
         </div>
@@ -26,7 +32,7 @@ function Service() {
         </div>
       </article>
 
-      <article className="flex flex-wrap-reverse  container mx-auto bg-white transition drop-shadow-xl  mt-8 ">
+      <article data-aos="fade-up-right" className="flex flex-wrap-reverse  container mx-auto bg-white transition drop-shadow-xl  mt-8 ">
         <div className="md:flex md:flex-1 md:flex-col ">
           <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
           
@@ -45,7 +51,7 @@ function Service() {
         </div>
       </article>
 
-      <article className="flex flex-wrap  container mx-auto bg-white transition drop-shadow-xl  mt-8 ">
+      <article data-aos="fade-down-left" className="flex flex-wrap  container mx-auto bg-white transition drop-shadow-xl  mt-8 ">
         <div className="md:basis-1/2 ">
           <img alt="Guitar" src='https://i.ibb.co/mGh12Yd/man-holding-smartphone-newspaper-during-breakfast.jpg' className="md:h-64 w-full object-cover" />
         </div>

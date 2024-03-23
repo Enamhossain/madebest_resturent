@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import MenuCard from '../Home/Menu/MenuCard';
 import useMenu from '../../hooks/useMenu';
-
+import Loading from '../../Component/Loading';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
 function Ourmenu() {
-  const [menu] = useMenu();
+  const [menu,loading] = useMenu();
   
+  useEffect(() => {
+    AOS.init();
+}, []);
+
 
   const sections = [
     { title: 'Main Dish', category: 'Main' },
@@ -15,7 +21,9 @@ function Ourmenu() {
     { title: 'Salad', category: 'salad' }
   ];
 
-
+  if (loading) {
+    return <Loading/>; // Render loading state if data is still being fetched
+  }
   const handleButtonClick = () => {
     const sectionElement = document.getElementById('menu-section');
     if (sectionElement) {
@@ -52,7 +60,9 @@ function Ourmenu() {
       </div>
 
       {/* Menu Sections */}
-         <div>
+         <div   data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="1500">
          <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
               Delicious Food Menu Gallery

@@ -1,9 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../../hooks/AxiosSecure';
 import useCart from '../../../hooks/useCart';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // Import AOS styles
 
 
 
@@ -15,7 +17,10 @@ function MenuCard({ title, price, description, image, _id }) {
   const location = useLocation();
   const axiosSecure = useAxiosSecure()
   const [, refetch] = useCart()
- 
+  useEffect(() => {
+    AOS.init();
+}, []);
+
   const handleAddToCart = () => {
 
     if (user && user.email) {
@@ -69,7 +74,7 @@ function MenuCard({ title, price, description, image, _id }) {
   const truncatedDescription = description.length > 20 ? `${description.slice(0, 70)}...` : description;
 
   return (
-    <div className="max-w-md mx-auto bg-gray-100 md:rounded-l-full shadow-lg overflow-hidden md:max-w-2xl mt-3 relative">
+    <div data-aos="zoom-in" className="max-w-md mx-auto bg-gray-100 md:rounded-l-full shadow-lg overflow-hidden md:max-w-2xl mt-3 relative">
       {/* Heart Icon */}
       <div className="absolute top-0 right-0 m-2">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
