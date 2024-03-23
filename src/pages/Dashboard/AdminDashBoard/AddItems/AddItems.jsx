@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import useAxiosPublic from '../../../../hooks/axiosPublic';
 import useAxiosSecure from '../../../../hooks/AxiosSecure';
 import swal from 'sweetalert';
-
 const imageHostKey = import.meta.env.VITE_IMG_HOSTING_KEY
 const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostKey}`
 function AddItems() {

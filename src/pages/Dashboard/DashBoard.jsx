@@ -1,12 +1,11 @@
 import React from 'react';
 import { FaChartBar, FaClipboardList, FaUtensils, FaUserFriends, FaMoneyBillAlt } from 'react-icons/fa';
 import { Link, Outlet } from 'react-router-dom';
-import useCart from '../../hooks/useCart';
 import { Helmet } from 'react-helmet-async';
 import useAdmin from '../../hooks/useAdmin';
 
 function DashBoard() {
-  const [ cart ] = useCart();
+ 
   
   
   const [ isAdmin ] = useAdmin();
@@ -18,7 +17,7 @@ function DashBoard() {
     { name: 'General', icon: <FaChartBar />, path: 'generals' },
     { name: 'All Orders', icon: <FaClipboardList />, path: 'Addorders' },
     { name: 'Add Items', icon: <FaUtensils />, path: 'AllItems' },
-    { name: 'Manage Booking', icon: <FaUserFriends />, path: 'Booking' },
+    { name: 'Manage Booking', icon: <FaUserFriends />, path: 'manageitems' },
     { name: 'All Users', icon: <FaClipboardList />, path: 'AllUsers' },
     { name: 'Customers', icon: <FaMoneyBillAlt />, path: 'customers' },
     { name: 'Reports', icon: <FaChartBar />, path: 'reports' },

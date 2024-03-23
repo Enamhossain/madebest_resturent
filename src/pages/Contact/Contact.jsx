@@ -1,9 +1,15 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 
 function Contact() {
   return (
     <div>
+       <Helmet>
+        <title>Contact | MadeBest</title>
+      </Helmet>
+
+      
       {/* Hero Section */}
       <div className="bg-gray-800 text-white py-12">
         <div className="container mx-auto px-4 mt-28">

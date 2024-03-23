@@ -1,59 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useCart from '../hooks/useCart';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import useAxiosPublic from '../hooks/axiosPublic';
-;
+import swal from 'sweetalert';
+import { useForm, Controller } from 'react-hook-form';
+
+
 
 function ViewCart() {
     const [cart, refetch] = useCart();
-    const [updatedCart, setUpdatedCart] = useState([...cart]);
     const axios = useAxiosPublic();
+    const [quantity, setQuantity] = useState(1); // Initial quantity is 1
+    const [openModal, setOpenModal] = useState(false);
+    const { control, handleSubmit, reset } = useForm();
+    const onSubmit = (data) => {
+        // Construct order data
+        const orderData = {
+            name: data.name,
+            address: data.address,
+            phoneNumber: data.phoneNumber,
+            Email: data.Email,
+            cartItems: cart.map(item => ({
+                productId: item._id,
+                quantity: item.quantity  // Include the quantity of each item
+            }))
+        };
+
+        // Send order data to the server
+        fetch("https://madebestresturent.vercel.app/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData)
+        })
+            .then(res => res.json())
+            .then((result) => {
+                window.location.replace(result.url)
+                console.log(result)
+            })
 
 
-   
-
-    const handleQuantityChange = (itemId, newQuantity) => {
-        // Ensure the new quantity is within the allowed range (min: 1)
-        newQuantity = Math.max(newQuantity, 1);
-
-        const updatedItems = updatedCart.map(item => {
-            if (item.id === itemId) {
-                return { ...item, quantity: newQuantity };
-            }
-            return item;
-        });
-        setUpdatedCart(updatedItems);
     };
 
+
+
+    useEffect(() => {
+        if (openModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflowY = 'auto';
+        }
+        return () => document.body.style.overflow = 'auto';
+    }, [openModal]);
+    // Function to increase quantity
+    const increaseQuantity = () => {
+        setQuantity(prevQuantity => prevQuantity + 1);
+    };
+
+    // Function to decrease quantity
+    const decreaseQuantity = () => {
+        if (quantity > 1) { // Ensure quantity is not less than 1
+            setQuantity(prevQuantity => prevQuantity - 1);
+        }
+    };
     const handleDelete = id => {
         axios.delete(`/carts/${id}`)
             .then(res => {
                 console.log(res);
-                // Check the response status and show a success message if necessary
                 if (res.status === 200) {
                     swal("Success!", "Item deleted successfully", "success");
-                    refetch(); // Refetch cart data to update the UI
+                    refetch();
                 } else {
-                    // Handle other status codes if necessary
                     swal("Error", "Failed to delete item", "error");
                 }
             })
-        refetch();
+            .catch(error => {
+                console.error('Error deleting item:', error);
+                swal("Error", "Failed to delete item", "error");
+            });
     };
 
-    // Calculate total price
-    const totalPrice = updatedCart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+    const totalPrice = cart.reduce((total, item) => total + parseFloat(item.price), 0);
+
+
+
 
     return (
         <div className="">
-            {/* Hero Section */}
             <div className="bg-gray-800 text-white py-12">
                 <div className=" px-28  mt-28">
                     <h1 className="text-3xl font-bold mb-4 ">Your Cart</h1>
                     <p className="text-gray-100 text-lg">View and manage items in your cart.</p>
                 </div>
             </div>
-
 
             <section>
                 <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -77,27 +116,28 @@ function ViewCart() {
 
                                             <dl className="mt-0.5 space-y-px text-[10px] text-gray-600">
                                                 <div>
-                                                    <dt className="inline">{item.price}</dt>
+                                                    <dt className="inline">{parseFloat(item.price).toFixed(2)}</dt>
                                                 </div>
                                             </dl>
                                         </div>
 
                                         <div className="flex flex-1 items-center justify-end gap-2">
                                             <div className="flex items-center gap-1 rounded border border-gray-200">
-                                                <button type="button" onClick={() => handleQuantityChange(item._id, item.quantity - 1)} className="size-10 leading-10 text-gray-600 transition hover:opacity-75">
+                                                <button type="button" onClick={decreaseQuantity} className="size-10 leading-10 text-gray-600 transition hover:opacity-75">
                                                     <FaMinus />
                                                 </button>
 
                                                 <input
                                                     type="number"
-                                                    value={item.quantity}
-                                                    className="h-10 w-16 rounded border-gray-200 bg-white text-black text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+                                                    value={quantity}
+                                                    className="h-10 w-16 rounded border-gray-200 bg-white text-black text-center [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                                                     readOnly
                                                 />
 
-                                                <button type="button" onClick={() => handleQuantityChange(item._id, item.quantity + 1)} className="size-10 leading-10 text-gray-600 transition hover:opacity-75">
+                                                <button type="button" onClick={increaseQuantity} className="size-10 leading-10 text-gray-600 transition hover:opacity-75">
                                                     <FaPlus />
                                                 </button>
+
                                             </div>
 
                                             <button onClick={() => handleDelete(item._id)} className="text-gray-600 transition hover:text-red-600">
@@ -120,7 +160,6 @@ function ViewCart() {
                                         </div>
                                     </li>
                                 ))}
-
                             </ul>
 
                             <div className="mt-8 flex justify-end border-t border-gray-100 pt-8">
@@ -128,19 +167,76 @@ function ViewCart() {
                                     <dl className="space-y-0.5 text-sm text-gray-700">
                                         <div className="flex justify-between">
                                             <dt>Subtotal</dt>
-                                            <dd>{totalPrice}</dd>
+                                            <dd>{totalPrice.toFixed(2)}</dd>
                                         </div>
-
-                                        {/* Add VAT, Discount, and Total sections here if needed */}
                                     </dl>
 
                                     <div className="flex justify-end">
                                         <a
-                                            href="#"
+                                            onClick={() => setOpenModal(true)}
                                             className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
                                         >
                                             Checkout
                                         </a>
+                                        <div onClick={() => setOpenModal(false)} className={`fixed flex justify-center items-center z-[100] ${openModal ? 'visible opacity-1' : 'invisible opacity-0'} inset-0 w-full h-full backdrop-blur-sm bg-black/20 duration-100`}>
+
+                                            <div onClick={(e) => e.stopPropagation()} className={`absolute w-full lg:w-[500px] bg-white drop-shadow-2xl rounded-lg ${openModal ? 'opacity-1 duration-300 translate-y-0' : '-translate-y-20 opacity-0 duration-150'}`}>
+                                                <h1 className='text-center font-extrabold text-2xl mt-5 '>Payment </h1>
+                                                <form className="p-12" onSubmit={handleSubmit(onSubmit)}>
+                                                    <svg onClick={() => setOpenModal(false)} className="w-10 mx-auto mr-0 cursor-pointer" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#000000"></path></svg>
+
+                                    
+                                                    <div className="space-y-5">
+                                                        <Controller
+                                                            name="name"
+                                                            control={control}
+                                                            defaultValue=""
+                                                            rules={{ required: true }} // Add the required rule here
+                                                            render={({ field }) => (
+                                                                <input {...field} type="text" placeholder="Name" className="border bg-slate-50 border-gray-300 rounded-md p-2 w-full" />
+                                                            )}
+                                                        />
+                                                        <Controller
+                                                            name="phoneNumber"
+                                                            control={control}
+                                                            defaultValue=""
+                                                            rules={{ required: true }} // Add the required rule here
+                                                            render={({ field }) => (
+                                                                <input {...field} type="tel" placeholder="Phone Number" className="border bg-slate-50 border-gray-300 rounded-md p-2 w-full" />
+                                                            )}
+                                                        />
+                                                        <Controller
+                                                            name="Email"
+                                                            control={control}
+                                                            defaultValue=""
+                                                            rules={{ required: true }} // Add the required rule here
+                                                            render={({ field }) => (
+                                                                <input {...field} type="email" placeholder="Email Address" className="border bg-slate-50 border-gray-300 rounded-md p-2 w-full" />
+                                                            )}
+                                                        />
+                                                        <Controller
+                                                            name="postcode"
+                                                            control={control}
+                                                            defaultValue=""
+                                                            rules={{ required: true }} // Add the required rule here
+                                                            render={({ field }) => (
+                                                                <input {...field} type="text" placeholder="Postcode" className="border bg-slate-50 border-gray-300 rounded-md p-2 w-full" />
+                                                            )}
+                                                        />
+                                                        <Controller
+                                                            name="address"
+                                                            control={control}
+                                                            defaultValue=""
+                                                            rules={{ required: true }} // Add the required rule here
+                                                            render={({ field }) => (
+                                                                <textarea {...field} placeholder="Address" className="border bg-slate-50 border-gray-200 rounded-md p-2 w-full" />
+                                                            )}
+                                                        />
+                                                    </div>
+                                                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 mt-6 rounded-md">Pay  </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

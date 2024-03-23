@@ -2,63 +2,63 @@
 
   {
     "Title": "Burger Bliss",
-    "price": "140 TAKA",
+    "price": 170,
     "description": "Experience Burger Bliss with our juicy and flavorful cheeseburger, a classic favorite.",
     "img": "https://i.ibb.co/P5DrCMR/birger-with-meat-tomatoess.jpg",
     "category": "Main"
   },
   {
     "Title": "Spaghetti Veggie Delight",
-    "price": "120 TAKA",
+    "price": 200,
     "description": "Delve into the Veggie Delight with our Spaghetti, a hearty blend of fresh vegetables and pasta.",
     "img": "https://i.ibb.co/xzVW4Pv/spaghetti-with-vegetables.jpg",
     "category": "Main"
   },
   {
     "Title": "Fresh Garden Salad",
-    "price": "90 TAKA",
+    "price": 90,
     "description": "Revitalize your senses with our Fresh Garden Salad, a healthy and refreshing choice.",
     "img": "https://i.ibb.co/z4RHNfT/shaurma-inside-lavash-bread-with-french-fries-ketchup.jpg",
     "category": "Main"
   },
   {
     "Title": "Fish Fillet",
-    "price": "150 TAKA",
+    "price": 150,
     "description": "Indulge in our Fish Fillet, a culinary masterpiece. Delicately seasoned, perfectly seared – a seafood sensation in every bite.",
     "img": "https://i.ibb.co/f0PpbC7/salmon-steak-white-plate.jpg",
     "category": "Main"
   },
   {
     "Title": "Beef Delight",
-    "price": "180 TAKA",
+    "price": 160,
     "description": "Savor the richness of our Beef Delight, expertly prepared for an unforgettable dining experience.",
     "img": "https://i.ibb.co/TkcnLnv/beef-meat-plate.jpg",
     "category": "popular"
   },
   {
     "Title": "Chicken Kabab",
-    "price": "120 TAKA",
+    "price": 200,
     "description": "Enjoy the succulence of our Chicken Kabab, a flavorful delight served with lavash.",
     "img": "https://i.ibb.co/Z1Zyvkc/chicken-kebab-lavash-servede.jpg",
     "category": "popular"
   },
   {
     "Title": "Crispy Chicken Wings",
-    "price": "100 TAKA",
+    "price": 100,
     "description": "Treat yourself to our Crispy Chicken Wings, seasoned to perfection and served with your favorite dip.",
     "img": "https://i.ibb.co/WkSd1y7/Chicken-Wings.jpg",
     "category": "popular"
   },
   {
     "Title": "Pasta Perfection",
-    "price": "130 TAKA",
+    "price": 130,
     "description": "Delight in the exquisite taste of our Pasta Perfection, a symphony of flavors in every forkful.",
     "img": "https://i.ibb.co/qDrCgYN/Pasta.jpg",
     "category": "Main"
   },
   {
     "Title": "Vegetarian Pizza",
-    "price": "160 TAKA",
+    "price": 170,
     "description": "Satisfy your taste buds with our Vegetarian Pizza, loaded with fresh vegetables and melted cheese.",
     "img": "https://i.ibb.co/fvbvLFb/vegetarian-pizza.jpg",
     "category": "pizza"
@@ -67,21 +67,21 @@
 
   {
     "Title": "Beef Delight",
-    "price": "180 TAKA",
+    "price": 160,
     "description": "Savor the richness of our Beef Delight, expertly prepared for an unforgettable dining experience.",
     "img": "../src/assets/MenusItems/beef-meat-plate.jpg",
     "category": "popular"
   },
   {
     "Title": "Chicken Kabab",
-    "price": "120 TAKA",
+    "price": 180,
     "description": "Enjoy the succulence of our Chicken Kabab, a flavorful delight served with lavash.",
     "img": "../src/assets/MenusItems/chicken-kebab-lavash-servede.jpg",
     "category": "popular"
   },
   {
     "Title": "Crispy Chicken Wings",
-    "price": "100 TAKA",
+    "price": 100,
     "description": "Treat yourself to our Crispy Chicken Wings, seasoned to perfection and served with your favorite dip.",
     "img": "../src/assets/MenusItems/ChickenWings.jpg",
     "category": "popular"
@@ -90,7 +90,7 @@
   
   {
     "Title": "Pasta Perfection",
-    "price": "130 TAKA",
+    "price": 130,
     "description": "Delight in the exquisite taste of our Pasta Perfection, a symphony of flavors in every forkful.",
     "img": "../src/assets/MenusItems/Pasta.jpg",
     "category": "Main"
@@ -99,7 +99,7 @@
  
   {
     "Title": "Vanilla Milkshake",
-    "price": "230 Taka",
+    "price": 230,
     "description": "Indulge in the creamy goodness of a classic vanilla milkshake made with rich vanilla ice cream, cold milk, and a drizzle of vanilla syrup. It's a timeless treat that's perfect for satisfying your sweet cravings.",
     "img": "https://i.ibb.co/VY4RSNW/124865.jpg",
     "category": "Drinks"
@@ -109,25 +109,25 @@
     "description": "Enjoy the perfect blend of espresso, creamy milk, and caramel syrup over ice. This refreshing beverage is sure to perk you up any time of day.",
     "img": "https://i.ibb.co/V2bhmHM/84960.jpg",
     "category": "Drinks",
-    "price": "230 Taka "
+    "price":140
   },
   {
     "Title": "Chocolate Hazelnut Frappuccino",
     "description": "Treat yourself to a delightful combination of rich chocolate, creamy milk, and toasted hazelnuts blended with ice. It's a decadent and refreshing beverage that's perfect for chocolate lovers.",
     "img": "https://i.ibb.co/jZqxp1m/34377.jpg",
     "category": "Drinks",
-    "price": "230 Taka "
+    "price":140
   },
   {
     "Title": "Iced Matcha Latte",
-    "price": "230 Taka ",
+    "price":140,
     "description": "Savor the smooth and earthy flavors of matcha green tea combined with creamy milk and a hint of sweetness, served over ice. It's a refreshing and energizing drink that's perfect for any time of day.",
     "img": "https://i.ibb.co/WDDB6GX/84969.jpg",
     "category": "Drinks"
   },
   {
     "Title": "Caramel Mocha",
-    "price": "130 Taka ",
+    "price": 160,
     "description": "Indulge in the rich flavors of chocolate and caramel combined with espresso and steamed milk, topped with whipped cream and a drizzle of caramel sauce. It's a luxurious treat for coffee lovers.",
     "img": "https://i.ibb.co/V2bhmHM/84960.jpg",
     "category": "Drinks"
@@ -136,7 +136,7 @@
 
   {
     "Title": "Vegetarian Pizza",
-    "price": "160 TAKA",
+    "price": 170,
     "description": "Satisfy your taste buds with our Vegetarian Pizza, loaded with fresh vegetables and melted cheese.",
     "img": "https://i.ibb.co/mFr6TDG/the-nix-company-ljvm17b-H-e0-unsplash.jpg",
     "category": "pizza"
@@ -147,7 +147,7 @@
     "description": "Pan roasted haddock fillet wrapped in smoked French bacon with pea purée and tomato and chive vinaigrette. Enjoy this savory pizza!",
     "img": "https://i.ibb.co/C0Zc81M/chad-montano-Mq-T0asuo-Ic-U-unsplash.jpg",
     "category": "pizza",
-    "price": "130 TAKA"
+    "price": 130
   },
   {
     "_id": "642c155b2c4774f05c36ee9e",
@@ -155,28 +155,28 @@
     "description": "Chargrilled chicken with avocado, baby gem lettuce, baby spinach, shallots, French beans, walnuts, croutons and a mustard dressing. A unique twist on a classic pizza!",
     "img": "https://i.ibb.co/C0Zc81M/chad-montano-Mq-T0asuo-Ic-U-unsplash.jpg",
     "category": "pizza",
-    "price": "130 Taka "
+    "price": 160
   },
   {
     "Title": "Margherita Pizza",
     "description": "A classic pizza topped with tomato sauce, fresh mozzarella cheese, basil leaves, and a drizzle of olive oil. Simple yet satisfying!",
     "img": "https://i.ibb.co/mFr6TDG/the-nix-company-ljvm17b-H-e0-unsplash.jpg",
     "category": "pizza",
-    "price": "130 Taka "
+    "price": 160
   },
   {
     "Title": "Pepperoni Pizza",
     "description": "Satisfy your cravings with this timeless favorite featuring zesty tomato sauce, gooey mozzarella cheese, and savory slices of pepperoni on a crispy crust.",
     "img": "https://i.ibb.co/C0Zc81M/chad-montano-Mq-T0asuo-Ic-U-unsplash.jpg",
     "category": "pizza",
-    "price": "130 Taka "
+    "price": 160
   },
   {
     "Title": "BBQ Chicken Pizza",
     "description": "Tender grilled chicken, tangy BBQ sauce, red onions, cilantro, and melted mozzarella cheese on a crispy pizza crust. A flavor-packed indulgence!",
     "img": "https://i.ibb.co/C0Zc81M/chad-montano-Mq-T0asuo-Ic-U-unsplash.jpg",
     "category": "pizza",
-    "price": "230 Taka "
+    "price":140
   },
 
   {
@@ -185,7 +185,7 @@
     "description": "Chargrilled fresh tuna steak (served medium rare) on classic Niçoise salad with French beans.",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-1-370x247.jpg",
     "category": "salad",
-    "price": "150 TAKA"
+    "price": 150
   },
   {
     "_id": "642c155b2c4774f05c36eeb9",
@@ -193,7 +193,7 @@
     "description": "Chargrilled fresh tuna steak (served medium rare) on classic Niçoise salad with French beans.",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-1-370x247.jpg",
     "category": "Drinks",
-    "price": "150 TAKA"
+    "price": 150
   },
   {
     "_id": "642c155b2c4774f05c36eea6",
@@ -201,7 +201,7 @@
     "description": "Pan roasted pork belly with gratin potato, braised Savoy cabbage, apples, thyme and calvados jus. This refreshing salad is perfect for a light meal.",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-3-370x247.jpg",
     "category": "salad",
-    "price": "270 Taka "
+    "price": 180
   },
   {
     "_id": "642c155b2c4774f05c36eea5",
@@ -209,7 +209,7 @@
     "description": "Sautéed breaded veal escalope with watercress, lemon and veal jus. This salad offers a delightful combination of flavors.",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-8-370x247.jpg",
     "category": "salad",
-    "price": "12.9"
+    "price": 110
   },
   {
     "_id": "642c155b2c4774f05c36eead",
@@ -217,7 +217,7 @@
     "description": "Pan roasted haddock fillet wrapped in smoked French bacon with pea purée and tomato and chive vinaigrette. A seafood lover's delight!",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-4-370x247.jpg",
     "category": "salad",
-    "price": "13.5"
+    "price": 120
   },
   {
     "_id": "642c155b2c4774f05c36eeab",
@@ -225,7 +225,7 @@
     "description": "Pan roasted haddock fillet wrapped in smoked French bacon with pea purée and tomato and chive vinaigrette. These grilled sardines are bursting with flavor!",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-1-370x247.jpg",
     "category": "salad",
-    "price": "150 TAKA"
+    "price": 150
   },
 
  
@@ -235,7 +235,7 @@
     "description": "Pan roasted haddock fillet wrapped in smoked French bacon with pea purée and tomato and chive vinaigrette. Warm up with this comforting soup!",
     "img": "https://cristianonew.ukrdevs.com/wp-content/uploads/2016/08/product-2-370x247.jpg",
     "category": "soup",
-    "price": "130 TAKA"
+    "price": 130
   },
 
 
@@ -244,34 +244,34 @@
     "description": "Indulge in the rich, molten center of this decadent chocolate cake. It's the perfect balance of gooey and cakey, sure to satisfy any chocolate lover's cravings.",
     "img": "https://i.ibb.co/2qRyR5t/chocolate-brownie-cake-with-scoop-ice-cream.jpg",
     "category": "Dessert",
-    "price": "120TAKA"
+    "price": 230
   },
   {
     "Title": "Tiramisu",
     "description": "Layers of coffee-soaked ladyfingers, creamy mascarpone cheese, and dustings of cocoa powder make up this classic Italian dessert. It's a delightful combination of textures and flavors.",
     "img": "https://i.ibb.co/ch3k4Q2/tiramisu-with-mascarpone-cheese-chocolate-plate.jpg",
     "category": "Dessert",
-    "price": "160 TAKA"
+    "price": 170
   },
   {
     "Title": "Strawberry Shortcake",
     "description": "Enjoy the sweetness of fresh strawberries sandwiched between layers of fluffy shortcake and topped with whipped cream. It's a timeless dessert that's perfect for any occasion.",
     "img": "https://i.ibb.co/wgnSmwg/strawberry-cheese-cake-table.jpg",
     "category": "Dessert",
-    "price": "400 TAKA"
+    "price": 270
   },
   {
     "Title": "Banoffee Pie",
     "description": "Savor the irresistible combination of bananas, toffee, and whipped cream atop a buttery biscuit crust. It's a heavenly dessert that's both comforting and indulgent.",
     "img": "https://i.ibb.co/Y3zpGSf/top-view-fresh-pecan-pie-whisk-table.jpg",
     "category": "Dessert",
-    "price": "350 TAKA"
+    "price": 260
   },
   {
     "Title": "Lemon Meringue Tart",
     "description": "Tangy lemon curd nestled in a flaky pastry shell and crowned with fluffy meringue – this tart is a burst of citrusy goodness in every bite. It's a refreshing and elegant dessert option.",
     "img": "https://i.ibb.co/rwdNZF8/homemade-newyork-cheesecake-with-lemon-mint-healthy-organic-dessert-top-view.jpg",
     "category": "Dessert",
-    "price": "180 TAKA"
+    "price": 230
   }
 ]

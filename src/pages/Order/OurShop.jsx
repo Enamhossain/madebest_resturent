@@ -1,8 +1,13 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 
 function OurShop() {
   return (
     <div>
+      <Helmet>
+        <title>Our Shop | MadeBest</title>
+      </Helmet>
+
       {/* Hero Section */}
       <div className="hero-section bg-gray-800 text-white py-20 px-4">
         <div className="container mx-auto mt-20 mr-4">
@@ -48,7 +53,7 @@ function OurShop() {
           </div>
         </div>
       </div>
-    
+
 
       {/* Testimonials Section */}
       <div className="testimonials-section py-20 px-4 bg-gray-200">

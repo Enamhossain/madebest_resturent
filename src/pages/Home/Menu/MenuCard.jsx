@@ -14,8 +14,8 @@ function MenuCard({ title, price, description, image, _id }) {
   const navigate = useNavigate();
   const location = useLocation();
   const axiosSecure = useAxiosSecure()
-  const [, refetch ] = useCart()
-
+  const [, refetch] = useCart()
+ 
   const handleAddToCart = () => {
 
     if (user && user.email) {
@@ -28,24 +28,24 @@ function MenuCard({ title, price, description, image, _id }) {
         title,
         price,
         image
-    };
-    
+      };
 
-     axiosSecure.post('/carts',cartItem)
-       .then(res =>{
-           console.log(res.data)
-           if(res.data.insertedId){
+
+      axiosSecure.post('/carts', cartItem)
+        .then(res => {
+          console.log(res.data)
+          if (res.data.insertedId) {
             swal("Good job!", "You clicked the button!", "success", {
-                timer:1500,
-                name:`${title}`
+              timer: 1500,
+              name: `${title}`
             });
-           
 
-           }
-            // refetch cart to update cart items count
-            refetch()
-       })
-    } 
+
+          }
+          // refetch cart to update cart items count
+          refetch()
+        })
+    }
     else {
       console.log("User is not logged in. Showing validation popup...");
       swal({
@@ -56,7 +56,7 @@ function MenuCard({ title, price, description, image, _id }) {
         dangerMode: true,
       }).then((willDeleted) => {
         if (willDeleted) {
-          navigate('/login', { state: {from: location} });
+          navigate('/login', { state: { from: location } });
         }
       });
     }
@@ -83,7 +83,7 @@ function MenuCard({ title, price, description, image, _id }) {
         </div>
         <div className="p-3 flex flex-col justify-between">
           <div>
-            <span className="uppercase text-sm text-red-500 font-semibold underline">{price}</span>
+            <span className="uppercase text-sm text-red-500 font-semibold underline">{price} Taka </span>
             <a href="#" className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">{title}</a>
             <p className="mt-2 text-slate-500 overflow-hidden">{showFullDescription ? description : truncatedDescription}</p>
             {description.length > 40 && (

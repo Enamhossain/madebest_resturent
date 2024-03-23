@@ -264,7 +264,7 @@ function Singup() {
                                     type="password"
                                     id="Password"
                                     name="password"
-                                    {...register("password", { required: 'Password is required', required:'true', minLength:6,
+                                    {...register("password", { required: 'Password is required',  minLength:6,
                                     maxLength:20,
                                  
                                 })}

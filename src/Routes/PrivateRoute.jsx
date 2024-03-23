@@ -12,7 +12,6 @@ const PrivateRoute = ({ children }) => {
         return <h3>Loadding....</h3>
     }
 
-    console.log(user)
     if (user) {
         return children;
     }

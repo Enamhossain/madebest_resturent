@@ -7,7 +7,7 @@ import img4 from '../../../assets/Banner/freshly-italian-pizza-with-mozzarella-c
 import img5 from '../../../assets/Banner/arabic-shaurma-with-stuffings-lavash.jpg'
 
 
-const Banner = ({handleButtonClick}) => {
+const Banner = () => {
   const [currentSlider, setCurrentSlider] = useState(0);
 
   const sliders = [
@@ -29,14 +29,23 @@ const Banner = ({handleButtonClick}) => {
     return () => clearInterval(intervalId);
   }, [currentSlider, sliders.length]);
 
- 
+  const handleButtonClick = () => {
+    const sectionElement = document.getElementById('menu-section');
+    if (sectionElement) {
+      const offsetTop = sectionElement.offsetTop;
+      window.scroll({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
 
     <>
       <div className="mx-auto h-[320px] md:h-[640px] flex flex-col lg:flex-row items-center overflow-hidden gap-5 lg:gap-10  cursor-auto">
-   
-       
+
+
         {/* slider container */}
         <div className="">
           {/* arrow */}
@@ -74,45 +83,48 @@ const Banner = ({handleButtonClick}) => {
           </div>
           {/* slider container */}
           <div className="ease-linear duration-300 flex transform-gpu relative" style={{ transform: `translateX(-${currentSlider * 100}%)` }}>
-  {/* sliders */}
-  {sliders.map((slide, inx) => (
-    <div key={inx} className="min-w-full duration-200 relative">
-      <img
-        src={slide.img}
-        className="w-full h-80 md:h-[680px] object-cover"
-        alt={`Slider - ${inx + 1}`}
-      />
-      <div className="absolute top-1/2 left-4 sm:left-28 transform -translate-y-1/2 p-4 md:p-8 rounded-lg shadow-xl overflow-hidden text-white bg-opacity-80 md:flex md:items-center md:justify-center">
-        <div className="text-center md:text-left md:max-w-lg lg:max-w-xl">
-          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight mb-4">
-            Indulge Your Senses in Culinary Bliss at <span className="text-orange-600">MadeBest</span>
-          </h1>
-          <p className="text-base sm:text-lg lg:text-xl mb-4">
-            Welcome to a Gastronomic Journey of Flavor and Elegance
-            <span> </span>
-          </p>
-          <div className="flex flex-col md:flex-row items-center gap-3 md:space-x-3">
-            <a
-              href="javascript:void(0)"
-              className="block py-2 px-4 text-center text-white font-medium bg-indigo-600 duration-150 hover:bg-indigo-400 active:bg-indigo-700 rounded-lg shadow-lg hover:shadow-none cursor-pointer"
-            >
-              Order Now
-            </a>
-            <a 
-              href="#reserve"
-              className="bg-yellow-500 text-gray-800 hover:bg-yellow-400 py-2 px-4 rounded-full uppercase tracking-wide font-semibold transition duration-300"
-            >
-              Reserve Your Table
-            </a>
+            {/* sliders */}
+            {sliders.map((slide, inx) => (
+              <div key={inx} className="min-w-full duration-200 relative">
+                <img
+                  src={slide.img}
+                  className="w-full h-80 md:h-[680px] object-cover"
+                  alt={`Slider - ${inx + 1}`}
+                />
+                <div className="absolute top-1/2 left-4 sm:left-28 transform -translate-y-1/2 p-4 md:p-8 rounded-lg shadow-xl  text-white bg-opacity-80 md:flex md:items-center md:justify-center">
+                  <div className="text-center md:text-left md:max-w-lg lg:max-w-xl">
+                    <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight mb-4">
+                      Indulge Your Senses in Culinary Bliss at <span className="text-orange-600">MadeBest</span>
+                    </h1>
+                    <p className="text-base sm:text-lg lg:text-xl mb-4">
+                      Welcome to a Gastronomic Journey of Flavor and Elegance
+                      <span> </span>
+                    </p>
+                    <div className="flex flex-col md:flex-row items-center gap-3 md:space-x-3">
+                      <a
+                        href="javascript:void(0)"
+                        className="block py-2 px-4 text-center text-white font-medium bg-indigo-600 duration-150 hover:bg-indigo-400 active:bg-indigo-700 rounded-lg shadow-lg hover:shadow-none cursor-pointer"
+                      >
+                        Order Now
+                      </a>
+                      <button onClick={handleButtonClick}>
+                        <a
+                          href="#reserve"
+                          className="bg-yellow-500 cursor-pointer text-gray-800 hover:bg-yellow-400 py-2 px-4 rounded-full uppercase tracking-wide font-semibold transition duration-300"
+                        >
+                          Reserve Your Table
+                        </a>
+                      </button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
 
         </div>
-     
+
 
       </div>
       {/* slider container */}
@@ -128,7 +140,7 @@ const Banner = ({handleButtonClick}) => {
           />
         ))}
       </div>
-     
+
     </>
 
 

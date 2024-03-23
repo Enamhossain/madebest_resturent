@@ -8,12 +8,17 @@ import Service from './Service/Service'
 // import Contact from './Contact/Contact'
 // import ReserverBooking from './Reserve/ReserverBooking'
 import Tastomonial from './Tastomonial/Tastomonial'
+import { Helmet } from 'react-helmet-async'
 
 
 
  function Home() {
   return (
    <div>
+      <Helmet>
+        <title>Home | MadeBest</title>
+      </Helmet>
+
       <Banner/>
       <Category/>
       <Discount/>

@@ -7,7 +7,7 @@ const Tastomonial = () => {
   const reviewsPerPage = 3;
 
   useEffect(() => {
-    fetch('http://localhost:5000/review')
+    fetch('https://madebestresturent.vercel.app/review')
       .then(res => res.json())
       .then(data => {
         setReviews(data);
