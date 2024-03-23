@@ -26,3 +26,8 @@ Currently, two official plugins are available:
 - **Others**: Add any other libraries or tools you're using in your project.
 
 ## https://madebest-3b6ec.web.app/
+
+## Admin DashBoard 
+test@gmail.com
+testtest2024
+
