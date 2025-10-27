@@ -8,37 +8,49 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 const ShoppingCart = () => {
   const [cart, refetch] = useCart();
   const axios = useAxiosPublic();
-  const [cartItems, setCartItems] = useState(cart);
+  const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setCartOpen] = useState(true);
   const { user } = useContext(AuthContext);
-console.log(user)
+  console.log(user);
 
   useEffect(() => {
-    // Filter out cart items based on email
-    const filteredCart = cart.filter(item => item.email !== user);
-    setCartItems(filteredCart);
-  }, [cart, user]); 
-
-  const handleCloseCart = () => {
-    setCartOpen(false); // Close the cart popup
-  };
-
-  const handleQuantityChange = (itemId, newQuantity) => {
-    newQuantity = parseFloat(newQuantity);
-
-    if (isNaN(newQuantity) || newQuantity < 1) {
-      console.error("Invalid quantity:", newQuantity);
-      return;
-    }
-
-    const updatedItems = cartItems.map(item =>
-      item.id === itemId ? { ...item, quantity: newQuantity } : item
+    setCartItems(
+      cart.map((item) => ({
+        ...item,
+        quantity: item.quantity || 1,
+        price: parseFloat(item.price) || 0,
+      }))
     );
+  }, [cart]);
 
-    setCartItems(updatedItems);
+  const handleAddToCart = (item) => {
+    setCartItems(
+      cartItems.map((cartItem) =>
+        cartItem._id === item._id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      )
+    );
   };
 
-  const handleDelete = id => {
+  const handleRemoveFromCart = (item) => {
+    setCartItems(
+      cartItems.map((cartItem) =>
+        cartItem._id === item._id && cartItem.quantity > 1
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem
+      )
+    );
+  };
+
+  const getCartTotal = () => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  };
+
+  const handleDelete = (id) => {
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this item!",
@@ -48,7 +60,7 @@ console.log(user)
     }).then((willDelete) => {
       if (willDelete) {
         axios.delete(`/carts/${id}`)
-          .then(res => {
+          .then((res) => {
             if (res.status === 200) {
               swal("Success!", "Item deleted successfully", "success");
               refetch(); // Refetch cart data to update the UI
@@ -56,7 +68,7 @@ console.log(user)
               swal("Error", "Failed to delete item", "error");
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Error deleting item:", error);
             swal("Error", "An error occurred while deleting the item", "error");
           });
@@ -64,7 +76,9 @@ console.log(user)
     });
   };
 
- 
+  const handleCloseCart = () => {
+    setCartOpen(false);
+  };
 
   return (
     <>
@@ -89,7 +103,7 @@ console.log(user)
           <div className="mt-4 space-y-6">
             <ul className="space-y-4">
               {cartItems.map(item => (
-                <div key={item.id} className="flex items-center justify-between border-b py-2">
+                <div key={item._id} className="flex items-center justify-between border-b py-2">
                   <div className="flex items-center gap-4">
                     <img src={item.image} alt="Item" className="w-16 h-16 rounded-full object-cover" />
                     <div>
@@ -99,15 +113,15 @@ console.log(user)
                   </div>
                   <div className="flex items-center gap-4">
                     <button
-                      onClick={() => handleQuantityChange(item.id, parseFloat(item.quantity) - 1)}
+                      onClick={() => handleRemoveFromCart(item)}
                       disabled={item.quantity <= 1}
                       className="px-2 py-1 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
                     >
                       -
                     </button>
-                    <span className="px-2 py-1">{(item.quantity)}</span>
+                    <span className="px-2 py-1">{item.quantity}</span>
                     <button
-                      onClick={() => handleQuantityChange(item.id, parseFloat(item.quantity) + 1)}
+                      onClick={() => handleAddToCart(item)}
                       className="px-2 py-1 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
                     >
                       +
@@ -141,13 +155,13 @@ console.log(user)
                 View my cart ({cartItems.length})
               </Link>
               <a
-                href="#"
+                href="/checkout"
                 className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
               >
                 Checkout
               </a>
               <a
-                href="#"
+                href="/shop"
                 className="inline-block text-sm text-gray-500 underline underline-offset-4 transition hover:text-gray-600"
               >
                 Continue shopping

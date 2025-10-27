@@ -1,7 +1,9 @@
 import React from 'react'
 
+// eslint-disable-next-line react/prop-types
 function SectionCover({img,title}) {
   return (
+// eslint-disable-next-line react/jsx-no-undef
 <Parallax
     blur={{ min: -50, max: 50 }}
     bgImage={img}

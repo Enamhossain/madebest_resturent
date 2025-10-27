@@ -5,6 +5,7 @@ import useMenu from '../../hooks/useMenu';
 import Loading from '../../Component/Loading';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // Import AOS styles
+import SkeletonCard from '../../Component/SkeletonCard';
 function Ourmenu() {
   const [menu,loading] = useMenu();
   
@@ -21,9 +22,7 @@ function Ourmenu() {
     { title: 'Salad', category: 'salad' }
   ];
 
-  if (loading) {
-    return <Loading/>; // Render loading state if data is still being fetched
-  }
+
   const handleButtonClick = () => {
     const sectionElement = document.getElementById('menu-section');
     if (sectionElement) {
@@ -42,9 +41,8 @@ function Ourmenu() {
         <link rel="canonical" href="https://www.tacobell.com/" />
       </Helmet>
 
-      {/* Banner */}
       <div className="p-6 py-12 " style={{
-        backgroundImage: 'url(https://i.ibb.co/Y2B7YpJ/Black-Orange-Modern-Food-Promotion-Banner.png)',
+        backgroundImage: 'url(https://i.ibb.co/cv9n6f4/Black-Orange-Modern-Food-Promotion-Banner-1.png)',
         backgroundSize: 'cover',
         width: '100%',
         height: '80vh',
@@ -107,32 +105,41 @@ function Ourmenu() {
          </div>
           
 
-          {/* Render Menu Sections */}
-        <div id='menu-section'>
-        {sections.map((section, index) => (
-            <div key={index} className="mt-10">
-              <h2 className="text-3xl font-extrabold text-center text-orange-500 uppercase border-orange-500 pb-4">
-                {section.title}
-              </h2>
-              <hr className="w-80 border-gray-800 text-center mx-auto" />
-              <div className="container mx-auto grid grid-cols-2 md:grid-cols-3 gap-3 mt-5">
-                {/* Filter and render menu items for the current section */}
-                {menu
-                  .filter(item => item.category === section.category)
-                  .map((item, index) => (
-                    <MenuCard
-                      key={index}
-                      _id={item._id}
-                      title={item.Title}
-                      price={item.price}
-                      description={item.description}
-                      image={item.img}
-                    />
-                  ))}
-              </div>
+        
+     
+         <div id="menu-section">
+      {loading ? (
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-5">
+      {Array.from({ length: 6 }).map((_, idx) => (
+        <SkeletonCard key={idx} />
+      ))}
+    </div>
+      ) : (
+        sections.map((section, index) => (
+          <div key={index} className="mt-10">
+            <h2 className="text-3xl font-extrabold text-center text-orange-500 uppercase border-orange-500 pb-4">
+              {section.title}
+            </h2>
+            <hr className="w-80 border-gray-800 text-center mx-auto" />
+            <div className="container mx-auto grid grid-cols-2 md:grid-cols-3 gap-3 mt-5">
+              {/* Filter and render menu items for the current section */}
+              {menu
+                .filter(item => item.category === section.category)
+                .map((item, idx) => (
+                  <MenuCard
+                    key={idx}
+                    _id={item._id}
+                    title={item.Title}
+                    price={item.price}
+                    description={item.description}
+                    image={item.img}
+                  />
+                ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))
+      )}
+    </div>
         </div>
       
 

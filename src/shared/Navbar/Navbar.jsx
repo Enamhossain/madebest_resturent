@@ -1,11 +1,12 @@
 // Navbar.js
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../AuthProvider/AuthProvider';
 import ShoppingCart from '../../Component/ShoppingCart';
 import useCart from '../../hooks/useCart';
+import LazyImage from '../../Component/LazyImage';
 
-function Navbar() {
+const Navbar = memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false); // State to manage the cart popup
 
@@ -20,15 +21,15 @@ function Navbar() {
     { title: 'Our Shop', path: 'order' },
   ];
 
-  const toggleMenu = () => {
-    setMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setMenuOpen(prev => !prev);
+  }, []);
 
-  const toggleCart = () => {
-    setCartOpen(!isCartOpen);
-  };
+  const toggleCart = useCallback(() => {
+    setCartOpen(prev => !prev);
+  }, []);
 
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(() => {
     logOut()
       .then(() => {
         console.log('User signed out successfully');
@@ -36,18 +37,17 @@ function Navbar() {
       .catch(error => {
         console.error('Error signing out:', error);
       });
-  };
+  }, [logOut]);
 
   return (
     <nav className="z-50 border-none w-full md:absolute md:text-sm md:border-none ">
       <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
         <div className="flex items-center justify-between py-2 md:py-2 md:block">
           <Link to='/'>
-            <img
+            <LazyImage
               className="bg-gray-900 rounded-full w-30 h-50"
               src="https://i.ibb.co/VNs4X6g/1705932001959oh7xa24u-removebg-preview.png"
-              alt="1705932001959oh7xa24u-removebg-preview"
-              border="0"
+              alt="MadeBest Logo"
               width={100}
               height={30}
             />
@@ -57,6 +57,7 @@ function Navbar() {
             <button
               className="text-gray-800 hover:text-gray-900"
               onClick={toggleMenu}
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? (
                 <svg
@@ -114,11 +115,11 @@ function Navbar() {
                 </Link>
               </li>
             )}
-               <li onClick={toggleCart} className='text-black md:text-white cursor-pointer bg-black    w-20  md:bg-transparent  md:hover:bg-orange-500 rounded-full   hover:text-orange-600 uppercase font-semibold'> <div class="relative">
+               <li onClick={toggleCart} className='text-black md:text-white cursor-pointer bg-black    w-20  md:bg-transparent  md:hover:bg-orange-500 rounded-full   hover:text-orange-600 uppercase font-semibold'> <div className="relative">
 
-              <svg  width="44px" className='mx-auto' height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              <svg  width="44px" className='mx-auto' height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
 
-              <span class="bg-red-500  text-white w-5 h-5 rounded-full flex items-center justify-center text-xs absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">{cart.length}</span>
+              <span className="bg-red-500  text-white w-5 h-5 rounded-full flex items-center justify-center text-xs absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">{cart.length}</span>
             </div></li>
             {isCartOpen && <ShoppingCart cart={cart} />}
 
@@ -158,6 +159,8 @@ function Navbar() {
     </nav>
 
   );
-}
+});
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar;

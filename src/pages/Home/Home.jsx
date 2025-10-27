@@ -1,18 +1,17 @@
 
-import React from 'react'
-import Banner from './Banner/Banner'
-import Category from './Category/Category'
-import Discount from './Discount/Discount'
-import DiseMenu from './Menu/DiseMenu'
-import Service from './Service/Service'
-// import Contact from './Contact/Contact'
-// import ReserverBooking from './Reserve/ReserverBooking'
-import Tastomonial from './Tastomonial/Tastomonial'
+import React, { Suspense, memo } from 'react'
 import { Helmet } from 'react-helmet-async'
+import Loading from '../../Component/Loading'
+import Banner from './Banner/Banner'
 
+// Lazy load non-critical components
+const Category = React.lazy(() => import('./Category/Category'))
+const Discount = React.lazy(() => import('./Discount/Discount'))
+const DiseMenu = React.lazy(() => import('./Menu/DiseMenu'))
+const Service = React.lazy(() => import('./Service/Service'))
+const Tastomonial = React.lazy(() => import('./Tastomonial/Tastomonial'))
 
-
- function Home() {
+function Home() {
   return (
    <div>
       <Helmet>
@@ -20,14 +19,14 @@ import { Helmet } from 'react-helmet-async'
       </Helmet>
 
       <Banner/>
-      <Category/>
-      <Discount/>
-      <DiseMenu/>
-      {/* <ReserverBooking/> */}
-      <Service/>
-      <Tastomonial/>
-      {/* <Contact/> */}
+      <Suspense fallback={<Loading />}>
+        <Category/>
+        <Discount/>
+        <DiseMenu/>
+        <Service/>
+        <Tastomonial/>
+      </Suspense>
    </div>
   )
 }
-export default Home
+export default memo(Home)

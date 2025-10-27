@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useContext, useEffect, useState, memo, useCallback } from 'react';
 import { AuthContext } from '../../../AuthProvider/AuthProvider';
 import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../../hooks/AxiosSecure';
 import useCart from '../../../hooks/useCart';
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import 'aos/dist/aos.css';
+import LazyImage from '../../../Component/LazyImage';
 
 
 
 
-function MenuCard({ title, price, description, image, _id }) {
+const MenuCard = memo(function MenuCard({ title, price, description, image, _id }) {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,15 +20,14 @@ function MenuCard({ title, price, description, image, _id }) {
   const axiosSecure = useAxiosSecure()
   const [, refetch] = useCart()
   useEffect(() => {
-    AOS.init();
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
 }, []);
 
-  const handleAddToCart = () => {
-
+  const handleAddToCart = useCallback(() => {
     if (user && user.email) {
-      console.log("User is logged in. Adding to cart...");
-      // TODO: Send cart item to the database
-
       const cartItem = {
         menuId: _id,
         email: user.email,
@@ -35,24 +36,17 @@ function MenuCard({ title, price, description, image, _id }) {
         image
       };
 
-
       axiosSecure.post('/carts', cartItem)
         .then(res => {
-          console.log(res.data)
           if (res.data.insertedId) {
-            swal("Good job!", "You clicked the button!", "success", {
+            swal("Good job!", "Added to cart!", "success", {
               timer: 1500,
-              name: `${title}`
             });
-
-
           }
-          // refetch cart to update cart items count
           refetch()
         })
     }
     else {
-      console.log("User is not logged in. Showing validation popup...");
       swal({
         title: "You are not Logged In",
         text: "Please login to add to the cart ?",
@@ -65,11 +59,11 @@ function MenuCard({ title, price, description, image, _id }) {
         }
       });
     }
-  };
+  }, [user, _id, title, price, image, axiosSecure, refetch, navigate, location]);
 
-  const handleToggleDescription = () => {
+  const handleToggleDescription = useCallback(() => {
     setShowFullDescription(!showFullDescription);
-  };
+  }, [showFullDescription]);
 
   const truncatedDescription = description.length > 20 ? `${description.slice(0, 70)}...` : description;
 
@@ -84,7 +78,12 @@ function MenuCard({ title, price, description, image, _id }) {
 
       <div className="md:flex">
         <div className="md:shrink-0">
-          <img className="h-56 w-full rounded-md object-cover  md:h-full md:w-20 items-center md:rounded-2xl" src={image} alt="Modern building architecture" />
+          <LazyImage 
+            className="h-56 w-full rounded-md object-cover md:h-full md:w-20 items-center md:rounded-2xl" 
+            src={image} 
+            alt={title}
+            loading="lazy"
+          />
         </div>
         <div className="p-3 flex flex-col justify-between">
           <div>
@@ -108,6 +107,8 @@ function MenuCard({ title, price, description, image, _id }) {
       </div>
     </div>
   );
-}
+});
+
+MenuCard.displayName = 'MenuCard';
 
 export default MenuCard;

@@ -1,7 +1,8 @@
-import Img from '../../assets/bg/wepik-export-20240125182837vR6t.jpeg'
-import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'; // Import icons from Font Awesome
+import { memo, lazy, Suspense } from 'react';
+import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import LazyImage from '../../Component/LazyImage';
 
-const Footer = () => {
+const Footer = memo(() => {
 
 
 
@@ -39,14 +40,20 @@ const Footer = () => {
 
 
     return (
-        <footer className="pt-10  text-white text-lg relative" style={{ backgroundImage: `url(${Img})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+        <footer className="pt-10  text-white text-lg relative" style={{ backgroundImage: 'url(https://i.ibb.co/27tp6gk/wepik-export-20240125182837v-R6t.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
             <div className="max-w-screen-xl  md:px-8">
                 <div className="grid  grid-cols-2 md:grid-cols-4 gap-8">
                     <div className="mt-2">
                         <h4 className="text-xl mb-1 font-semibold text-orange-500 uppercase">Know About MadeBest</h4>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci itaque soluta suscipit debitis quos rem officiis</p>
 
-                        <img src="https://i.ibb.co/VNs4X6g/1705932001959oh7xa24u-removebg-preview.png" alt="Logo" />
+                        <LazyImage 
+                          src="https://i.ibb.co/VNs4X6g/1705932001959oh7xa24u-removebg-preview.png" 
+                          alt="Logo"
+                          width={150}
+                          height={60}
+                          className="w-auto h-auto"
+                        />
                     </div>
 
                     <div>
@@ -194,5 +201,8 @@ const Footer = () => {
             </div>
         </footer>
     )
-}
+})
+
+Footer.displayName = 'Footer';
+
 export default Footer;

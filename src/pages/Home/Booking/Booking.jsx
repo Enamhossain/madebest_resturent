@@ -70,7 +70,7 @@ function Booking() {
       </section>
 
       {/* Form Section */}
-      <section className="bg-gray-100 py-20">
+      <section className="bg-white py-20">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center">Book Your Experience</h2>
           <form className="max-w-lg mx-auto" onSubmit={handleSubmit(onSubmit)}>

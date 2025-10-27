@@ -1,30 +1,39 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Main from "../Layout/Main";
-import Home from "../pages/Home/Home";
-import Ourmenu from "../pages/OurMenu/Ourmenu";
+import Loading from "../Component/Loading";
 
-import Login from "../pages/Login/Login";
-import Singup from "../pages/Singup/Singup";
-import PrivateRoute from './PrivateRoute';
-import DashBoard from "../pages/Dashboard/DashBoard";
-import General from "../pages/Dashboard/UserDashBoard/General/General";
-import Contact from "../pages/Contact/Contact";
-import ViewCart from "../Component/ViewCart";
-import DsOrder from "../pages/Dashboard/UserDashBoard/order/DsOrder";
-import Reservations from "../pages/Dashboard/UserDashBoard/Reservations/Reservations";
-import CheckOrder from "../pages/Dashboard/UserDashBoard/CheckOrder/CheckOrder";
-import AdminGenereal from "../pages/Dashboard/AdminDashBoard/General/AdminGenereal";
-import AllOrders from "../pages/Dashboard/AdminDashBoard/AllOrders/AllOrders";
-import AllUsers from "../pages/Dashboard/AdminDashBoard/AllUsers/AllUsers";
-import Customers from "../pages/Dashboard/AdminDashBoard/Customers/Customers";
-import AddItems from "../pages/Dashboard/AdminDashBoard/AddItems/AddItems";
-import AdminRoute from "./AdminRoute";
-import ManageItems from "../pages/Dashboard/AdminDashBoard/Manage Booking/ManageBooking";
-import PaymentSuccess from "../pages/Payment/PaymentSuccess";
-import PaymentFailed from "../pages/Payment/PaymendFailed";
-import Booking from "../pages/Home/Booking/Booking";
-import OurShop from "../pages/Order/OurShop";
+// Lazy load components for better performance
+const Home = lazy(() => import("../pages/Home/Home"));
+const Ourmenu = lazy(() => import("../pages/OurMenu/Ourmenu"));
+const Login = lazy(() => import("../pages/Login/Login"));
+const Singup = lazy(() => import("../pages/Singup/Singup"));
+const PrivateRoute = lazy(() => import('./PrivateRoute'));
+const DashBoard = lazy(() => import("../pages/Dashboard/DashBoard"));
+const General = lazy(() => import("../pages/Dashboard/UserDashBoard/General/General"));
+const Contact = lazy(() => import("../pages/Contact/Contact"));
+const ViewCart = lazy(() => import("../Component/ViewCart"));
+const DsOrder = lazy(() => import("../pages/Dashboard/UserDashBoard/order/DsOrder"));
+const Reservations = lazy(() => import("../pages/Dashboard/UserDashBoard/Reservations/Reservations"));
+const CheckOrder = lazy(() => import("../pages/Dashboard/UserDashBoard/CheckOrder/CheckOrder"));
+const AdminGenereal = lazy(() => import("../pages/Dashboard/AdminDashBoard/General/AdminGenereal"));
+const AllOrders = lazy(() => import("../pages/Dashboard/AdminDashBoard/AllOrders/AllOrders"));
+const AllUsers = lazy(() => import("../pages/Dashboard/AdminDashBoard/AllUsers/AllUsers"));
+const Customers = lazy(() => import("../pages/Dashboard/AdminDashBoard/Customers/Customers"));
+const AddItems = lazy(() => import("../pages/Dashboard/AdminDashBoard/AddItems/AddItems"));
+const AdminRoute = lazy(() => import("./AdminRoute"));
+const ManageItems = lazy(() => import("../pages/Dashboard/AdminDashBoard/Manage Booking/ManageBooking"));
+const PaymentSuccess = lazy(() => import("../pages/Payment/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("../pages/Payment/PaymendFailed"));
+const Booking = lazy(() => import("../pages/Home/Booking/Booking"));
+const OurShop = lazy(() => import("../pages/Order/OurShop"));
 
+// Wrapper component for lazy loading with Suspense
+const LazyWrapper = ({ children }) => (
+  <Suspense fallback={<Loading />}>
+    {children}
+  </Suspense>
+);
 
 export const router = createBrowserRouter([
    {
@@ -33,47 +42,47 @@ export const router = createBrowserRouter([
       children: [
          {
             path: "/",
-            element: <Home />
+            element: <LazyWrapper><Home /></LazyWrapper>
          },
          {
             path: "/ourmenu",
-            element: <Ourmenu />
+            element: <LazyWrapper><Ourmenu /></LazyWrapper>
          },
          {
             path: "/order",
-            element: <OurShop />
+            element: <LazyWrapper><OurShop /></LazyWrapper>
          },
          {
             path: "/contact",
-            element: <Contact />
+            element: <LazyWrapper><Contact /></LazyWrapper>
          },
          {
             path: "/login",
-            element: <Login />
+            element: <LazyWrapper><Login /></LazyWrapper>
          },
          {
             path: "/signup",
-            element: <Singup />
+            element: <LazyWrapper><Singup /></LazyWrapper>
          },
 
          {
             path:'/Booking',
-            element:<Booking/>
+            element: <LazyWrapper><Booking /></LazyWrapper>
          },
 
          
          {
             path: '/Carts',
-            element: <PrivateRoute> <ViewCart /> </PrivateRoute>
+            element: <LazyWrapper><PrivateRoute> <ViewCart /> </PrivateRoute></LazyWrapper>
          },
          
          {
             path: 'payment/success/:tranId',
-            element: <PaymentSuccess />
+            element: <LazyWrapper><PaymentSuccess /></LazyWrapper>
          },
          {
             path: 'payment/failed/:tranId',
-            element: <PaymentFailed/>
+            element: <LazyWrapper><PaymentFailed /></LazyWrapper>
          },
       ]
 
@@ -81,47 +90,47 @@ export const router = createBrowserRouter([
 
    {
       path: 'dashboard',
-      element: <PrivateRoute><DashBoard /></PrivateRoute>,
+      element: <LazyWrapper><PrivateRoute><DashBoard /></PrivateRoute></LazyWrapper>,
       children: [
          {
             path: 'general',
-            element: <General />
+            element: <LazyWrapper><General /></LazyWrapper>
          },
          {
             path: 'orders',
-            element: <DsOrder />
+            element: <LazyWrapper><DsOrder /></LazyWrapper>
          },
          {
             path: 'reservation',
-            element: <Reservations />
+            element: <LazyWrapper><Reservations /></LazyWrapper>
          },
          {
             path: 'check-orders',
-            element: <CheckOrder />
+            element: <LazyWrapper><CheckOrder /></LazyWrapper>
          },
          {
             path: 'Generals',
-            element: <AdminGenereal />
+            element: <LazyWrapper><AdminGenereal /></LazyWrapper>
          },
          {
             path: 'Addorders',
-            element: <AllOrders />
+            element: <LazyWrapper><AllOrders /></LazyWrapper>
          },
          {
             path: 'AllItems',
-            element: <AdminRoute><AddItems/></AdminRoute>
+            element: <LazyWrapper><AdminRoute><AddItems/></AdminRoute></LazyWrapper>
          },
          {
             path: 'AllUsers',
-            element: <AllUsers />
+            element: <LazyWrapper><AllUsers /></LazyWrapper>
          },
          {
             path: 'Customers',
-            element: <Customers />
+            element: <LazyWrapper><Customers /></LazyWrapper>
          },
          {
             path: 'manageitems',
-            element: <ManageItems />
+            element: <LazyWrapper><ManageItems /></LazyWrapper>
          },
           
       ],

@@ -4,6 +4,7 @@ import { Navigate, useLocation } from "react-router";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 
 
+// eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ children }) => {
     const { user, loading } = useContext(AuthContext);
     const location = useLocation();

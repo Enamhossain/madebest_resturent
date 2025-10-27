@@ -1,0 +1,21 @@
+{
+  "name": "MadeBest Restaurant",
+  "short_name": "MadeBest",
+  "description": "Delicious food delivery and restaurant booking platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "restaurant", "delivery"],
+  "lang": "en",
+  "dir": "ltr"
+}

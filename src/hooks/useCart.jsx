@@ -1,4 +1,3 @@
-// useCart.js
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./AxiosSecure";
 import { useContext } from "react";
