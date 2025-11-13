@@ -1,6 +1,15 @@
-// Service Worker for caching static assets
-const CACHE_NAME = 'madebest-v2';
-const RUNTIME_CACHE = 'madebest-runtime-v2';
+// Service Worker for caching static assets - Optimized Version
+const CACHE_NAME = 'madebest-v3';
+const RUNTIME_CACHE = 'madebest-runtime-v3';
+const IMAGE_CACHE = 'madebest-images-v3';
+const API_CACHE = 'madebest-api-v3';
+
+// Cache duration (in milliseconds)
+const CACHE_DURATION = {
+  STATIC: 7 * 24 * 60 * 60 * 1000, // 7 days
+  IMAGE: 30 * 24 * 60 * 60 * 1000, // 30 days
+  API: 5 * 60 * 1000, // 5 minutes
+};
 
 // Assets to cache on install
 const STATIC_CACHE_URLS = [
@@ -14,11 +23,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Service Worker: Cache opened');
         return cache.addAll(STATIC_CACHE_URLS);
       })
       .catch(err => {
-        console.log('Service Worker: Cache failed', err);
+        // Silent fail - don't block installation
       })
   );
   self.skipWaiting();
@@ -26,45 +34,68 @@ self.addEventListener('install', (event) => {
 
 // Fetch event - serve from cache when possible
 self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
   // Skip non-GET requests
-  if (event.request.method !== 'GET') {
+  if (request.method !== 'GET') {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        // Return cached version if available
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+  // Skip cross-origin requests
+  if (url.origin !== location.origin && !url.href.includes('i.ibb.co')) {
+    return;
+  }
 
-        // Fetch from network
-        return fetch(event.request)
-          .then((response) => {
-            // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            // Cache the response
-            caches.open(RUNTIME_CACHE)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          })
-          .catch(() => {
-            // Return offline page if available
-            return caches.match('/');
-          });
-      })
-  );
+  // Handle different types of requests
+  if (request.destination === 'image' || url.pathname.match(/\.(jpg|jpeg|png|gif|webp|svg)$/i)) {
+    event.respondWith(cacheFirstStrategy(request, IMAGE_CACHE));
+  } else if (url.pathname.startsWith('/api/') || url.href.includes('madebestresturent.vercel.app')) {
+    event.respondWith(networkFirstStrategy(request, API_CACHE, API_CACHE));
+  } else if (request.destination === 'script' || request.destination === 'style') {
+    event.respondWith(cacheFirstStrategy(request, RUNTIME_CACHE));
+  } else {
+    event.respondWith(networkFirstStrategy(request, RUNTIME_CACHE, CACHE_NAME));
+  }
 });
+
+// Cache-first strategy for static assets
+async function cacheFirstStrategy(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(request);
+  
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    // Return cached version even if stale
+    return cachedResponse || new Response('Offline', { status: 503 });
+  }
+}
+
+// Network-first strategy for dynamic content
+async function networkFirstStrategy(request, runtimeCache, fallbackCache) {
+  const runtime = await caches.open(runtimeCache);
+  
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      runtime.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cachedResponse = await runtime.match(request) || 
+                          await caches.open(fallbackCache).then(c => c.match(request));
+    return cachedResponse || new Response('Offline', { status: 503 });
+  }
+}
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
@@ -72,14 +103,23 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
-            console.log('Deleting old cache:', cacheName);
+          if (![CACHE_NAME, RUNTIME_CACHE, IMAGE_CACHE, API_CACHE].includes(cacheName)) {
             return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  // Take control of all pages under this service worker's scope
   return self.clients.claim();
 });
+
+// Background sync for offline actions (optional enhancement)
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'background-sync') {
+    event.waitUntil(doBackgroundSync());
+  }
+});
+
+async function doBackgroundSync() {
+  // Implement background sync logic if needed
+}

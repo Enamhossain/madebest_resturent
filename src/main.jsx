@@ -22,13 +22,47 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       // Refetch on reconnect
       refetchOnReconnect: true,
+      // Network mode for better offline support
+      networkMode: 'online',
     },
     mutations: {
       // Retry failed mutations once
       retry: 1,
+      // Network mode
+      networkMode: 'online',
     },
   },
 });
+
+// Performance optimization: Preload critical resources
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(() => {
+    // Prefetch likely next routes
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = '/ourmenu';
+    document.head.appendChild(link);
+  });
+}
+
+// Performance monitoring (development only)
+if (import.meta.env.DEV) {
+  // Monitor Core Web Vitals
+  if ('PerformanceObserver' in window) {
+    try {
+      const observer = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (entry.entryType === 'largest-contentful-paint') {
+            console.log('LCP:', entry.renderTime || entry.loadTime);
+          }
+        }
+      });
+      observer.observe({ entryTypes: ['largest-contentful-paint'] });
+    } catch (e) {
+      // Silent fail
+    }
+  }
+}
 
 // App component with splash screen
 function App() {
@@ -47,4 +81,6 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+// Use createRoot for React 18
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);

@@ -5,8 +5,7 @@ import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../../hooks/AxiosSecure';
 import useCart from '../../../hooks/useCart';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { initAOS } from '../../../utils/aosInit';
 import LazyImage from '../../../Component/LazyImage';
 
 
@@ -20,10 +19,7 @@ const MenuCard = memo(function MenuCard({ title, price, description, image, _id 
   const axiosSecure = useAxiosSecure()
   const [, refetch] = useCart()
   useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
+    initAOS();
 }, []);
 
   const handleAddToCart = useCallback(() => {

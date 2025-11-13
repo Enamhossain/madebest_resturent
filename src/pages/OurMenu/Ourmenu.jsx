@@ -3,14 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import MenuCard from '../Home/Menu/MenuCard';
 import useMenu from '../../hooks/useMenu';
 import Loading from '../../Component/Loading';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import { initAOS } from '../../utils/aosInit';
 import SkeletonCard from '../../Component/SkeletonCard';
 function Ourmenu() {
   const [menu,loading] = useMenu();
   
   useEffect(() => {
-    AOS.init();
+    initAOS();
 }, []);
 
 

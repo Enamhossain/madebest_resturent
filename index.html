@@ -13,13 +13,18 @@
     <link rel="preconnect" href="https://i.ibb.co" crossorigin />
     <link rel="dns-prefetch" href="https://madebestresturent.vercel.app" />
     <link rel="dns-prefetch" href="https://i.ibb.co" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/src/main.jsx" as="script" />
+    <link rel="preload" href="/src/main.jsx" as="script" crossorigin />
     <link rel="preload" href="/src/index.css" as="style" />
     
     <!-- Resource hints for performance -->
     <link rel="modulepreload" href="/src/main.jsx" />
+    
+    <!-- Prefetch likely next resources -->
+    <link rel="prefetch" href="/ourmenu" as="document" />
+    <link rel="prefetch" href="/order" as="document" />
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json" />
@@ -127,17 +132,29 @@
     </div>
     <script type="module" src="/src/main.jsx"></script>
     
-    <!-- Service Worker Registration -->
+    <!-- Service Worker Registration - Optimized -->
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-              console.log('SW registered: ', registration);
-            })
-            .catch((registrationError) => {
-              console.log('SW registration failed: ', registrationError);
-            });
+        // Register immediately, don't wait for load
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then((registration) => {
+            // Check for updates periodically
+            setInterval(() => {
+              registration.update();
+            }, 60 * 60 * 1000); // Check every hour
+          })
+          .catch(() => {
+            // Silent fail - service worker is optional
+          });
+      }
+      
+      // Preload critical resources
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.href = '/ourmenu';
+          document.head.appendChild(link);
         });
       }
     </script>

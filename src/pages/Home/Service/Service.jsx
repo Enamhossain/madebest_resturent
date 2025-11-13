@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import UseText from '../../../Component/HeadingText/UseText';
 import './Service.css'
 import { Link } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import { initAOS } from '../../../utils/aosInit';
 
 function Service() {
   useEffect(() => {
-    AOS.init();
+    initAOS();
 }, []);
 
   return (
