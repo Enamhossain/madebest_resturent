@@ -1,8 +1,8 @@
 // Service Worker for caching static assets - Optimized Version
-const CACHE_NAME = 'madebest-v3';
-const RUNTIME_CACHE = 'madebest-runtime-v3';
-const IMAGE_CACHE = 'madebest-images-v3';
-const API_CACHE = 'madebest-api-v3';
+const CACHE_NAME = 'madebest-v4';
+const RUNTIME_CACHE = 'madebest-runtime-v4';
+const IMAGE_CACHE = 'madebest-images-v4';
+const API_CACHE = 'madebest-api-v4';
 
 // Cache duration (in milliseconds)
 const CACHE_DURATION = {
@@ -52,10 +52,19 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(cacheFirstStrategy(request, IMAGE_CACHE));
   } else if (url.pathname.startsWith('/api/') || url.href.includes('madebestresturent.vercel.app')) {
     event.respondWith(networkFirstStrategy(request, API_CACHE, API_CACHE));
-  } else if (request.destination === 'script' || request.destination === 'style') {
+  } else if (
+    request.destination === 'script' ||
+    request.destination === 'style' ||
+    request.destination === 'worker' ||
+    request.destination === 'document' ||
+    request.mode === 'navigate'
+  ) {
+    // Always try network first for critical application files
+    event.respondWith(networkFirstStrategy(request, RUNTIME_CACHE, CACHE_NAME));
+  } else if (request.destination === 'font') {
     event.respondWith(cacheFirstStrategy(request, RUNTIME_CACHE));
   } else {
-    event.respondWith(networkFirstStrategy(request, RUNTIME_CACHE, CACHE_NAME));
+    event.respondWith(networkFirstStrategy(request, RUNTIME_CACHE, RUNTIME_CACHE));
   }
 });
 
