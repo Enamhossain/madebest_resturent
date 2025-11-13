@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import useAxiosSecure from '../../../../hooks/AxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import swal from 'sweetalert';
+import Loading from '../../../../Component/Loading';
 
 function AllUsers() {
     // const radios = ["Write and Read", "Read only", "Write only"];
     const axiosSecure = useAxiosSecure();
 
-    const { data: users = [], refetch } = useQuery({
+    const { data: users = [], refetch, isLoading } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             try {
@@ -16,7 +17,8 @@ function AllUsers() {
                         authorization: `Bearer ${localStorage.getItem('access-token')}` // Add a space after 'Bearer'
                     }
                 });
-                return res.data;
+                // Handle pagination response
+                return res.data?.data || res.data || [];
             } catch (error) {
                 // Handle errors appropriately
                 console.error('Error fetching users:', error);
@@ -24,6 +26,10 @@ function AllUsers() {
             }
         }
     });
+
+    if (isLoading) {
+        return <Loading />;
+    }
     
 
     // State to track user being edited

@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import PageSkeleton from '../../Component/PageSkeleton';
 
-function Contact() {
+const Contact = memo(() => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for better UX
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <PageSkeleton type="contact" />;
+  }
+
   return (
     <div>
        <Helmet>
@@ -77,6 +92,8 @@ function Contact() {
       </div>
     </div>
   );
-}
+});
+
+Contact.displayName = 'Contact';
 
 export default Contact;

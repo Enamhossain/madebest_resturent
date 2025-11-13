@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 
-const Tastomonial = () => {
+const Tastomonial = memo(() => {
   const [reviews, setReviews] = useState([]);
   const [displayedReviews, setDisplayedReviews] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(true);
   const reviewsPerPage = 3;
 
   useEffect(() => {
@@ -12,9 +13,11 @@ const Tastomonial = () => {
       .then(data => {
         setReviews(data);
         setDisplayedReviews(data.slice(0, reviewsPerPage));
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching reviews:', error);
+        setLoading(false);
       });
   }, []);
 
@@ -23,6 +26,27 @@ const Tastomonial = () => {
     const endIndex = startIndex + reviewsPerPage;
     setDisplayedReviews(reviews.slice(0, endIndex));
   };
+
+  if (loading) {
+    return (
+      <section className="block">
+        <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32">
+          <div className="h-12 w-96 bg-gray-300 rounded mx-auto mb-12 animate-pulse"></div>
+          <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:mb-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="rounded-md border border-solid border-gray-200 bg-white p-8 animate-pulse">
+                <div className="h-4 w-32 bg-gray-300 rounded mb-3"></div>
+                <div className="h-4 w-40 bg-gray-300 rounded mb-3"></div>
+                <div className="h-4 w-24 bg-gray-300 rounded mb-3"></div>
+                <div className="h-20 w-full bg-gray-200 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="block">
     {/* Container */}
@@ -32,14 +56,18 @@ const Tastomonial = () => {
       {/* Contents */}
       <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:mb-8">
         {/* Map through displayed reviews array */}
-        {displayedReviews.map((review, index) => (
+        {displayedReviews.length > 0 ? displayedReviews.map((review, index) => (
           <div key={index} className="grid grid-cols-1 gap-6 rounded-md border border-solid border-[#cdcdcd] bg-white p-8 md:p-10">
             <div className="text-[#636262]">Restaurant: {review.restaurant_name}</div>
             <div className="text-[#636262]">Reviewer: {review.reviewer_name}</div>
             <div className="text-[#636262]">Rating: {review.rating}</div>
             <div className="text-[#636262]">Comment: {review.comment}</div>
           </div>
-        ))}
+        )) : (
+          <div className="col-span-full text-center py-8 text-gray-500">
+            No reviews available yet.
+          </div>
+        )}
       </div>
       {/* Text Button */}
       <div className="flex flex-col">
@@ -50,6 +78,8 @@ const Tastomonial = () => {
     </div>
   </section>
   );
-};
+});
+
+Tastomonial.displayName = 'Tastomonial';
 
 export default Tastomonial;

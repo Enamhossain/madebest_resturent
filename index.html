@@ -59,7 +59,7 @@
         height: 100vh;
         background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
       }
-      /* Beautiful Spinner */
+      /* Beautiful Spinner - Optimized */
       .loading-container {
         position: relative;
         display: flex;
@@ -74,6 +74,8 @@
         border-top-color: #f97316;
         border-radius: 50%;
         animation: spin 1s linear infinite;
+        will-change: transform;
+        transform: translateZ(0); /* GPU acceleration */
       }
       .spinner-ring-inner {
         position: absolute;
@@ -83,6 +85,8 @@
         border-right-color: #f59e0b;
         border-radius: 50%;
         animation: spin-reverse 0.8s linear infinite;
+        will-change: transform;
+        transform: translateZ(0); /* GPU acceleration */
       }
       @keyframes spin {
         to { transform: rotate(360deg); }

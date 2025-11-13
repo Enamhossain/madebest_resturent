@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import useAxiosSecure from '../../../../hooks/AxiosSecure';
 import { FaUsers, FaClipboardList, FaShoppingCart, FaDollarSign } from 'react-icons/fa';
+import Loading from '../../../../Component/Loading';
 
-function AdminGeneral() {
+const AdminGeneral = memo(() => {
   const axiosSecure = useAxiosSecure();
   const [cardData, setCardData] = useState([]);
-  console.log(cardData)
-  // Sample data for demonstration
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axiosSecure.get('/general')
@@ -18,12 +18,29 @@ function AdminGeneral() {
           { title: 'Orders', value: data.orders, icon: <FaShoppingCart /> },
           { title: 'Revenue', value: data.revenue, icon: <FaDollarSign /> }
         ]);
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching general information:', error);
-
+        setLoading(false);
       });
-  }, []);
+  }, [axiosSecure]);
+
+  if (loading) {
+    return (
+      <div className='w-full'>
+        <h2 className="text-2xl font-bold mb-4 bg-gray-900 text-center text-white p-3">General Information</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="p-4 rounded-lg shadow-md bg-gray-200 animate-pulse">
+              <div className="h-6 w-32 bg-gray-300 rounded mb-2"></div>
+              <div className="h-8 w-16 bg-gray-300 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const getRandomRgbColor = () => {
     const r = Math.floor(Math.random() * 256);
@@ -52,5 +69,8 @@ function AdminGeneral() {
         </div>
     
       );
-}
-      export default AdminGeneral;
+});
+
+AdminGeneral.displayName = 'AdminGeneral';
+
+export default AdminGeneral;

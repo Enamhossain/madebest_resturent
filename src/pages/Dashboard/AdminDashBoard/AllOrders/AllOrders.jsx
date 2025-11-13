@@ -2,21 +2,30 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Assuming you have Axios configured in your project
 import useAxiosSecure from '../../../../hooks/AxiosSecure';
 import swal from 'sweetalert';
+import Loading from '../../../../Component/Loading';
 
 function AllOrders() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const axiosSecure = useAxiosSecure();
+  
   useEffect(() => {
     // Fetch all orders data when the component mounts
     axiosSecure.get('/order')
       .then(response => {
-        const ordersData = response.data;
+        const ordersData = response.data?.data || response.data || [];
         setOrders(ordersData);
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching all orders:', error);
+        setLoading(false);
       });
-  }, []);
+  }, [axiosSecure]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
 
   const handleDeleteOrder = (orderId) => {

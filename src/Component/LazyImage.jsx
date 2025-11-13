@@ -38,6 +38,13 @@ const LazyImage = ({
     };
   }, [imageRef, imageSrc, placeholder, src]);
 
+  const handleLoad = (e) => {
+    setIsLoaded(true);
+    if (props.onLoad) {
+      props.onLoad(e);
+    }
+  };
+
   return (
     <img
       {...props}
@@ -46,6 +53,7 @@ const LazyImage = ({
       alt={alt}
       className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-70'} ${className}`}
       loading="lazy"
+      onLoad={handleLoad}
     />
   );
 };

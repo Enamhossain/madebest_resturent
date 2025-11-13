@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import useCart from '../../../../hooks/useCart';
+import Loading from '../../../../Component/Loading';
+import SkeletonCard from '../../../../Component/SkeletonCard';
 
-function DsOrder() {
-  const [cart] = useCart();
+const DsOrder = memo(() => {
+  const [cart, , loading] = useCart();
+
+  if (loading) {
+    return (
+      <div className='w-full'>
+        <h2 className="text-2xl font-bold mb-4 text-center bg-orange-700 text-white p-2">Order List</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+          {[1, 2, 3].map((i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   // Calculate total price for each item
   
@@ -42,6 +57,8 @@ function DsOrder() {
       </div>
     </div>
   );
-}
+});
+
+DsOrder.displayName = 'DsOrder';
 
 export default DsOrder;

@@ -7,7 +7,7 @@ const useCart = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useContext(AuthContext);
 
-    const { refetch, data: cart = [] } = useQuery({
+    const { refetch, data: cart = [], isLoading } = useQuery({
         queryKey: ['cart', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/carts?email=${user.email}`);
@@ -16,7 +16,7 @@ const useCart = () => {
         enabled: !!user?.email, // Ensure query is only executed when user email is available
     });
 
-    return [cart, refetch];
+    return [cart, refetch, isLoading];
 };
 
 export default useCart;

@@ -53,11 +53,19 @@ function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
+        // Set a timeout to prevent infinite loading
+        const loadingTimeout = setTimeout(() => {
+            console.warn('Auth loading timeout - continuing anyway');
+            setLoading(false);
+        }, 5000); // Max 5 seconds loading
+
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            clearTimeout(loadingTimeout);
             setUser(currentUser);
 
             if (currentUser) {
                 const userInfo = { email: currentUser.email };
+                // Don't block rendering if JWT request fails
                 axiosPublic.post('/jwt', userInfo)
                     .then(res => {
                         if (res.data.token) {
@@ -66,16 +74,22 @@ function AuthProvider({ children }) {
                     })
                     .catch(error => {
                         console.error('Error posting user info:', error);
+                        // Continue even if JWT request fails
                     });
             } else {
                 // User is not logged in, clear token
                 localStorage.removeItem('access-token');
             }
 
+            // Always set loading to false
             setLoading(false);
         });
-        return unsubscribe;
-    }, []);
+
+        return () => {
+            clearTimeout(loadingTimeout);
+            unsubscribe();
+        };
+    }, [axiosPublic]);
 
     const authInfo = {
         user,

@@ -29,11 +29,13 @@ const Booking = lazy(() => import("../pages/Home/Booking/Booking"));
 const OurShop = lazy(() => import("../pages/Order/OurShop"));
 
 // Wrapper component for lazy loading with Suspense
-const LazyWrapper = ({ children }) => (
-  <Suspense fallback={<Loading />}>
-    {children}
-  </Suspense>
-);
+const LazyWrapper = ({ children }) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      {children}
+    </Suspense>
+  );
+};
 
 export const router = createBrowserRouter([
    {

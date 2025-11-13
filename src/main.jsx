@@ -7,6 +7,7 @@ import { router } from "./Routes/Routes.jsx";
 import { HelmetProvider } from "react-helmet-async";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
 import SplashScreen from "./Component/SplashScreen";
+import Loading from "./Component/Loading";
 
 // Optimized QueryClient configuration for better performance
 const queryClient = new QueryClient({
@@ -64,19 +65,72 @@ if (import.meta.env.DEV) {
   }
 }
 
-// App component with splash screen
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
+          <p className="text-gray-600 mb-4">{this.state.error?.message || 'An error occurred'}</p>
+          <button
+            onClick={() => {
+              this.setState({ hasError: false, error: null });
+              window.location.reload();
+            }}
+            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+          >
+            Reload Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// App component with optimized loading
 function App() {
+  // Remove HTML loading screen once React loads
+  React.useEffect(() => {
+    const htmlLoader = document.querySelector('.loading');
+    if (htmlLoader) {
+      // Fade out smoothly
+      htmlLoader.style.transition = 'opacity 0.3s ease-out';
+      htmlLoader.style.opacity = '0';
+      setTimeout(() => {
+        htmlLoader.remove();
+      }, 300);
+    }
+  }, []);
+
   return (
     <React.StrictMode>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <HelmetProvider>
-            <Suspense fallback={<SplashScreen />}>
-              <RouterProvider router={router} />
-            </Suspense>
-          </HelmetProvider>
-        </QueryClientProvider>
-      </AuthProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <HelmetProvider>
+              <Suspense fallback={<Loading />}>
+                <RouterProvider router={router} />
+              </Suspense>
+            </HelmetProvider>
+          </QueryClientProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 }

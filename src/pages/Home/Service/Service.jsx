@@ -1,20 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import UseText from '../../../Component/HeadingText/UseText';
 import './Service.css'
 import { Link } from 'react-router-dom';
 import { initAOS } from '../../../utils/aosInit';
+import ServiceSkeleton from '../../../Component/ServiceSkeleton';
+import LazyImage from '../../../Component/LazyImage';
 
-function Service() {
+const Service = memo(() => {
+  const [loading, setLoading] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const totalImages = 3;
+
   useEffect(() => {
     initAOS();
-}, []);
+    // Simulate loading for better UX
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleImageLoad = () => {
+    setImagesLoaded(prev => {
+      const newCount = prev + 1;
+      if (newCount >= totalImages) {
+        setLoading(false);
+      }
+      return newCount;
+    });
+  };
+
+  if (loading && imagesLoaded < totalImages) {
+    return <ServiceSkeleton />;
+  }
 
   return (
     <div  className='p-8 service  '  id='reserver' >
       <UseText heading={'Our Service'} subheading={'Services'}></UseText>
       <article data-aos="fade-up-left" className="flex flex-wrap container mx-auto  bg-white transition drop-shadow-xl ">
         <div className="md:basis-1/2">
-          <img alt="Guitar" src='https://i.ibb.co/RTpf1ZJ/crop-man-eating-dessert-cafe.jpg' className="h-60 w-full object-cover" />
+          <LazyImage 
+            alt="Corporate Service" 
+            src='https://i.ibb.co/RTpf1ZJ/crop-man-eating-dessert-cafe.jpg' 
+            className="h-60 w-full object-cover"
+            onLoad={handleImageLoad}
+          />
         </div>
         <div className=" block md:flex md:flex-1 md:flex-col ">
           <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
@@ -46,13 +76,23 @@ function Service() {
           </div>
         </div>
         <div className="md:basis-1/2 ">
-          <img alt="Guitar" src= 'https://i.ibb.co/j3V6qp4/close-up-people-serving-themselves-fruits-buffet-restaurant.jpg'  className=" md:h-60 md:w-full object-cover" />
+          <LazyImage 
+            alt="Wedding Event" 
+            src='https://i.ibb.co/j3V6qp4/close-up-people-serving-themselves-fruits-buffet-restaurant.jpg'  
+            className="md:h-60 md:w-full object-cover"
+            onLoad={handleImageLoad}
+          />
         </div>
       </article>
 
       <article data-aos="fade-down-left" className="flex flex-wrap  container mx-auto bg-white transition drop-shadow-xl  mt-8 ">
         <div className="md:basis-1/2 ">
-          <img alt="Guitar" src='https://i.ibb.co/mGh12Yd/man-holding-smartphone-newspaper-during-breakfast.jpg' className="md:h-64 w-full object-cover" />
+          <LazyImage 
+            alt="Private Dining" 
+            src='https://i.ibb.co/mGh12Yd/man-holding-smartphone-newspaper-during-breakfast.jpg' 
+            className="md:h-64 w-full object-cover"
+            onLoad={handleImageLoad}
+          />
         </div>
         <div className="md:flex md:flex-1 md:flex-col">
           <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
@@ -70,6 +110,8 @@ function Service() {
       </article>
     </div>
   );
-}
+});
+
+Service.displayName = 'Service';
 
 export default Service;

@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import LazyImage from "./LazyImage";
 
 const ViewCart = memo(function ViewCart() {
-  const [cart, refetch] = useCart();
+  const [cart, refetch, loading] = useCart();
   const axios = useAxiosPublic();
   const [openModal, setOpenModal] = useState(false);
   const { control, handleSubmit, reset } = useForm();
@@ -104,6 +104,44 @@ const ViewCart = memo(function ViewCart() {
       0
     );
   };
+
+  if (loading) {
+    return (
+      <div className="">
+        <div className="bg-gray-800 text-white py-12">
+          <div className="px-28 mt-28">
+            <div className="h-10 w-48 bg-gray-300 rounded animate-pulse mb-4"></div>
+            <div className="h-6 w-64 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white p-4 rounded-lg shadow animate-pulse">
+                  <div className="flex gap-4">
+                    <div className="w-24 h-24 bg-gray-300 rounded"></div>
+                    <div className="flex-1 space-y-2">
+                      <div className="h-6 w-32 bg-gray-300 rounded"></div>
+                      <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                      <div className="h-8 w-20 bg-gray-300 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow h-64 animate-pulse">
+              <div className="h-6 w-32 bg-gray-300 rounded mb-4"></div>
+              <div className="h-4 w-full bg-gray-200 rounded mb-2"></div>
+              <div className="h-4 w-3/4 bg-gray-200 rounded mb-4"></div>
+              <div className="h-10 w-full bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="">
       <div className="bg-gray-800 text-white py-12">

@@ -1,22 +1,30 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-const SkeletonCard = () => {
+// Optimized SkeletonCard for menu items
+const SkeletonCard = memo(() => {
   return (
-    <div className="max-w-md mx-auto bg-gray-300 md:rounded-l-full shadow-lg overflow-hidden md:max-w-2xl mt-3 relative animate-pulse">
-    <div className="flex p-4 space-x-4 sm:px-8 shadow-lg bg-gray-200">
-      <div className="flex-shrink-0 w-16 h-16 rounded-full dark:bg-gray-300"></div>
-      <div className="flex-1 py-2 space-y-4">
-        <div className="w-full h-3 rounded dark:bg-gray-300"></div>
-        <div className="w-5/6 h-3 rounded dark:bg-gray-300"></div>
+    <div className="max-w-md mx-auto bg-gray-100 md:rounded-l-full shadow-lg overflow-hidden md:max-w-2xl mt-3 relative animate-pulse">
+      <div className="md:flex">
+        {/* Image skeleton */}
+        <div className="md:shrink-0">
+          <div className="h-56 w-full md:h-full md:w-20 bg-gray-300 rounded-md"></div>
+        </div>
+        {/* Content skeleton */}
+        <div className="p-3 flex flex-col justify-between">
+          <div>
+            <div className="h-4 w-24 bg-gray-300 rounded mb-2"></div>
+            <div className="h-6 w-32 bg-gray-300 rounded mb-2"></div>
+            <div className="h-4 w-full bg-gray-200 rounded mb-1"></div>
+            <div className="h-4 w-5/6 bg-gray-200 rounded"></div>
+          </div>
+          {/* Button skeleton */}
+          <div className="h-10 w-32 bg-gray-300 rounded-lg mt-2"></div>
+        </div>
       </div>
     </div>
-    <div className="p-4 space-y-4 sm:px-8 max-w-md mx-auto bg-gray-300 md:rounded-l-full shadow-lg overflow-hidden md:max-w-2xl mt-3 relative">
-      <div className="w-full h-4 rounded dark:bg-gray-300"></div>
-      <div className="w-full h-4 rounded dark:bg-gray-300"></div>
-      <div className="w-3/4 h-4 rounded dark:bg-gray-300"></div>
-    </div>
-  </div>
   )
-}
+})
+
+SkeletonCard.displayName = 'SkeletonCard';
 
 export default SkeletonCard

@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import PageSkeleton from '../../Component/PageSkeleton';
+import LazyImage from '../../Component/LazyImage';
 
-function OurShop() {
+const OurShop = memo(() => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for better UX
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <PageSkeleton type="shop" />;
+  }
+
   return (
     <div>
       <Helmet>
@@ -31,10 +47,10 @@ function OurShop() {
       <div className="shop-images-section py-20 px-4">
         <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="shop-image-item">
-            <img src="https://img.freepik.com/free-photo/pork-hock-german-with-sauces-dark-background_1150-45508.jpg?t=st=1709575880~exp=1709579480~hmac=ed108c3e4514207e7d50236d869ddda83eb8ad66df9a841ac81747ade76bc1b9&w=996" alt="Shop Image 1" className="rounded-lg w-full h-auto" />
+            <LazyImage src="https://img.freepik.com/free-photo/pork-hock-german-with-sauces-dark-background_1150-45508.jpg?t=st=1709575880~exp=1709579480~hmac=ed108c3e4514207e7d50236d869ddda83eb8ad66df9a841ac81747ade76bc1b9&w=996" alt="Shop Image 1" className="rounded-lg w-full h-auto" />
           </div>
           <div className="shop-image-item">
-            <img src="https://img.freepik.com/free-photo/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food_2829-6193.jpg?t=st=1709575332~exp=1709578932~hmac=4490dd8e7810d12f8bf86025d27b21f707f105b4824f5fc32543bad8abe2dc00&w=996" alt="Shop Image 2" className="rounded-lg w-full h-auto" />
+            <LazyImage src="https://img.freepik.com/free-photo/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food_2829-6193.jpg?t=st=1709575332~exp=1709578932~hmac=4490dd8e7810d12f8bf86025d27b21f707f105b4824f5fc32543bad8abe2dc00&w=996" alt="Shop Image 2" className="rounded-lg w-full h-auto" />
           </div>
         </div>
       </div>
@@ -43,13 +59,13 @@ function OurShop() {
       <div className="grid-images-section py-20 px-4">
         <div className="container mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="grid-image-item">
-            <img src="https://img.freepik.com/free-photo/side-view-fried-meat-with-french-fries-ketchup_141793-4908.jpg?t=st=1709575351~exp=1709578951~hmac=583fa53a9631e62095704f75465898f579eeaa4418451f789a15b52f62d639f8&w=996" alt="Grid Image 1" className="rounded-lg w-full h-auto" />
+            <LazyImage src="https://img.freepik.com/free-photo/side-view-fried-meat-with-french-fries-ketchup_141793-4908.jpg?t=st=1709575351~exp=1709578951~hmac=583fa53a9631e62095704f75465898f579eeaa4418451f789a15b52f62d639f8&w=996" alt="Grid Image 1" className="rounded-lg w-full h-auto" />
           </div>
           <div className="grid-image-item">
-            <img src="https://img.freepik.com/free-photo/pasta-spaghetti-with-shrimps-sauce_1220-5072.jpg?w=996" alt="Grid Image 2" className="rounded-lg w-full h-auto" />
+            <LazyImage src="https://img.freepik.com/free-photo/pasta-spaghetti-with-shrimps-sauce_1220-5072.jpg?w=996" alt="Grid Image 2" className="rounded-lg w-full h-auto" />
           </div>
           <div className="grid-image-item">
-            <img src="https://img.freepik.com/free-photo/fresh-grill-bbq-chicken_144627-7526.jpg?t=st=1709575415~exp=1709579015~hmac=75dc5a29219995fac7055ff1d9a7a7ebf05edda070fd25b75850660aee22ad77&w=996" alt="Grid Image 3" className="rounded-lg w-full h-auto" />
+            <LazyImage src="https://img.freepik.com/free-photo/fresh-grill-bbq-chicken_144627-7526.jpg?t=st=1709575415~exp=1709579015~hmac=75dc5a29219995fac7055ff1d9a7a7ebf05edda070fd25b75850660aee22ad77&w=996" alt="Grid Image 3" className="rounded-lg w-full h-auto" />
           </div>
         </div>
       </div>
@@ -73,6 +89,8 @@ function OurShop() {
       </div>
     </div>
   );
-}
+});
+
+OurShop.displayName = 'OurShop';
 
 export default OurShop;

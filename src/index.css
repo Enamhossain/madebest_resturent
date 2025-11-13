@@ -37,7 +37,7 @@ iframe, embed, object, video {
   max-width: 100%;
 }
 
-/* Splash screen animations */
+/* Splash screen animations - optimized */
 @keyframes progress {
   0% { 
     transform: translateX(-100%); 
@@ -49,6 +49,28 @@ iframe, embed, object, video {
 
 .animate-progress {
   animation: progress 1.5s ease-in-out infinite;
+}
+
+/* Optimize animations for performance */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* GPU acceleration for smooth animations */
+.animate-spin {
+  animation: spin 1s linear infinite;
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: opacity;
 }
 
 
