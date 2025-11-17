@@ -18,8 +18,10 @@ export default defineConfig({
         manualChunks(id) {
           // Vendor chunks for better caching
           if (id.includes('node_modules')) {
-            if (id.includes('react-dom')) return 'react-dom';
-            if (id.includes('react') && !id.includes('react-dom')) return 'react';
+            // Keep React and React-DOM together to avoid internal state issues
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
             if (id.includes('react-router-dom')) return 'react-router';
             if (id.includes('@tanstack/react-query')) return 'react-query';
             if (id.includes('firebase')) return 'firebase';
@@ -40,23 +42,8 @@ export default defineConfig({
     },
     // Increase chunk size warning limit
     chunkSizeWarningLimit: 1500,
-    // Enable minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-        passes: 2, // Multiple passes for better minification
-        unsafe: true,
-        unsafe_comps: true,
-        unsafe_math: true,
-        unsafe_methods: true,
-      },
-      format: {
-        comments: false, // Remove all comments
-      },
-    },
+    // Use esbuild for minification (safer for React)
+    minify: 'esbuild',
     // Disable source maps for production (smaller bundle)
     sourcemap: false,
     // Optimize for performance
@@ -64,10 +51,7 @@ export default defineConfig({
     cssMinify: true, // Minify CSS
     reportCompressedSize: false, // Faster builds
     target: 'esnext',
-    // Tree-shaking optimization
-    treeshake: {
-      moduleSideEffects: false,
-    },
+    // Rely on Rollup defaults for tree-shaking to avoid stripping necessary React internals
   },
   // Optimize dependencies
   optimizeDeps: {
@@ -85,13 +69,14 @@ export default defineConfig({
       target: 'esnext',
     },
   },
-  // Resolve Firebase properly
+  // Resolve Firebase and ensure React deduplication
   resolve: {
     alias: {
       'firebase/app': 'firebase/app',
       'firebase/auth': 'firebase/auth',
       'firebase/firestore': 'firebase/firestore'
-    }
+    },
+    dedupe: ['react', 'react-dom']
   },
   // Performance optimizations
   esbuild: {
