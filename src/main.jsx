@@ -6,7 +6,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./Routes/Routes.jsx";
 import { HelmetProvider } from "react-helmet-async";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
-import Loading from "./Component/Loading";
+import Loading from "./Component/Loading.jsx";
 
 // Optimized QueryClient configuration
 const queryClient = new QueryClient({
@@ -213,3 +213,4 @@ function initializeApp() {
 
 // Start the application
 initializeApp();
+
