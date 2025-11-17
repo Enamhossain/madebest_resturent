@@ -14,18 +14,25 @@ const loadAOSCSS = () => {
 };
 
 export const initAOS = () => {
+  if (typeof window === 'undefined') return;
   if (aosInitialized) return;
-  
+
   // Return existing promise if already loading
   if (aosPromise) return aosPromise;
-  
+
   // Load CSS first
   loadAOSCSS();
-  
+
   // Dynamic import for AOS to reduce initial bundle size
-  aosPromise = import('aos').then((AOS) => {
+  aosPromise = import('aos').then((module) => {
+    const AOSLib = module?.default || module;
+
+    if (!AOSLib || typeof AOSLib.init !== 'function') {
+      throw new Error('AOS library failed to load');
+    }
+
     if (!aosInitialized) {
-      AOS.default.init({
+      AOSLib.init({
         duration: 800,
         once: true,
         offset: 50,
@@ -35,7 +42,7 @@ export const initAOS = () => {
       });
       aosInitialized = true;
     }
-    return AOS;
+    return AOSLib;
   }).catch((error) => {
     console.warn('AOS initialization failed:', error);
     aosPromise = null;

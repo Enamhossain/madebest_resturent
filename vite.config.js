@@ -78,8 +78,9 @@ export default defineConfig({
       '@tanstack/react-query',
       'axios',
       'react-icons/fa', // Tree-shake react-icons
+      'aos',
+      'lodash.throttle',
     ],
-    exclude: ['aos'], // Exclude AOS from pre-bundling (lazy load)
     esbuildOptions: {
       target: 'esnext',
     },
