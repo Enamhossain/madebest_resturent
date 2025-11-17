@@ -9,7 +9,7 @@ const axiosPublic = axios.create({
     }
 })
 
-// Add response interceptor for caching
+// Add response interceptor for caching and error handling
 axiosPublic.interceptors.response.use(
     function (response) {
         // Add cache headers for GET requests
@@ -17,9 +17,24 @@ axiosPublic.interceptors.response.use(
             response.headers['Cache-Control'] = 'public, max-age=300'; // 5 minutes
         }
         
+        // Validate response is JSON
+        const contentType = response.headers['content-type'];
+        if (contentType && !contentType.includes('application/json')) {
+            console.warn('Response is not JSON:', contentType);
+        }
+        
         return response;
     },
     function (error) {
+        // Handle JSON parsing errors
+        if (error.response) {
+            const contentType = error.response.headers['content-type'];
+            if (contentType && !contentType.includes('application/json')) {
+                // Server returned non-JSON (likely HTML error page)
+                error.isJsonError = true;
+                error.message = 'Server returned non-JSON response. Please check the API endpoint.';
+            }
+        }
         return Promise.reject(error);
     }
 );

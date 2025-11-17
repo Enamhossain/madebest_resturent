@@ -4,7 +4,6 @@ import useAxiosPublic from '../../../hooks/axiosPublic';
 const Tastomonial = memo(() => {
   const [reviews, setReviews] = useState([]);
   const [displayedReviews, setDisplayedReviews] = useState([]);
-  const [showAll,] = useState(false);
   const [loading, setLoading] = useState(true);
   const reviewsPerPage = 3;
 
@@ -24,12 +23,22 @@ const Tastomonial = memo(() => {
         setLoading(false);
       })
       .catch(error => {
-        console.error('Error fetching reviews:', error);
+        // Handle JSON parsing errors and network errors gracefully
+        if (error.response) {
+          // Server responded with error status
+          console.error('Error fetching reviews:', error.response.status, error.response.data);
+        } else if (error.request) {
+          // Request made but no response
+          console.error('Error fetching reviews: No response from server');
+        } else {
+          // Error setting up request
+          console.error('Error fetching reviews:', error.message);
+        }
         setReviews([]);
         setDisplayedReviews([]);
         setLoading(false);
       });
-  }, []);
+  }, [axiosPublic]);
 
   const handleShowMoreReviews = () => {
     const startIndex = displayedReviews.length;
@@ -80,8 +89,8 @@ const Tastomonial = memo(() => {
       </div>
       {/* Text Button */}
       <div className="flex flex-col">
-        {!showAll && displayedReviews.length < reviews.length && (
-          <button onClick={handleShowMoreReviews} className="mx-auto font-bold text-black">Check more reviews</button>
+        {displayedReviews.length < reviews.length && (
+          <button onClick={handleShowMoreReviews} className="mx-auto font-bold text-black hover:text-orange-500 transition-colors">Check more reviews</button>
         )}
       </div>
     </div>
