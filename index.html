@@ -15,16 +15,8 @@
     <link rel="dns-prefetch" href="https://i.ibb.co" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/src/main.jsx" as="script" crossorigin />
-    <link rel="preload" href="/src/index.css" as="style" />
-    
-    <!-- Resource hints for performance -->
-    <link rel="modulepreload" href="/src/main.jsx" />
-    
-    <!-- Prefetch likely next resources -->
-    <link rel="prefetch" href="/ourmenu" as="document" />
-    <link rel="prefetch" href="/order" as="document" />
+    <!-- Preload/modulepreload for source files removed to avoid MIME/404 in production -->
+    <!-- Vite will manage built asset links during build -->
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json" />
