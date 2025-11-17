@@ -1,22 +1,32 @@
-import React, { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo } from 'react';
+import useAxiosPublic from '../../../hooks/axiosPublic';
 
 const Tastomonial = memo(() => {
   const [reviews, setReviews] = useState([]);
   const [displayedReviews, setDisplayedReviews] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+  const [showAll,] = useState(false);
   const [loading, setLoading] = useState(true);
   const reviewsPerPage = 3;
 
+  const axiosPublic = useAxiosPublic();
+
   useEffect(() => {
-    fetch('https://madebestresturent.vercel.app/review')
-      .then(res => res.json())
-      .then(data => {
-        setReviews(data);
-        setDisplayedReviews(data.slice(0, reviewsPerPage));
+    axiosPublic.get('/review?limit=9')
+      .then(res => {
+        const data = res.data;
+        if (Array.isArray(data)) {
+          setReviews(data);
+          setDisplayedReviews(data.slice(0, reviewsPerPage));
+        } else {
+          setReviews([]);
+          setDisplayedReviews([]);
+        }
         setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching reviews:', error);
+        setReviews([]);
+        setDisplayedReviews([]);
         setLoading(false);
       });
   }, []);
@@ -56,12 +66,11 @@ const Tastomonial = memo(() => {
       {/* Contents */}
       <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:mb-8">
         {/* Map through displayed reviews array */}
-        {displayedReviews.length > 0 ? displayedReviews.map((review, index) => (
-          <div key={index} className="grid grid-cols-1 gap-6 rounded-md border border-solid border-[#cdcdcd] bg-white p-8 md:p-10">
-            <div className="text-[#636262]">Restaurant: {review.restaurant_name}</div>
-            <div className="text-[#636262]">Reviewer: {review.reviewer_name}</div>
+        {displayedReviews.length > 0 ? displayedReviews.map((review) => (
+          <div key={review._id} className="grid grid-cols-1 gap-6 rounded-md border border-solid border-[#cdcdcd] bg-white p-8 md:p-10">
+            <div className="text-[#636262]">Name: {review.name}</div>
             <div className="text-[#636262]">Rating: {review.rating}</div>
-            <div className="text-[#636262]">Comment: {review.comment}</div>
+            <div className="text-[#636262]">Comment: {review.details}</div>
           </div>
         )) : (
           <div className="col-span-full text-center py-8 text-gray-500">

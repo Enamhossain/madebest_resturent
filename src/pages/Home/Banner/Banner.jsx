@@ -25,7 +25,7 @@ const sliders = [
 
 const Banner = memo(() => {
   const [currentSlider, setCurrentSlider] = useState(0);
-  const [loadedImages, setLoadedImages] = useState(new Set());
+  const [ setLoadedImages] = useState(new Set());
 
   const prevSlider = useCallback(() =>
     setCurrentSlider((currentSlider) =>
@@ -170,7 +170,8 @@ const Banner = memo(() => {
                     </p>
                     <div className="flex flex-col md:flex-row items-center gap-3 md:space-x-3">
                       <a
-                        href="javascript:void(0)"
+                        href="#"
+                        onClick={(e) => e.preventDefault()}
                         className="block py-2 px-4 text-center text-white font-medium bg-indigo-600 duration-150 hover:bg-indigo-400 active:bg-indigo-700 rounded-lg shadow-lg hover:shadow-none cursor-pointer"
                       >
                         Order Now

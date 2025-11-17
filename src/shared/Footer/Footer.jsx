@@ -1,4 +1,4 @@
-import { memo, lazy, Suspense } from 'react';
+import { memo,  } from 'react';
 import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import LazyImage from '../../Component/LazyImage';
 
@@ -11,31 +11,12 @@ const Footer = memo(() => {
 
 
     const footerNavs = [
-        {
-            href: 'javascript:void()',
-            name: 'About'
-        },
-        {
-            href: 'javascript:void()',
-            name: 'Blog'
-        },
-        {
-            href: 'javascript:void()',
-            name: 'Contact'
-        },
-        {
-            href: 'javascript:void()',
-            name: 'Team'
-        },
-        {
-            href: 'javascript:void()',
-            name: 'Careers'
-        },
-
-        {
-            href: 'javascript:void()',
-            name: 'Support'
-        }
+        { href: '#', name: 'About' },
+        { href: '#', name: 'Blog' },
+        { href: '#', name: 'Contact' },
+        { href: '#', name: 'Team' },
+        { href: '#', name: 'Careers' },
+        { href: '#', name: 'Support' }
     ]
 
 
@@ -58,7 +39,7 @@ const Footer = memo(() => {
 
                     <div>
                         <h4 className="text-3xl mb-4 font-semibold text-orange-500 uppercase">Opening Hours</h4>
-                        <table class="table-auto">
+                        <table className="table-auto">
                             <thead>
 
                             </thead>
@@ -154,8 +135,8 @@ const Footer = memo(() => {
                     <ul className="md:items-center justify-center hidden mt-8 space-y-2  sm:space-x-2 sm:space-y-0">
                         {
                             footerNavs.map((item, idx) => (
-                                <li className=" hover:text-orange-600 m-2 uppercase">
-                                    <a key={idx} href={item.href}>
+                                <li key={idx} className=" hover:text-orange-600 m-2 uppercase">
+                                    <a href={item.href} onClick={(e) => e.preventDefault()}>
                                         {item.name}
                                     </a>
                                 </li>
@@ -169,25 +150,25 @@ const Footer = memo(() => {
                         <div className="mt-6 sm:mt-0 ml-48 flex flex-col sm:flex-row">
                             <ul className="flex items-center space-x-4">
                                 <li className="w-10 h-10 border rounded-full  items-center justify-center">
-                                    <a href="javascript:void()">
+                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="Twitter">
                                         <FaTwitter className="w-10 h-8 text-blue-400" />
                                     </a>
                                 </li>
 
                                 <li className="w-10 h-10 border rounded-full  items-center justify-center">
-                                    <a href="javascript:void()">
+                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="Facebook">
                                         <FaFacebook className="w-10 h-8 text-blue-700" />
                                     </a>
                                 </li>
 
                                 <li className="w-10 h-10 border rounded-full items-center justify-center">
-                                    <a href="javascript:void()">
+                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="Instagram">
                                         <FaInstagram className="w-10 h-8 text-blue-500" />
                                     </a>
                                 </li>
 
                                 <li className="w-10 h-10 border rounded-full items-center justify-center">
-                                    <a href="javascript:void()">
+                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="LinkedIn">
                                         <FaLinkedin className="w-10 h-8 text-red-600 rounded-full" />
                                     </a>
                                 </li>

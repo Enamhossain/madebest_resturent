@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import useAxiosSecure from '../../../../hooks/AxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import swal from 'sweetalert';
@@ -127,14 +127,13 @@ function AllUsers() {
                             </td>
                             <td className="text-right px-6 whitespace-nowrap">
                                 <a
-                                    href="javascript:void()"
+                                    href="#"
+                                    onClick={(e) => { e.preventDefault(); handleEdit(item); }}
                                     className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                                    onClick={() => handleEdit(item)}
                                 >
                                     Edit
                                 </a>
                                 <button
-                                    href="javascript:void()"
                                     className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
                                     onClick={() => handleDelete(item)}
                                 >
