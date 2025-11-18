@@ -25,7 +25,7 @@ const sliders = [
 
 const Banner = memo(() => {
   const [currentSlider, setCurrentSlider] = useState(0);
-  const [ setLoadedImages] = useState(new Set());
+  const [loadedImages, setLoadedImages] = useState(new Set());
 
   const prevSlider = useCallback(() =>
     setCurrentSlider((currentSlider) =>
