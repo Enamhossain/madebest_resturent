@@ -133,9 +133,14 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+import { initAOS } from "./utils/aosInit";
+
 // Main App component
 function App() {
   useEffect(() => {
+    // Initialize AOS for reveal animations
+    initAOS();
+
     // Remove HTML loading screen with smooth transition
     const htmlLoader = document.querySelector('.loading');
     if (htmlLoader) {
@@ -146,11 +151,6 @@ function App() {
 
     // Prevent layout shift by setting min-height
     document.body.style.minHeight = '100vh';
-    
-    // Clean up function
-    return () => {
-      // Cleanup if needed
-    };
   }, []);
 
   return (

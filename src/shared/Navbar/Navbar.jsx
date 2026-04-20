@@ -5,6 +5,8 @@ import ShoppingCart from '../../Component/ShoppingCart';
 import useCart from '../../hooks/useCart';
 import LazyImage from '../../Component/LazyImage';
 import { HiMenuAlt3, HiX, HiOutlineShoppingBag, HiUserCircle } from 'react-icons/hi';
+import { useQueryClient } from '@tanstack/react-query';
+import useAxiosPublic from '../../hooks/axiosPublic';
 
 const Navbar = memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -14,6 +16,8 @@ const Navbar = memo(() => {
   const { user, logOut } = useContext(AuthContext);
   const [cart] = useCart();
   const location = useLocation();
+  const queryClient = useQueryClient();
+  const axiosPublic = useAxiosPublic();
 
   const navigation = [
     { title: 'Home', path: '/' },
@@ -39,6 +43,18 @@ const Navbar = memo(() => {
   }, [logOut]);
 
   const isActive = (path) => location.pathname === path;
+
+  // Prefetching logic for faster transitions
+  const prefetchMenu = useCallback(() => {
+    queryClient.prefetchQuery({
+      queryKey: ['menu'],
+      queryFn: async () => {
+        const res = await axiosPublic.get('/menu');
+        return res.data;
+      },
+      staleTime: 1000 * 60 * 60,
+    });
+  }, [queryClient, axiosPublic]);
 
   return (
     <nav 
@@ -73,6 +89,7 @@ const Navbar = memo(() => {
                 <li key={item.path}>
                   <Link 
                     to={item.path}
+                    onMouseEnter={item.path === '/ourmenu' ? prefetchMenu : undefined}
                     className={`text-sm font-semibold uppercase tracking-wider transition-all hover:text-primary relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full ${
                       isActive(item.path) 
                         ? 'text-primary after:w-full' 
@@ -197,6 +214,7 @@ const Navbar = memo(() => {
                 <Link 
                   to={item.path}
                   onClick={toggleMenu}
+                  onMouseEnter={item.path === '/ourmenu' ? prefetchMenu : undefined}
                   className={`text-2xl font-bold ${isActive(item.path) ? 'text-primary' : 'text-foreground/70'}`}
                 >
                   {item.title}

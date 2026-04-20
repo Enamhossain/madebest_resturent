@@ -55,6 +55,62 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Responsive Utilities */
+  @layer utilities {
+    .container-fluid {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /* Custom Loading Bar */
+  #top-loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary) 0%, #fbbf24 50%, var(--primary) 100%);
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+    transition: width 0.4s ease, opacity 0.4s ease;
+    will-change: width, opacity;
+  }
+
+  /* Smart Skeleton Pulse */
+  @keyframes skeleton-pulse {
+    0% { background-color: rgba(0, 0, 0, 0.05); }
+    50% { background-color: rgba(0, 0, 0, 0.1); }
+    100% { background-color: rgba(0, 0, 0, 0.05); }
+  }
+
+  .animate-skeleton {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Advanced Transitions */
+  .page-transition-enter {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .page-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .page-transition-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .page-transition-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 300ms, transform 300ms;
+  }
 }
 
 @layer components {

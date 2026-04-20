@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import { HiArrowRight, HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import LazyImage from "../../../Component/LazyImage";
 
 const sliders = [
   {
@@ -72,10 +73,13 @@ const Banner = memo(() => {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-            <img
+            <LazyImage
               src={slide.img}
               className="w-full h-full object-cover"
               alt={slide.title}
+              // First slide should have priority loading for better LCP
+              loading={inx === 0 ? "eager" : "lazy"}
+              decoding={inx === 0 ? "sync" : "async"}
             />
           </div>
         ))}
@@ -91,7 +95,7 @@ const Banner = memo(() => {
             >
               <div className="space-y-6 animate-in fade-in slide-in-from-left-8 duration-1000">
                 <span className="inline-block px-4 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest backdrop-blur-md">
-                  {slide.tag}
+                   {slide.tag}
                 </span>
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none">
                   {slide.title.split(' ')[0]} <br/>
@@ -102,17 +106,17 @@ const Banner = memo(() => {
                 </p>
                 <div className="flex flex-wrap items-center gap-4 pt-4">
                   <Link
-                    to="/order"
+                    to="/ourmenu"
                     className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-full overflow-hidden transition-all hover:pr-12 hover:shadow-[0_0_40px_rgba(249,115,22,0.4)] active:scale-95"
                   >
                     <span>Discover Menu</span>
                     <HiArrowRight className="absolute right-4 opacity-0 group-hover:opacity-100 transition-all" />
                   </Link>
                   <Link
-                    to="/contact"
+                    to="/Booking"
                     className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-full backdrop-blur-md border border-white/10 transition-all active:scale-95"
                   >
-                    Reserver Table
+                    Reserve Table
                   </Link>
                 </div>
               </div>

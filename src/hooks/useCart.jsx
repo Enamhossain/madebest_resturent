@@ -7,16 +7,20 @@ const useCart = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useContext(AuthContext);
 
-    const { refetch, data: cart = [], isLoading } = useQuery({
+    const { refetch, data: cart = [], isLoading, isError, error } = useQuery({
         queryKey: ['cart', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/carts?email=${user.email}`);
             return res.data;
         },
-        enabled: !!user?.email, // Ensure query is only executed when user email is available
+        enabled: !!user?.email, 
+        staleTime: 1000 * 30, // 30 seconds stale time for cart
+        gcTime: 1000 * 60 * 5, // 5 minutes garbage collection
+        refetchOnWindowFocus: true, // Refetch when returning to tab
+        retry: 2,
     });
 
-    return [cart, refetch, isLoading];
+    return [cart, refetch, isLoading, isError, error];
 };
 
 export default useCart;
