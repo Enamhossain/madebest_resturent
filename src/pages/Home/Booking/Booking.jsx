@@ -6,6 +6,7 @@ import useAxiosPublic from '../../../hooks/axiosPublic';
 import swal from 'sweetalert';
 import UseText from '../../../Component/HeadingText/UseText';
 import LazyImage from '../../../Component/LazyImage';
+import { HiOutlineCalendar, HiOutlineClock, HiOutlineUserGroup, HiOutlineSparkles } from 'react-icons/hi';
 
 const Booking = memo(() => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -13,7 +14,6 @@ const Booking = memo(() => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    // Construct booking data
     const bookingData = {
       name: data.fullName,
       email: data.email,
@@ -25,332 +25,217 @@ const Booking = memo(() => {
       category: data.category
     };
     
-    console.log(bookingData);
-    
-    // Send booking data to the server using Axios
-    axios.post("/booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bookingData)
-    })
-    .then((response) => {
-      const result = response.data;
-      console.log(result);
-      swal("Success!", "Your booking has been submitted successfully!", "success");
+    axios.post("/booking", bookingData)
+    .then(() => {
+      swal("Table Reserved!", "We've received your request and will confirm shortly.", "success", {
+        buttons: false,
+        timer: 3000,
+      });
       reset();
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
+      setTimeout(() => navigate('/'), 3000);
     })
     .catch((error) => {
-      console.error('Error submitting booking:', error);
-      swal("Error", "Failed to submit booking. Please try again.", "error");
+      console.error('Booking error:', error);
+      swal("Submission Failed", "Please check your details and try again.", "error");
     });
   };
 
-  const featuredServices = [
-    {
-      img: "https://i.ibb.co/K7DgFFg/dev-asangbam-Sj-G7-MA4n8-S0-unsplash.jpg",
-      title: "Corporate Events",
-      description: "Professional catering for your business needs",
-      width: 400,
-      height: 256
-    },
-    {
-      img: "https://i.ibb.co/Y2Mp58P/shawnanggg-nmp-W-Www-VSc-unsplash.jpg",
-      title: "Wedding Celebrations",
-      description: "Make your special day unforgettable",
-      width: 400,
-      height: 256
-    },
-    {
-      img: "https://i.ibb.co/vc1ZRLj/priscilla-du-preez-W3-SEy-ZODn8-U-unsplash.jpg",
-      title: "Private Dining",
-      description: "Intimate gatherings with exquisite cuisine",
-      width: 400,
-      height: 256
-    }
-  ];
-
   return (
-    <div>
+    <div className="bg-background min-h-screen">
       <Helmet>
-        <title>Book Your Table | MadeBest</title>
+        <title>Reserve a Table | MadeBest Restaurant</title>
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-24 md:py-32 mt-20">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Reserve Your <span className="text-yellow-400">Perfect Table</span>
-          </h1>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-300">
-            Experience culinary excellence at MadeBest. Book your table today and indulge in an unforgettable dining experience.
-          </p>
-          <Link 
-            to="/" 
-            className="inline-block bg-yellow-500 hover:bg-yellow-600 text-gray-900 py-3 px-8 rounded-full uppercase tracking-wide font-semibold transition duration-300 transform hover:scale-105"
-          >
-            Explore Our Menu
-          </Link>
+      {/* Premium Discovery Hero */}
+      <section className="relative h-[60vh] md:h-[70vh] flex items-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+           <img 
+              src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2000&auto=format&fit=crop" 
+              className="w-full h-full object-cover"
+              alt="Dining Experience"
+           />
+           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background" />
+        </div>
+        
+        <div className="container relative z-10 mx-auto px-4 text-center">
+          <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-12 duration-1000">
+            <span className="text-primary font-bold uppercase tracking-[0.4em] text-sm md:text-base">Elite Reservations</span>
+            <h1 className="text-5xl md:text-8xl font-black text-white leading-none tracking-tighter">
+              A TABLE FOR <span className="text-primary italic">MEMORY</span>
+            </h1>
+            <p className="text-white/80 text-lg md:text-2xl font-light max-w-2xl mx-auto">
+              Secure your spot at MadeBest and embark on a culinary journey defined by passion and perfection.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Featured Services Section */}
-      <section className="py-16 bg-gray-50">
+      {/* Reservation Section */}
+      <section className="py-24 relative -mt-32 z-20">
         <div className="container mx-auto px-4">
-          <UseText heading="Our Services" subheading="Featured" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            {featuredServices.map((service, index) => (
-              <div 
-                key={index} 
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2"
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <LazyImage
-                    src={service.img}
-                    alt={service.title}
-                    width={service.width}
-                    height={service.height}
-                    quality={75}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-gray-600">{service.description}</p>
-                </div>
+           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+              
+              {/* Info Column */}
+              <div className="lg:col-span-4 space-y-12 h-full">
+                 <div className="bg-foreground text-background p-10 rounded-[3rem] space-y-8 shadow-2xl h-full flex flex-col justify-center">
+                    <HiOutlineSparkles className="text-primary" size={48} />
+                    <h2 className="text-4xl font-black leading-tight">Exceptional<br/>Dining Awaits</h2>
+                    <p className="text-background/60 leading-relaxed">
+                       From intimate dinners to grand celebrations, our dedicated team ensures every detail is masterfully executed.
+                    </p>
+                    <div className="pt-8 space-y-6">
+                       <div className="flex gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-primary">
+                             <HiOutlineClock size={24} />
+                          </div>
+                          <div>
+                             <h4 className="font-bold">Opening Hours</h4>
+                             <p className="text-sm text-background/60">Tue - Sun: 11:00 AM - 11:00 PM</p>
+                          </div>
+                       </div>
+                       <div className="flex gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-primary">
+                             <HiOutlineUserGroup size={24} />
+                          </div>
+                          <div>
+                             <h4 className="font-bold">Large Groups</h4>
+                             <p className="text-sm text-background/60">For 10+ guests, contact us directly.</p>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Form Column */}
+              <div className="lg:col-span-8 bg-card border border-border p-10 md:p-16 rounded-[3rem] shadow-2xl">
+                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div className="space-y-2">
+                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">Full Name</label>
+                          <input 
+                            {...register("fullName", { required: true })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors"
+                            placeholder="John Doe"
+                          />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">Email Address</label>
+                          <input 
+                            {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors"
+                            placeholder="john@example.com"
+                          />
+                       </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div className="space-y-2">
+                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">Phone Number</label>
+                          <input 
+                            {...register("phone", { required: true })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors"
+                            placeholder="+880 1XXX-XXXXXX"
+                          />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">Occasion</label>
+                          <select 
+                            {...register("category", { required: true })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors appearance-none"
+                          >
+                             <option value="General">General Dining</option>
+                             <option value="Birthday">Birthday</option>
+                             <option value="Anniversary">Anniversary</option>
+                             <option value="Corporate">Corporate</option>
+                             <option value="Wedding">Wedding</option>
+                          </select>
+                       </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                       <div className="space-y-2">
+                          <label className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">
+                             <HiOutlineCalendar /> Preferred Date
+                          </label>
+                          <input 
+                            type="date"
+                            {...register("date", { required: true })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors"
+                          />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">
+                             <HiOutlineClock /> Time Slot
+                          </label>
+                          <select 
+                            {...register("time", { required: true })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors appearance-none"
+                          >
+                             <option value="11:00 AM">11:00 AM</option>
+                             <option value="12:00 PM">12:00 PM</option>
+                             <option value="02:00 PM">02:00 PM</option>
+                             <option value="07:00 PM">07:00 PM</option>
+                             <option value="08:00 PM">08:00 PM</option>
+                             <option value="09:00 PM">09:00 PM</option>
+                          </select>
+                       </div>
+                       <div className="space-y-2">
+                          <label className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">
+                             <HiOutlineUserGroup /> Guests
+                          </label>
+                          <select 
+                            {...register("guests", { required: true })}
+                            className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors appearance-none"
+                          >
+                             {[2, 3, 4, 5, 6, 8, 10].map(n => <option key={n} value={n}>{n} Persons</option>)}
+                          </select>
+                       </div>
+                    </div>
+
+                    <div className="space-y-2">
+                       <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-4">Special Requests</label>
+                       <textarea 
+                         {...register("message")}
+                         rows="4"
+                         className="w-full bg-muted/30 border border-border rounded-2xl p-4 focus:outline-none focus:border-primary transition-colors resize-none"
+                         placeholder="Let us know if you have any allergies or special requirements..."
+                       />
+                    </div>
+
+                    <div className="pt-8">
+                       <button 
+                         type="submit"
+                         className="w-full py-6 bg-primary text-white font-black text-lg uppercase tracking-widest rounded-3xl transition-all hover:bg-primary/90 hover:shadow-2xl hover:shadow-primary/20 active:scale-[0.98]"
+                       >
+                          Confirm Reservation
+                       </button>
+                    </div>
+                 </form>
+              </div>
+
+           </div>
         </div>
       </section>
 
-      {/* Booking Form Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <UseText heading="Book Your Experience" subheading="Reservation" />
-          
-          <div className="max-w-4xl mx-auto mt-12">
-            <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border border-gray-100">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Personal Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="fullName"
-                      {...register("fullName", { required: "Full name is required" })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                      placeholder="Enter your full name"
-                    />
-                    {errors.fullName && (
-                      <span className="text-red-500 text-sm mt-1 block">{errors.fullName.message}</span>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      {...register("email", { 
-                        required: "Email is required",
-                        pattern: {
-                          value: /^\S+@\S+$/i,
-                          message: "Please enter a valid email address"
-                        }
-                      })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                      placeholder="your.email@example.com"
-                    />
-                    {errors.email && (
-                      <span className="text-red-500 text-sm mt-1 block">{errors.email.message}</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      {...register("phone", { 
-                        required: "Phone number is required",
-                        pattern: {
-                          value: /^[0-9+\-\s()]+$/,
-                          message: "Please enter a valid phone number"
-                        }
-                      })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                      placeholder="+1 (555) 123-4567"
-                    />
-                    {errors.phone && (
-                      <span className="text-red-500 text-sm mt-1 block">{errors.phone.message}</span>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="guests" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Number of Guests <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      id="guests"
-                      {...register("guests", { required: "Please select number of guests" })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                    >
-                      <option value="">Select guests</option>
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                        <option key={num} value={num}>{num} {num === 1 ? 'Guest' : 'Guests'}</option>
-                      ))}
-                      <option value="10+">10+ Guests</option>
-                    </select>
-                    {errors.guests && (
-                      <span className="text-red-500 text-sm mt-1 block">{errors.guests.message}</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="date" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Date <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      id="date"
-                      {...register("date", { required: "Date is required" })}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                    />
-                    {errors.date && (
-                      <span className="text-red-500 text-sm mt-1 block">{errors.date.message}</span>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="time" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Time <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      id="time"
-                      {...register("time", { required: "Time is required" })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                    >
-                      <option value="">Select time</option>
-                      <option value="11:00 AM">11:00 AM</option>
-                      <option value="12:00 PM">12:00 PM</option>
-                      <option value="1:00 PM">1:00 PM</option>
-                      <option value="2:00 PM">2:00 PM</option>
-                      <option value="5:00 PM">5:00 PM</option>
-                      <option value="6:00 PM">6:00 PM</option>
-                      <option value="7:00 PM">7:00 PM</option>
-                      <option value="8:00 PM">8:00 PM</option>
-                      <option value="9:00 PM">9:00 PM</option>
-                    </select>
-                    {errors.time && (
-                      <span className="text-red-500 text-sm mt-1 block">{errors.time.message}</span>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Event Category <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="category"
-                    {...register("category", { required: "Please select a category" })}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300"
-                  >
-                    <option value="">Select Category</option>
-                    <option value="Corporate">Corporate Booking</option>
-                    <option value="Wedding">Wedding Booking</option>
-                    <option value="Private">Private Booking</option>
-                    <option value="Birthday">Birthday Celebration</option>
-                    <option value="Anniversary">Anniversary</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  {errors.category && (
-                    <span className="text-red-500 text-sm mt-1 block">{errors.category.message}</span>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Special Requests or Message
-                  </label>
-                  <textarea
-                    id="message"
-                    {...register("message")}
-                    rows="4"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-300 resize-none"
-                    placeholder="Any special dietary requirements, allergies, or requests..."
-                  ></textarea>
-                </div>
-
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white py-4 px-8 rounded-full uppercase tracking-wide font-semibold transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                  >
-                    Confirm Reservation
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Additional Info Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose MadeBest?</h2>
+      {/* Gallery Highlight */}
+      <section className="py-24 bg-muted/30 overflow-hidden">
+         <div className="container mx-auto px-4">
+            <UseText 
+              heading="The Atmosphere" 
+              subheading="Designed for Comfort" 
+            />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-              <div className="p-6">
-                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Flexible Timing</h3>
-                <p className="text-gray-600">Book at your convenience with flexible reservation options</p>
-              </div>
-              <div className="p-6">
-                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Premium Service</h3>
-                <p className="text-gray-600">Experience world-class service and attention to detail</p>
-              </div>
-              <div className="p-6">
-                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Exquisite Cuisine</h3>
-                <p className="text-gray-600">Savor the finest dishes crafted by our expert chefs</p>
-              </div>
+               {[
+                 "https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=600&auto=format&fit=crop",
+                 "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600&auto=format&fit=crop",
+                 "https://images.unsplash.com/photo-1550966841-3eeec17819ce?q=80&w=600&auto=format&fit=crop"
+               ].map((img, i) => (
+                 <div key={i} className="h-96 rounded-[3rem] overflow-hidden group">
+                    <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Atmosphere" />
+                 </div>
+               ))}
             </div>
-          </div>
-        </div>
+         </div>
       </section>
     </div>
   );

@@ -1,188 +1,129 @@
-import { memo,  } from 'react';
+import { memo } from 'react';
 import { FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import LazyImage from '../../Component/LazyImage';
+import { HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker } from 'react-icons/hi';
 
 const Footer = memo(() => {
-
-
-
-
-
-
-
     const footerNavs = [
-        { href: '#', name: 'About' },
-        { href: '#', name: 'Blog' },
-        { href: '#', name: 'Contact' },
-        { href: '#', name: 'Team' },
-        { href: '#', name: 'Careers' },
-        { href: '#', name: 'Support' }
-    ]
-
+        { title: 'Company', links: [
+            { name: 'About Us', href: '/about' },
+            { name: 'Our Team', href: '/team' },
+            { name: 'Careers', href: '/careers' },
+            { name: 'Contact', href: '/contact' }
+        ]},
+        { title: 'Services', links: [
+            { name: 'Private Dining', href: '/services' },
+            { name: 'Wedding Events', href: '/services' },
+            { name: 'Corporate Catering', href: '/services' },
+            { name: 'Gift Cards', href: '/shop' }
+        ]},
+        { title: 'Legal', links: [
+            { name: 'Privacy Policy', href: '/privacy' },
+            { name: 'Terms of Service', href: '/terms' },
+            { name: 'Cookie Policy', href: '/cookies' }
+        ]}
+    ];
 
     return (
-        <footer className="pt-10  text-white text-lg relative" style={{ backgroundImage: 'url(https://i.ibb.co/27tp6gk/wepik-export-20240125182837v-R6t.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
-            <div className="max-w-screen-xl  md:px-8">
-                <div className="grid  grid-cols-2 md:grid-cols-4 gap-8">
-                    <div className="mt-2">
-                        <h4 className="text-xl mb-1 font-semibold text-orange-500 uppercase">Know About MadeBest</h4>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci itaque soluta suscipit debitis quos rem officiis</p>
-
-                        <LazyImage 
-                          src="https://i.ibb.co/VNs4X6g/1705932001959oh7xa24u-removebg-preview.png" 
-                          alt="Logo"
-                          width={150}
-                          height={60}
-                          className="w-auto h-auto"
-                        />
-                    </div>
-
-                    <div>
-                        <h4 className="text-3xl mb-4 font-semibold text-orange-500 uppercase">Opening Hours</h4>
-                        <table className="table-auto">
-                            <thead>
-
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Monday</td>
-                                    <td></td>
-                                    <td>Closing</td>
-                                </tr>
-                                <tr>
-                                    <td>Tuesday</td>
-                                    <td></td>
-                                    <td className='text-gray-400'>11 Am to 11 pm</td>
-                                </tr>
-                                <tr className="">
-                                    <td>Wednesday</td>
-                                    <td></td>
-                                    <td className='text-gray-400'>11 Am to 11 pm</td>
-
-                                </tr>
-                                <tr className="">
-                                    <td>Thursday</td>
-                                    <td></td>
-                                    <td className='text-gray-400'>11 Am to 11 pm</td>
-                                </tr>
-                                <tr className="">
-                                    <td>Friday</td>
-                                    <td></td>
-                                    <td className='text-gray-400'>11 Am to 11 pm</td>
-
-                                </tr>
-                                <tr className="">
-                                    <td>Saturday</td>
-                                    <td></td>
-                                    <td className='text-gray-400'>11 Am to 11 pm</td>
-
-                                </tr>
-                                <tr className="">
-                                    <td>Sunday</td>
-                                    <td></td>
-                                    <td className='text-gray-400'>11 Am to 11 pm</td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div>
-                        <h4 className="text-3xl mb-4 font-semibold text-orange-500 uppercase">Our Location</h4>
-
-                        <span className=" text-lg font-semibold">Address</span>
-                        <p>768 Gulsan Market,Mirpur,Dhaka 1280 </p>
-
-                        <hr className="border-gray-500" />
-                        <span className=" text-lg font-semibold">Phone</span>
-                        <p> (+880)182233499 </p>
-                        <hr className="border-gray-500" />
-                        <span className=" text-lg font-semibold">Email</span>
-                        <p>info@madebest.com </p>
-                        <hr className="border-gray-500" />
-
-                    </div>
-
-
-                    <div className=" mt-6 md:mt-0">
-
-                        <h3 className="text-orange-500 text-3xl font-semibold ">Newsletter</h3>
-                        <p>Subcribe our newsletter & get all promo !</p>
-
-
-                        <form onSubmit={(e) => e.preventDefault()} className=" gap-x-3 md:justify-end">
-                            <div className="relative">
-                                <svg className="w-6 h-6 text-gray-400 absolute left-3 inset-y-0 my-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                                </svg>
-                                <input
-                                    type="email"
-                                    required
-                                    placeholder="Enter your email"
-                                    className="w-full pl-12 pr-3 py-2 text-gray-500 bg-white outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+        <footer className="relative bg-[#0a0a0a] text-white pt-24 pb-12 overflow-hidden">
+            {/* Background Texture/Pattern */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'url(https://i.ibb.co/27tp6gk/wepik-export-20240125182837v-R6t.jpg)', backgroundSize: 'cover' }} />
+            
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+                    {/* Brand Section */}
+                    <div className="lg:col-span-4 space-y-8">
+                        <Link to="/" className="flex items-center gap-2">
+                             <div className="w-12 h-12 bg-white rounded-full p-2">
+                                <LazyImage 
+                                    src="https://i.ibb.co/VNs4X6g/1705932001959oh7xa24u-removebg-preview.png" 
+                                    alt="MadeBest Logo"
+                                    className="w-full h-full object-contain"
                                 />
-                            </div>
-                            <button className=" mt-5 w-auto py-3 px-4 font-medium text-sm text-center text-black bg-orange-600 hover:bg-yellow-500 active:bg-yellow-300 active:shadow-none rounded-lg shadow">
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div className="">
-                    <ul className="md:items-center justify-center hidden mt-8 space-y-2  sm:space-x-2 sm:space-y-0">
-                        {
-                            footerNavs.map((item, idx) => (
-                                <li key={idx} className=" hover:text-orange-600 m-2 uppercase">
-                                    <a href={item.href} onClick={(e) => e.preventDefault()}>
-                                        {item.name}
-                                    </a>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                    <div className=" mt-8 items-center justify-center md:justify-between sm:flex ">
-                        <div className="mt-4 sm:mt-0  ml-44 uppercase">
-                            &copy; 2022 madebest All rights reserved.
+                             </div>
+                             <span className="text-3xl font-black tracking-tighter">Made<span className="text-primary">Best</span></span>
+                        </Link>
+                        <p className="text-white/60 leading-relaxed max-w-sm">
+                            Crafting unforgettable culinary experiences since 2022. We combine traditional flavors with modern innovation to bring the best to your table.
+                        </p>
+                        <div className="flex gap-4">
+                            {[FaFacebook, FaInstagram, FaTwitter, FaLinkedin].map((Icon, i) => (
+                                <a key={i} href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center transition-all hover:bg-primary hover:border-primary hover:-translate-y-1">
+                                    <Icon size={18} />
+                                </a>
+                            ))}
                         </div>
-                        <div className="mt-6 sm:mt-0 ml-48 flex flex-col sm:flex-row">
-                            <ul className="flex items-center space-x-4">
-                                <li className="w-10 h-10 border rounded-full  items-center justify-center">
-                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="Twitter">
-                                        <FaTwitter className="w-10 h-8 text-blue-400" />
-                                    </a>
-                                </li>
+                    </div>
 
-                                <li className="w-10 h-10 border rounded-full  items-center justify-center">
-                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="Facebook">
-                                        <FaFacebook className="w-10 h-8 text-blue-700" />
-                                    </a>
-                                </li>
+                    {/* Links Sections */}
+                    <div className="lg:col-span-5 grid grid-cols-2 md:grid-cols-3 gap-8">
+                        {footerNavs.map((section, idx) => (
+                            <div key={idx} className="space-y-6">
+                                <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{section.title}</h4>
+                                <ul className="space-y-4">
+                                    {section.links.map((link, lIdx) => (
+                                        <li key={lIdx}>
+                                            <Link to={link.href} className="text-white/50 hover:text-white transition-colors text-sm font-medium">
+                                                {link.name}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
 
-                                <li className="w-10 h-10 border rounded-full items-center justify-center">
-                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="Instagram">
-                                        <FaInstagram className="w-10 h-8 text-blue-500" />
-                                    </a>
+                    {/* Contact/Newsletter */}
+                    <div className="lg:col-span-3 space-y-8">
+                        <div className="space-y-6">
+                            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-primary">Get in Touch</h4>
+                            <ul className="space-y-4">
+                                <li className="flex items-start gap-3 text-white/60 text-sm">
+                                    <HiOutlineLocationMarker className="text-primary mt-1" size={20} />
+                                    <span>768 Gulsan Market, Mirpur,<br/>Dhaka 1280</span>
                                 </li>
-
-                                <li className="w-10 h-10 border rounded-full items-center justify-center">
-                                    <a href="#" onClick={(e) => e.preventDefault()} aria-label="LinkedIn">
-                                        <FaLinkedin className="w-10 h-8 text-red-600 rounded-full" />
-                                    </a>
+                                <li className="flex items-center gap-3 text-white/60 text-sm">
+                                    <HiOutlinePhone className="text-primary" size={20} />
+                                    <span>(+880) 1822 334 99</span>
+                                </li>
+                                <li className="flex items-center gap-3 text-white/60 text-sm">
+                                    <HiOutlineMail className="text-primary" size={20} />
+                                    <span>hello@madebest.com</span>
                                 </li>
                             </ul>
                         </div>
+                        
+                        <div className="space-y-4">
+                            <h4 className="text-xs font-bold uppercase tracking-widest">Newsletter</h4>
+                            <form className="relative" onSubmit={e => e.preventDefault()}>
+                                <input 
+                                    type="email" 
+                                    placeholder="Your email address" 
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-6 pr-12 text-sm focus:outline-none focus:border-primary/50 transition-colors"
+                                />
+                                <button className="absolute right-2 top-2 bottom-2 px-4 bg-primary text-white rounded-xl hover:bg-primary/80 transition-colors">
+                                    Go
+                                </button>
+                            </form>
+                        </div>
                     </div>
-
                 </div>
 
-
+                {/* Bottom Bar */}
+                <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <p className="text-white/40 text-xs font-medium">
+                        &copy; 2024 MadeBest Restaurant. Handcrafted with passion.
+                    </p>
+                    <div className="flex items-center gap-8 text-[10px] font-bold uppercase tracking-widest text-white/20">
+                         <span>Modern Nomad System</span>
+                         <span>Privacy first</span>
+                    </div>
+                </div>
             </div>
         </footer>
-    )
-})
+    );
+});
 
 Footer.displayName = 'Footer';
 

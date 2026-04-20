@@ -1,5 +1,7 @@
 import { useState, useEffect, memo } from 'react';
 import useAxiosPublic from '../../../hooks/axiosPublic';
+import { HiStar, HiOutlineChatAlt2 } from 'react-icons/hi';
+import UseText from '../../../Component/HeadingText/UseText';
 
 const Tastomonial = memo(() => {
   const [reviews, setReviews] = useState([]);
@@ -16,26 +18,10 @@ const Tastomonial = memo(() => {
         if (Array.isArray(data)) {
           setReviews(data);
           setDisplayedReviews(data.slice(0, reviewsPerPage));
-        } else {
-          setReviews([]);
-          setDisplayedReviews([]);
         }
         setLoading(false);
       })
-      .catch(error => {
-        // Handle JSON parsing errors and network errors gracefully
-        if (error.response) {
-          // Server responded with error status
-          console.error('Error fetching reviews:', error.response.status, error.response.data);
-        } else if (error.request) {
-          // Request made but no response
-          console.error('Error fetching reviews: No response from server');
-        } else {
-          // Error setting up request
-          console.error('Error fetching reviews:', error.message);
-        }
-        setReviews([]);
-        setDisplayedReviews([]);
+      .catch(() => {
         setLoading(false);
       });
   }, [axiosPublic]);
@@ -46,55 +32,84 @@ const Tastomonial = memo(() => {
     setDisplayedReviews(reviews.slice(0, endIndex));
   };
 
-  if (loading) {
-    return (
-      <section className="block">
-        <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32">
-          <div className="h-12 w-96 bg-gray-300 rounded mx-auto mb-12 animate-pulse"></div>
-          <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:mb-8">
+  return (
+    <section className="py-24 bg-background relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+      
+      <div className="container mx-auto px-4">
+        <UseText 
+          heading="Guest Reviews" 
+          subheading="Stories of Satisfaction" 
+        />
+
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="rounded-md border border-solid border-gray-200 bg-white p-8 animate-pulse">
-                <div className="h-4 w-32 bg-gray-300 rounded mb-3"></div>
-                <div className="h-4 w-40 bg-gray-300 rounded mb-3"></div>
-                <div className="h-4 w-24 bg-gray-300 rounded mb-3"></div>
-                <div className="h-20 w-full bg-gray-200 rounded"></div>
-              </div>
+              <div key={i} className="h-64 rounded-[2rem] bg-muted animate-pulse" />
             ))}
           </div>
-        </div>
-      </section>
-    );
-  }
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {displayedReviews.length > 0 ? displayedReviews.map((review, idx) => (
+              <div 
+                key={review._id || idx}
+                data-aos="fade-up"
+                data-aos-delay={idx * 100}
+                className="group relative bg-card p-10 rounded-[2.5rem] border border-border transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 overflow-hidden"
+              >
+                {/* Quote Icon */}
+                <div className="absolute -top-4 -right-4 w-24 h-24 text-primary/5 group-hover:text-primary/10 transition-colors pointer-events-none">
+                  <HiOutlineChatAlt2 size={96} />
+                </div>
 
-  return (
-    <section className="block">
-    {/* Container */}
-    <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-24 lg:py-32">
-      {/* Heading */}
-      <h2 className="mx-auto mb-8 max-w-3xl text-center text-3xl font-bold md:mb-12 md:text-5xl lg:mb-16">What our clients are saying</h2>
-      {/* Contents */}
-      <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:mb-8">
-        {/* Map through displayed reviews array */}
-        {displayedReviews.length > 0 ? displayedReviews.map((review) => (
-          <div key={review._id} className="grid grid-cols-1 gap-6 rounded-md border border-solid border-[#cdcdcd] bg-white p-8 md:p-10">
-            <div className="text-[#636262]">Name: {review.name}</div>
-            <div className="text-[#636262]">Rating: {review.rating}</div>
-            <div className="text-[#636262]">Comment: {review.details}</div>
-          </div>
-        )) : (
-          <div className="col-span-full text-center py-8 text-gray-500">
-            No reviews available yet.
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Rating Stars */}
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <HiStar 
+                        key={i} 
+                        className={i < (review.rating || 5) ? 'text-primary' : 'text-muted'} 
+                        size={20} 
+                      />
+                    ))}
+                  </div>
+
+                  <p className="text-foreground/80 font-medium italic mb-8 leading-relaxed">
+                    "{review.details}"
+                  </p>
+
+                  <div className="mt-auto flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-xl">
+                      {review.name?.charAt(0) || 'G'}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-foreground">{review.name}</h4>
+                      <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Verified Guest</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )) : (
+              <div className="col-span-full text-center py-20 glass-card rounded-[2rem]">
+                <p className="text-muted-foreground font-medium">No reviews shared yet. Be the first!</p>
+              </div>
+            )}
           </div>
         )}
-      </div>
-      {/* Text Button */}
-      <div className="flex flex-col">
+
         {displayedReviews.length < reviews.length && (
-          <button onClick={handleShowMoreReviews} className="mx-auto font-bold text-black hover:text-orange-500 transition-colors">Check more reviews</button>
+          <div className="flex justify-center">
+            <button 
+              onClick={handleShowMoreReviews} 
+              className="px-8 py-4 bg-muted hover:bg-primary hover:text-white text-foreground font-bold rounded-full transition-all duration-300"
+            >
+              Explore More Stories
+            </button>
+          </div>
         )}
       </div>
-    </div>
-  </section>
+    </section>
   );
 });
 

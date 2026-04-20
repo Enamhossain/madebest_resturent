@@ -2,75 +2,112 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Font optimization - ensure fonts load efficiently */
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #ffffff;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Premium Color Palette - HSL based for better manipulation */
+  --primary: 24 95% 53%; /* Vivid Orange */
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 45 93% 47%; /* Golden Harvest */
+  --secondary-foreground: 0 0% 0%;
+
+  --accent: 14 91% 55%; /* Accent Red-Orange */
+  --accent-foreground: 0 0% 100%;
+
+  --background: 0 0% 100%;
+  --foreground: 20 14% 4%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 20 14% 4%;
+
+  --muted: 20 14% 96%;
+  --muted-foreground: 20 14% 45%;
+
+  --border: 20 14% 90%;
+  --input: 20 14% 90%;
+  --ring: 24 95% 53%;
+
+  --radius: 1rem;
 }
 
-/* Performance optimizations */
-* {
-  box-sizing: border-box;
+.dark {
+  --background: 20 14% 4%;
+  --foreground: 0 0% 100%;
+
+  --card: 20 14% 8%;
+  --card-foreground: 0 0% 100%;
+
+  --muted: 20 14% 12%;
+  --muted-foreground: 20 14% 65%;
+
+  --border: 20 14% 15%;
+  --input: 20 14% 15%;
+  --ring: 24 95% 53%;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Reduce layout shifts */
-iframe, embed, object, video {
-  max-width: 100%;
-}
-
-/* Splash screen animations - optimized */
-@keyframes progress {
-  0% { 
-    transform: translateX(-100%); 
+@layer base {
+  * {
+    @apply border-border;
   }
-  100% { 
-    transform: translateX(100%); 
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-.animate-progress {
-  animation: progress 1.5s ease-in-out infinite;
+@layer components {
+  .glass-card {
+    @apply bg-white/70 dark:bg-black/70 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl;
+  }
+  
+  .glass-nav {
+    @apply bg-background/80 backdrop-blur-lg border-b border-border sticky top-0 z-50;
+  }
+
+  .premium-button {
+    @apply relative overflow-hidden transition-all duration-300 transform active:scale-95 px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-primary/25;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-transparent italic font-bold;
+  }
 }
 
-/* Optimize animations for performance */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/40 rounded-full hover:bg-primary/60 transition-colors;
 }
 
-/* GPU acceleration for smooth animations */
-.animate-spin {
-  animation: spin 1s linear infinite;
+/* Smooth entry animations */
+[data-aos] {
+  pointer-events: none;
+}
+.aos-animate {
+  pointer-events: auto;
+}
+
+/* High-performance GPU-accelerated animations */
+@keyframes float {
+  0% { transform: translateY(0px) translateZ(0); }
+  50% { transform: translateY(-10px) translateZ(0); }
+  100% { transform: translateY(0px) translateZ(0); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
   will-change: transform;
-  transform: translateZ(0); /* Force GPU acceleration */
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  will-change: opacity;
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-2;
 }
 
 

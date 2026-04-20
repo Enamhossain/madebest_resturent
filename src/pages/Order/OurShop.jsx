@@ -2,15 +2,31 @@ import React, { useState, useEffect, memo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageSkeleton from '../../Component/PageSkeleton';
 import LazyImage from '../../Component/LazyImage';
+import UseText from '../../Component/HeadingText/UseText';
+
+const shopGalleries = [
+  {
+    title: "Gourmet Selections",
+    images: [
+      "https://img.freepik.com/free-photo/pork-hock-german-with-sauces-dark-background_1150-45508.jpg?w=996",
+      "https://img.freepik.com/free-photo/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food_2829-6193.jpg?w=996"
+    ]
+  },
+  {
+    title: "Daily Specials",
+    images: [
+      "https://img.freepik.com/free-photo/side-view-fried-meat-with-french-fries-ketchup_141793-4908.jpg?w=996",
+      "https://img.freepik.com/free-photo/pasta-spaghetti-with-shrimps-sauce_1220-5072.jpg?w=996",
+      "https://img.freepik.com/free-photo/fresh-grill-bbq-chicken_144627-7526.jpg?w=996"
+    ]
+  }
+];
 
 const OurShop = memo(() => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading for better UX
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 400);
+    const timer = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(timer);
   }, []);
 
@@ -19,74 +35,85 @@ const OurShop = memo(() => {
   }
 
   return (
-    <div>
+    <div className="bg-background min-h-screen">
       <Helmet>
-        <title>Our Shop | MadeBest</title>
+        <title>Our Shop | MadeBest Restaurant</title>
       </Helmet>
 
-      {/* Hero Section */}
-      <div className="hero-section bg-gray-800 text-white py-20 px-4">
-        <div className="container mx-auto mt-20 mr-4">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">Welcome to Our Shop</h1>
-          <p className="text-lg sm:text-xl md:text-2xl mb-8">Explore our delicious menu and find your favorites.</p>
-          <button className="bg-red-500 text-white py-2 px-6 sm:py-3 sm:px-8 rounded-lg hover:bg-red-600">Order Now</button>
+      {/* Modern Hero Section */}
+      <section className="relative h-[60vh] flex items-center overflow-hidden bg-black">
+        <div className="absolute inset-0 z-0">
+           <img 
+              src="https://images.unsplash.com/photo-1550966841-3eeec17819ce?q=80&w=2000&auto=format&fit=crop" 
+              className="w-full h-full object-cover opacity-60 scale-105"
+              alt="Shop Banner"
+           />
+           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
-      </div>
-
-      {/* About Section */}
-      <div className="about-section py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8">About Us</h2>
-          <p className="text-lg mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce volutpat mattis metus, at lobortis nisl feugiat in. Aliquam erat volutpat. Fusce tristique arcu in efficitur hendrerit.</p>
-          <p className="text-lg mb-4">In hac habitasse platea dictumst. Nullam sollicitudin dui id arcu ultricies, vel convallis sapien ultrices. Vivamus vel elit sit amet mi hendrerit consequat nec nec lorem.</p>
-          <p className="text-lg mb-4">Curabitur nec pharetra dui, non rhoncus erat. Suspendisse potenti. Integer tincidunt lectus ac eros suscipit, et tempus nulla vestibulum.</p>
-        </div>
-      </div>
-
-      {/* Shop Images Section */}
-      <div className="shop-images-section py-20 px-4">
-        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="shop-image-item">
-            <LazyImage src="https://img.freepik.com/free-photo/pork-hock-german-with-sauces-dark-background_1150-45508.jpg?t=st=1709575880~exp=1709579480~hmac=ed108c3e4514207e7d50236d869ddda83eb8ad66df9a841ac81747ade76bc1b9&w=996" alt="Shop Image 1" className="rounded-lg w-full h-auto" />
-          </div>
-          <div className="shop-image-item">
-            <LazyImage src="https://img.freepik.com/free-photo/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food_2829-6193.jpg?t=st=1709575332~exp=1709578932~hmac=4490dd8e7810d12f8bf86025d27b21f707f105b4824f5fc32543bad8abe2dc00&w=996" alt="Shop Image 2" className="rounded-lg w-full h-auto" />
+        
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="max-w-3xl space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <span className="text-primary font-bold uppercase tracking-widest text-sm">Official Merchandise</span>
+            <h1 className="text-5xl md:text-7xl font-black text-white leading-none">
+              Gourmet <span className="text-primary">Shop</span>
+            </h1>
+            <p className="text-white/70 text-lg md:text-xl font-medium max-w-xl">
+              Bring the MadeBest experience to your home. Explore our curated selection of premium ingredients and signature items.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Grid Images Section */}
-      <div className="grid-images-section py-20 px-4">
-        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="grid-image-item">
-            <LazyImage src="https://img.freepik.com/free-photo/side-view-fried-meat-with-french-fries-ketchup_141793-4908.jpg?t=st=1709575351~exp=1709578951~hmac=583fa53a9631e62095704f75465898f579eeaa4418451f789a15b52f62d639f8&w=996" alt="Grid Image 1" className="rounded-lg w-full h-auto" />
-          </div>
-          <div className="grid-image-item">
-            <LazyImage src="https://img.freepik.com/free-photo/pasta-spaghetti-with-shrimps-sauce_1220-5072.jpg?w=996" alt="Grid Image 2" className="rounded-lg w-full h-auto" />
-          </div>
-          <div className="grid-image-item">
-            <LazyImage src="https://img.freepik.com/free-photo/fresh-grill-bbq-chicken_144627-7526.jpg?t=st=1709575415~exp=1709579015~hmac=75dc5a29219995fac7055ff1d9a7a7ebf05edda070fd25b75850660aee22ad77&w=996" alt="Grid Image 3" className="rounded-lg w-full h-auto" />
-          </div>
-        </div>
-      </div>
-
-
-      {/* Testimonials Section */}
-      <div className="testimonials-section py-20 px-4 bg-gray-200">
-        <div className="container mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8">What Our Customers Say</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="testimonial-item p-6 bg-white rounded-lg shadow-md">
-              <p className="text-lg mb-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in turpis nec nisi fermentum tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."</p>
-              <p className="text-sm font-bold">- John Doe</p>
+      {/* Shop Galleries */}
+      <section className="py-24 container mx-auto px-4">
+        <div className="space-y-32">
+          {shopGalleries.map((gallery, gIdx) => (
+            <div key={gIdx} className="space-y-12">
+               <UseText 
+                  heading={gallery.title} 
+                  subheading="Exclusively MadeBest" 
+               />
+               
+               <div className={`grid gap-8 ${gallery.images.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+                  {gallery.images.map((img, iIdx) => (
+                    <div 
+                      key={iIdx} 
+                      className="group relative aspect-[4/3] rounded-[2.5rem] overflow-hidden bg-muted transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10"
+                      data-aos="fade-up"
+                      data-aos-delay={iIdx * 100}
+                    >
+                       <LazyImage 
+                          src={img} 
+                          alt={`${gallery.title} - ${iIdx + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                       />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                          <button className="px-6 py-3 bg-primary text-white font-bold rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                             Quick View
+                          </button>
+                       </div>
+                    </div>
+                  ))}
+               </div>
             </div>
-            <div className="testimonial-item p-6 bg-white rounded-lg shadow-md">
-              <p className="text-lg mb-4">"Integer feugiat sem at nisi placerat suscipit. Nulla ultrices massa libero, ac cursus erat lobortis non. In pulvinar aliquet nisi, nec varius risus aliquet vel."</p>
-              <p className="text-sm font-bold">- Jane Smith</p>
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
+      </section>
+
+      {/* Premium Footer Call-to-Action */}
+      <section className="py-24 bg-foreground text-background">
+         <div className="container mx-auto px-4 text-center space-y-8">
+            <h2 className="text-4xl md:text-6xl font-black max-w-3xl mx-auto leading-tight">
+               Want Special <span className="text-primary">Curated</span> Packages?
+            </h2>
+            <p className="text-background/60 text-lg max-w-2xl mx-auto">
+               Our team can put together custom gift hampers or event boxes specifically tailored for your needs. Reach out for corporate orders.
+            </p>
+            <button className="px-12 py-5 bg-primary text-white font-black rounded-full hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] transition-all active:scale-95">
+               Contact Corporate Sales
+            </button>
+         </div>
+      </section>
     </div>
   );
 });
