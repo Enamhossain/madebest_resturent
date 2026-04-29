@@ -35,6 +35,18 @@ const Navbar = memo(() => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
+  // Body scroll lock
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
   const toggleCart = useCallback(() => setCartOpen(prev => !prev), []);
 
@@ -196,69 +208,121 @@ const Navbar = memo(() => {
 
       {/* Mobile Drawer */}
       <div 
-        className={`fixed inset-0 z-[110] bg-background/95 backdrop-blur-xl transition-all duration-500 md:hidden ${
-          isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        className={`fixed inset-0 z-[110] transition-all duration-500 md:hidden ${
+          isMenuOpen ? 'visible' : 'invisible pointer-events-none'
         }`}
       >
-        <div className="flex flex-col h-full p-8">
-          <div className="flex items-center justify-between mb-12">
-             <span className="text-2xl font-bold">Made<span className="text-primary">Best</span></span>
-             <button onClick={toggleMenu} className="p-2 bg-muted rounded-full">
+        {/* Backdrop */}
+        <div 
+          className={`absolute inset-0 bg-background/60 backdrop-blur-md transition-opacity duration-500 ${
+            isMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={toggleMenu}
+        />
+        
+        {/* Drawer Content */}
+        <div 
+          className={`absolute top-0 right-0 w-[85%] max-w-sm h-full bg-background shadow-2xl transition-transform duration-500 ease-out flex flex-col ${
+            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="flex items-center justify-between p-6 border-b border-border/50">
+             <Link to="/" onClick={toggleMenu} className="text-2xl font-bold">
+               Made<span className="text-primary">Best</span>
+             </Link>
+             <button 
+               onClick={toggleMenu} 
+               className="p-2 hover:bg-muted rounded-full transition-colors"
+               aria-label="Close Menu"
+             >
                 <HiX className="w-6 h-6" />
              </button>
           </div>
           
-          <ul className="flex flex-col gap-6 mb-12">
-            {navigation.map((item) => (
-              <li key={item.path}>
-                <Link 
-                  to={item.path}
-                  onClick={toggleMenu}
-                  onMouseEnter={item.path === '/ourmenu' ? prefetchMenu : undefined}
-                  className={`text-2xl font-bold ${isActive(item.path) ? 'text-primary' : 'text-foreground/70'}`}
+          <div className="flex-1 overflow-y-auto py-8 px-6">
+            <ul className="flex flex-col gap-4">
+              {navigation.map((item, index) => (
+                <li 
+                  key={item.path}
+                  className={`transition-all duration-500 delay-[${index * 100}ms] ${
+                    isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
+                  }`}
                 >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-            {user && (
-              <li>
-                <Link 
-                  to="/dashboard"
-                  onClick={toggleMenu}
-                  className={`text-2xl font-bold ${isActive('/dashboard') ? 'text-primary' : 'text-foreground/70'}`}
+                  <Link 
+                    to={item.path}
+                    onClick={toggleMenu}
+                    onMouseEnter={item.path === '/ourmenu' ? prefetchMenu : undefined}
+                    className={`group flex items-center justify-between text-xl font-bold py-3 px-4 rounded-xl transition-all ${
+                      isActive(item.path) 
+                        ? 'bg-primary/10 text-primary' 
+                        : 'text-foreground/70 hover:bg-muted hover:text-foreground'
+                    }`}
+                  >
+                    <span>{item.title}</span>
+                    <div className={`w-2 h-2 rounded-full bg-primary transition-all duration-300 ${isActive(item.path) ? 'scale-100' : 'scale-0 group-hover:scale-100'}`} />
+                  </Link>
+                </li>
+              ))}
+              
+              {user && (
+                <li 
+                  className={`transition-all duration-500 delay-[${navigation.length * 100}ms] ${
+                    isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
+                  }`}
                 >
-                  Dashboard
-                </Link>
-              </li>
-            )}
-          </ul>
+                  <Link 
+                    to="/dashboard"
+                    onClick={toggleMenu}
+                    className={`group flex items-center justify-between text-xl font-bold py-3 px-4 rounded-xl transition-all ${
+                      isActive('/dashboard') 
+                        ? 'bg-primary/10 text-primary' 
+                        : 'text-foreground/70 hover:bg-muted hover:text-foreground'
+                    }`}
+                  >
+                    <span>Dashboard</span>
+                    <div className={`w-2 h-2 rounded-full bg-primary transition-all duration-300 ${isActive('/dashboard') ? 'scale-100' : 'scale-0 group-hover:scale-100'}`} />
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
 
-          <div className="mt-auto pt-8 border-t border-border flex flex-col gap-4">
+          <div className="p-6 border-t border-border bg-muted/30 flex flex-col gap-3">
             {user ? (
-              <button 
-                onClick={() => { handleSignOut(); toggleMenu(); }}
-                className="w-full py-4 bg-muted text-foreground font-bold rounded-2xl"
-              >
-                Sign Out
-              </button>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3 px-2">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                    <HiUserCircle className="w-10 h-10 text-primary" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-foreground">{user.displayName || 'Guest User'}</span>
+                    <span className="text-xs text-muted-foreground">{user.email}</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => { handleSignOut(); toggleMenu(); }}
+                  className="w-full py-4 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all font-bold rounded-2xl flex items-center justify-center gap-2"
+                >
+                  Sign Out
+                </button>
+              </div>
             ) : (
-              <>
+              <div className="grid grid-cols-2 gap-3">
                 <Link 
                   to="/login"
                   onClick={toggleMenu}
-                  className="w-full py-4 bg-muted text-center text-foreground font-bold rounded-2xl"
+                  className="py-4 bg-background border border-border text-center text-foreground font-bold rounded-2xl hover:bg-muted transition-colors"
                 >
                   Login
                 </Link>
                 <Link 
                   to="/signup"
                   onClick={toggleMenu}
-                  className="w-full py-4 bg-primary text-center text-white font-bold rounded-2xl"
+                  className="py-4 bg-primary text-center text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all"
                 >
                   Sign Up
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>

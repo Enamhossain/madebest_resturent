@@ -4,14 +4,13 @@ import useCart from "../hooks/useCart";
 import { Link } from "react-router-dom";
 import useAxiosPublic from "../hooks/axiosPublic";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import { HiX, HiMinus, HiPlus, HiOutlineTrash, HiShoppingBag } from 'react-icons/hi';
 
-const ShoppingCart = () => {
+const ShoppingCart = ({ onClose }) => {
   const [cart, refetch] = useCart();
   const axios = useAxiosPublic();
   const [cartItems, setCartItems] = useState([]);
-  const [isCartOpen, setCartOpen] = useState(true);
   const { user } = useContext(AuthContext);
-  console.log(user);
 
   useEffect(() => {
     setCartItems(
@@ -23,155 +22,150 @@ const ShoppingCart = () => {
     );
   }, [cart]);
 
-  const handleAddToCart = (item) => {
-    setCartItems(
-      cartItems.map((cartItem) =>
-        cartItem._id === item._id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      )
-    );
-  };
-
-  const handleRemoveFromCart = (item) => {
-    setCartItems(
-      cartItems.map((cartItem) =>
-        cartItem._id === item._id && cartItem.quantity > 1
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
-      )
-    );
-  };
-
   const getCartTotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0
-    );
+    ).toFixed(2);
   };
 
   const handleDelete = (id) => {
     swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this item!",
+      title: "Remove Item?",
+      text: "Are you sure you want to remove this item from your cart?",
       icon: "warning",
-      buttons: true,
+      buttons: ["Cancel", "Remove"],
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         axios.delete(`/carts/${id}`)
           .then((res) => {
             if (res.status === 200) {
-              swal("Success!", "Item deleted successfully", "success");
-              refetch(); // Refetch cart data to update the UI
-            } else {
-              swal("Error", "Failed to delete item", "error");
+              refetch();
             }
           })
           .catch((error) => {
             console.error("Error deleting item:", error);
-            swal("Error", "An error occurred while deleting the item", "error");
+            swal("Error", "Could not remove item", "error");
           });
       }
     });
   };
 
-  const handleCloseCart = () => {
-    setCartOpen(false);
-  };
-
   return (
-    <>
-      {isCartOpen && (
-        <div className="fixed top-0 right-0 z-50 border border-gray-600 bg-gray-100 px-4 py-8 sm:px-6">
-          <button
-            className="absolute top-4 right-4 text-gray-600 transition hover:scale-110"
-            onClick={handleCloseCart}
-          >
-            <span className="sr-only">Close cart</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+    <div className="flex flex-col h-full bg-background">
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 border-b border-border bg-muted/30">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <HiShoppingBag size={24} />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-foreground">Your Cart</h2>
+            <p className="text-xs text-muted-foreground">{cartItems.length} items selected</p>
+          </div>
+        </div>
+        <button
+          onClick={onClose}
+          className="p-2 hover:bg-muted rounded-full transition-colors text-muted-foreground hover:text-foreground"
+        >
+          <HiX size={24} />
+        </button>
+      </div>
 
-          <div className="mt-4 space-y-6">
-            <ul className="space-y-4">
-              {cartItems.map(item => (
-                <div key={item._id} className="flex items-center justify-between border-b py-2">
-                  <div className="flex items-center gap-4">
-                    <img src={item.image} alt="Item" className="w-16 h-16 rounded-full object-cover" />
-                    <div>
-                      <h3 className="text-sm text-gray-900">{item.title}</h3>
-                      <p className="text-xs text-gray-600">Price: {item.price}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={() => handleRemoveFromCart(item)}
-                      disabled={item.quantity <= 1}
-                      className="px-2 py-1 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
-                    >
-                      -
-                    </button>
-                    <span className="px-2 py-1">{item.quantity}</span>
-                    <button
-                      onClick={() => handleAddToCart(item)}
-                      className="px-2 py-1 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="text-gray-600 transition hover:text-red-600"
-                    >
-                      <span className="sr-only">Remove item</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="h-4 w-4"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </ul>
-
-            <div className="space-y-4 text-center">
-              <Link
-                to="/Carts"
-                className="block rounded border border-gray-600 px-5 py-3 text-sm text-gray-600 transition hover:ring-1 hover:ring-gray-400"
-              >
-                View my cart ({cartItems.length})
-              </Link>
-              <a
-                href="/checkout"
-                className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
-              >
-                Checkout
-              </a>
-              <a
-                href="/shop"
-                className="inline-block text-sm text-gray-500 underline underline-offset-4 transition hover:text-gray-600"
-              >
-                Continue shopping
-              </a>
+      {/* Cart Items */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        {cartItems.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-60">
+            <HiShoppingBag size={64} className="text-muted-foreground/30" />
+            <div>
+              <p className="text-lg font-bold">Your cart is empty</p>
+              <p className="text-sm">Start adding some delicious items!</p>
             </div>
+            <Link
+              to="/order"
+              onClick={onClose}
+              className="px-6 py-2 bg-primary text-white font-bold rounded-full text-sm"
+            >
+              Order Now
+            </Link>
+          </div>
+        ) : (
+          cartItems.map((item) => (
+            <div key={item._id} className="group relative flex gap-4 p-3 rounded-2xl border border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
+              <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-muted">
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              </div>
+
+              <div className="flex-1 flex flex-col justify-between py-1">
+                <div>
+                  <h3 className="font-bold text-foreground line-clamp-1">{item.title}</h3>
+                  <p className="text-primary font-black">${item.price}</p>
+                </div>
+
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+                    <button className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-background transition-colors text-muted-foreground opacity-50 cursor-not-allowed">
+                      <HiMinus size={14} />
+                    </button>
+                    <span className="w-8 text-center text-xs font-bold">{item.quantity}</span>
+                    <button className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-background transition-colors text-primary opacity-50 cursor-not-allowed">
+                      <HiPlus size={14} />
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                  >
+                    <HiOutlineTrash size={20} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Footer / Summary */}
+      {cartItems.length > 0 && (
+        <div className="p-6 border-t border-border bg-muted/30 space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Subtotal</span>
+              <span>${getCartTotal()}</span>
+            </div>
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Delivery Fee</span>
+              <span className="text-green-500 font-bold uppercase text-[10px]">Free</span>
+            </div>
+            <div className="flex justify-between text-xl font-black text-foreground pt-2 border-t border-border/50">
+              <span>Total</span>
+              <span className="text-primary">${getCartTotal()}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/order"
+              onClick={onClose}
+              className="w-full py-4 bg-foreground text-background text-center font-bold rounded-2xl hover:bg-foreground/90 transition-all"
+            >
+              Check Out
+            </Link>
+            <button
+              onClick={onClose}
+              className="text-sm text-muted-foreground font-bold hover:text-primary transition-colors"
+            >
+              Continue Shopping
+            </button>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
 export default ShoppingCart;
+
+
