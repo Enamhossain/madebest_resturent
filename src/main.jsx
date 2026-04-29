@@ -146,7 +146,12 @@ function App() {
     if (htmlLoader) {
       htmlLoader.style.transition = 'opacity 0.3s ease-out';
       htmlLoader.style.opacity = '0';
-      setTimeout(() => htmlLoader.remove(), 300);
+      setTimeout(() => {
+        htmlLoader.remove();
+        // Restore scroll after loader is gone
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+      }, 300);
     }
 
     // Prevent layout shift by setting min-height

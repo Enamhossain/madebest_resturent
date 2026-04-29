@@ -119,12 +119,11 @@ function Singup() {
                         </a>
 
                         <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                            Welcome to Squid 🦑
+                            Welcome to MadeBest
                         </h2>
 
                         <p className="mt-4 leading-relaxed text-white/90">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-                            quibusdam aperiam voluptatum.
+                            Join us to experience the finest gourmet dining and exclusive member benefits. Start your journey with MadeBest today.
                         </p>
                     </div>
                 </section>
@@ -135,7 +134,7 @@ function Singup() {
                     <div className="max-w-xl lg:max-w-3xl">
                         <div className="relative -mt-16 block lg:hidden">
                             <a
-                                className="inline-flex size-16 items-center justify-center rounded-full bg-white text-blue-600 sm:size-20"
+                                className="inline-flex size-16 items-center justify-center rounded-full bg-white text-orange-500 sm:size-20 shadow-lg"
                                 href="#"
                             >
                                 <span className="sr-only">Home</span>
@@ -153,18 +152,17 @@ function Singup() {
                             </a>
 
                             <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                                Welcome to Squid 🦑
+                                Welcome to MadeBest
                             </h1>
 
                             <p className="mt-4 leading-relaxed text-gray-500">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-                                quibusdam aperiam voluptatum.
+                                Create an account to enjoy personalized service and seamless bookings at MadeBest.
                             </p>
                         </div>
                         <div>
                             <div className="mt-5 space-y-2">
-                                <h3 className="text-gray-800 text-2xl text-center font-bold sm:text-3xl">Create your accont</h3>
-                                <p className=" text-center">You have an account? <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Sing In</Link></p>
+                                <h3 className="text-gray-800 text-2xl text-center font-bold sm:text-3xl">Create your account</h3>
+                                <p className=" text-center">Already have an account? <Link to="/login" className="font-medium text-orange-600 hover:text-orange-500 transition-colors">Sign In</Link></p>
                             </div>
 
                             <div className="">
@@ -225,7 +223,7 @@ function Singup() {
                                     id="FirstName"
                                     name="first_name"
                                     {...register("first_name", { required: true })}
-                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all"
                                 />
                                 {errors.first_name && <span>This field is required</span>}
                             </div>
@@ -240,7 +238,7 @@ function Singup() {
                                     id="LastName"
                                     name="last_name"
                                     {...register("last_name", { required: true })}
-                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all"
                                 />
                                 {errors.last_name && <span className='text-red-700'>This field is required</span>}
                             </div>
@@ -253,7 +251,7 @@ function Singup() {
                                     id="Email"
                                     name="email"
                                     {...register("email", { required: true })}
-                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all"
                                 />
                                 {errors.email && <span className='text-red-700'>This field is required</span>}
                             </div>
@@ -268,7 +266,7 @@ function Singup() {
                                     maxLength:20,
                                  
                                 })}
-                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all"
                                 />
                                 {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                                 {errors.password?.type === 'minLength' && <p className="text-red-500">Password is must be 8 charecther</p>}
@@ -285,7 +283,7 @@ function Singup() {
                                         validate: value =>
                                             value === password || 'The passwords do not match'
                                     })}
-                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                                    className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all"
                                 />
                                 {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
                             </div>
@@ -317,7 +315,7 @@ function Singup() {
 
                             <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                                 <button type='submit' 
-                                    className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                                    className="inline-block shrink-0 rounded-md border border-orange-600 bg-orange-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-orange-600 focus:outline-none focus:ring active:text-orange-500 shadow-lg hover:shadow-orange-200 active:scale-95 transition-all"
                                 >
                                     Create an account
                                 </button>

@@ -17,6 +17,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useAdmin from '../../hooks/useAdmin';
 import useAuth from '../../hooks/useAuth';
+import ScrollToTop from '../../Component/ScrollToTop';
 
 function DashBoard() {
   const [isAdmin] = useAdmin();
@@ -59,6 +60,7 @@ function DashBoard() {
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
+      <ScrollToTop />
       <Helmet>
         <title>Dashboard | MadeBest</title>
       </Helmet>

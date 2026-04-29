@@ -132,12 +132,11 @@ function Login() {
             </a>
 
             <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-              Welcome to Squid 🦑
+              Welcome to MadeBest
             </h2>
 
             <p className="mt-4 leading-relaxed text-white/90">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-              quibusdam aperiam voluptatum.
+              Indulge in a world of gourmet dining and exclusive experiences. Sign in to manage your bookings and orders.
             </p>
           </div>
         </section>
@@ -166,19 +165,18 @@ function Login() {
               </a>
 
               <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Welcome to Squid 🦑
+                Welcome to MadeBest
               </h1>
 
               <p className="mt-4 leading-relaxed text-gray-500">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-                quibusdam aperiam voluptatum.
+                Experience the finest cuisine with a touch of elegance. Join our community for exclusive benefits and seamless service.
               </p>
             </div>
             <div className="w-full max-w-md space-y-8 px-4 bg-white text-gray-600 sm:px-0">
               <div>
                 <div className="mt-5 space-y-2">
                   <h3 className="text-gray-800 text-2xl text-center font-bold sm:text-3xl">Log In</h3>
-                  <p className=" text-center">Don't have an account? <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</Link></p>
+                  <p className=" text-center">Don't have an account? <Link to="/signup" className="font-medium text-orange-600 hover:text-orange-500 transition-colors">Sign up</Link></p>
                 </div>
 
 
@@ -192,7 +190,7 @@ function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-orange-500 shadow-sm rounded-lg transition-all"
                   />
                 </div>
                 <div>
@@ -203,14 +201,14 @@ function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-orange-500 shadow-sm rounded-lg transition-all"
                   />
                 </div>
                 <div className="">
                   <LoadCanvasTemplate />
                   <input onBlur={handleValidateCaptcha} type="text" name="captcha" placeholder="type the captcha above" className='bg-white text-gray-800' id="user_captcha_input" />
                 </div>
-                <input disabled={disabled} className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150" type="submit" value="Login" />
+                <input disabled={disabled} className="w-full px-4 py-2 text-white font-medium bg-orange-600 hover:bg-orange-500 active:bg-orange-700 rounded-lg duration-150 shadow-md hover:shadow-orange-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all" type="submit" value="Login" />
 
               </form>
 
@@ -289,7 +287,7 @@ function Login() {
                   </button>
                 </div>
                 <div className="text-center">
-                  <a href="#" onClick={(e) => e.preventDefault()} className="text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                  <a href="#" onClick={(e) => e.preventDefault()} className="text-orange-600 hover:text-orange-500 transition-colors">Forgot password?</a>
                 </div>
               </div>
             </div>

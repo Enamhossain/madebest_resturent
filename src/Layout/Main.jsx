@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Footer from '../shared/Footer/Footer'
 import Navbar from '../shared/Navbar/Navbar'
+import ScrollToTop from '../Component/ScrollToTop'
 
 const Main = memo(() => {
   const location = useLocation()
@@ -42,6 +43,7 @@ const Main = memo(() => {
 
   return (
     <div className="relative min-h-screen flex flex-col">
+      <ScrollToTop />
       {/* Top Loading Bar */}
       <div 
         id="top-loading-bar" 
