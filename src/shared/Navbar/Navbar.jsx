@@ -80,13 +80,11 @@ const Navbar = memo(() => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="relative w-12 h-12 overflow-hidden rounded-full ring-2 ring-primary/20 group-hover:ring-primary transition-all duration-300">
-               <LazyImage
-                src="https://i.ibb.co/VNs4X6g/1705932001959oh7xa24u-removebg-preview.png"
+            <div className="relative w-12 h-12 overflow-hidden rounded-full ring-2 ring-primary/20 group-hover:ring-primary transition-all duration-300 bg-white p-1">
+               <img
+                src="/favicon.svg"
                 alt="MadeBest Logo"
-                className="w-full h-full object-cover p-1 bg-white"
-                width={48}
-                height={48}
+                className="w-full h-full object-contain"
               />
             </div>
             <span className={`text-2xl font-bold tracking-tight transition-colors ${isScrolled ? 'text-foreground' : 'text-white'}`}>
