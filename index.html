@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="loading-active">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -43,8 +43,11 @@
         padding: 0;
         width: 100%;
         height: 100%;
-        overflow: hidden; /* Lock scroll during loading */
         background: #ffffff;
+      }
+      html.loading-active, body.loading-active {
+        overflow: hidden !important;
+        height: 100vh;
       }
       .loading { 
         position: fixed;

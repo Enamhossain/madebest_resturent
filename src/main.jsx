@@ -149,6 +149,8 @@ function App() {
       setTimeout(() => {
         htmlLoader.remove();
         // Restore scroll after loader is gone
+        document.documentElement.classList.remove('loading-active');
+        document.body.classList.remove('loading-active');
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
       }, 300);
