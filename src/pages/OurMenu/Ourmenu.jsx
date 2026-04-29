@@ -15,12 +15,22 @@ const Ourmenu = memo(() => {
   }, []);
 
   const sections = [
-    { title: 'Signature Mains', category: 'Main' },
-    { title: 'Divine Desserts', category: 'Dessert' },
+    { title: "Chef's Specials", category: 'popular' },
+    { title: 'Signature Mains', category: 'main' },
+    { title: 'Divine Desserts', category: 'dessert' },
     { title: 'Artisan Pizzas', category: 'pizza' },
-    { title: 'Refreshing Drinks', category: 'Drinks' },
-    { title: 'Crispy Salads', category: 'salad' }
+    { title: 'Refreshing Drinks', category: 'drinks' },
+    { title: 'Crispy Salads', category: 'salad' },
+    { title: 'House Favorites', category: 'others' }
   ];
+
+  const getSectionItems = (category) => {
+    if (category === 'others') {
+      const knownCategories = ['popular', 'main', 'dessert', 'pizza', 'drinks', 'salad'];
+      return menu.filter(item => !knownCategories.includes(item.category?.toLowerCase()));
+    }
+    return menu.filter(item => item.category?.toLowerCase() === category);
+  };
 
   const scrollToMenu = () => {
     const el = document.getElementById('menu-discovery');
@@ -97,17 +107,19 @@ const Ourmenu = memo(() => {
               ))}
             </div>
           ) : (
-            sections.map((section, sIdx) => (
-              <div key={sIdx} className="space-y-12" data-aos="fade-up">
-                <UseText 
-                  heading={section.title} 
-                  subheading="Masterfully Prepared" 
-                />
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                  {menu
-                    .filter(item => item.category === section.category)
-                    .map((item, mIdx) => (
+            sections.map((section, sIdx) => {
+              const items = getSectionItems(section.category);
+              if (items.length === 0) return null;
+
+              return (
+                <div key={sIdx} className="space-y-12" data-aos="fade-up">
+                  <UseText 
+                    heading={section.title} 
+                    subheading="Masterfully Prepared" 
+                  />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {items.map((item, mIdx) => (
                       <MenuCard
                         key={item._id || mIdx}
                         _id={item._id}
@@ -118,9 +130,10 @@ const Ourmenu = memo(() => {
                         inx={mIdx}
                       />
                     ))}
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </section>

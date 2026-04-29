@@ -9,15 +9,27 @@ const useMenu = () => {
         queryKey: ['menu'], 
         queryFn: async () => {
             const res = await axiosPublic.get('/menu');
-            return res.data;
+            const rawData = res.data?.data || res.data || [];
+            
+            // Normalize data to ensure consistency
+            return rawData.map(item => ({
+                ...item,
+                // Ensure Title is always accessible via Title property (some items might have title)
+                Title: item.Title || item.title || 'Untitled Dish',
+                // Handle local asset paths from API which won't work in browser
+                img: (item.img && !item.img.startsWith('..')) 
+                    ? item.img 
+                    : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop',
+                // Ensure category is lowercase for consistent filtering
+                category: item.category?.toLowerCase() || 'unclassified'
+            }));
         },
-        // Advanced Caching Strategy
-        staleTime: 1000 * 60 * 60, // Consider data fresh for 1 hour
-        gcTime: 1000 * 60 * 60 * 24, // Keep in cache for 24 hours
+        staleTime: 1000 * 60 * 60,
+        gcTime: 1000 * 60 * 60 * 24,
         retry: 3,
         retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-        refetchOnWindowFocus: false, // Prevent extra calls when switching tabs
-        refetchOnMount: false, // Don't refetch if we already have data
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
 
     return [menu, loading, refetch, isError, error];

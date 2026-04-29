@@ -31,21 +31,26 @@ const Navbar = memo(() => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    // Check initial scroll position to prevent UI jump on refresh
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // Body scroll lock
+  // Unified body scroll lock for both Menu and Cart
   useEffect(() => {
-    if (isMenuOpen) {
+    if (isMenuOpen || isCartOpen) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.classList.add('loading-active'); // Re-use our lock class
     } else {
       document.body.style.overflow = '';
+      document.documentElement.classList.remove('loading-active');
     }
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.classList.remove('loading-active');
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isCartOpen]);
 
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
   const toggleCart = useCallback(() => setCartOpen(prev => !prev), []);
@@ -54,7 +59,10 @@ const Navbar = memo(() => {
     logOut().catch(error => console.error('Error signing out:', error));
   }, [logOut]);
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
 
   // Prefetching logic for faster transitions
   const prefetchMenu = useCallback(() => {
@@ -242,9 +250,10 @@ const Navbar = memo(() => {
               {navigation.map((item, index) => (
                 <li 
                   key={item.path}
-                  className={`transition-all duration-500 delay-[${index * 100}ms] ${
+                  className={`transition-all duration-500 ${
                     isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
                   }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <Link 
                     to={item.path}
@@ -264,9 +273,10 @@ const Navbar = memo(() => {
               
               {user && (
                 <li 
-                  className={`transition-all duration-500 delay-[${navigation.length * 100}ms] ${
+                  className={`transition-all duration-500 ${
                     isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
                   }`}
+                  style={{ transitionDelay: `${navigation.length * 100}ms` }}
                 >
                   <Link 
                     to="/dashboard"
