@@ -37,78 +37,117 @@
     
     <!-- Critical CSS inline for faster rendering -->
     <style>
-      /* Critical CSS for initial render */
-      html { scroll-behavior: smooth; }
-      body { 
+      /* Premium Initial Loader */
+      html, body { 
         margin: 0; 
-        overflow-x: hidden;
+        padding: 0;
         width: 100%;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        height: 100%;
+        overflow: hidden; /* Lock scroll during loading */
+        background: #ffffff;
       }
-      #root { min-height: 100vh; }
       .loading { 
+        position: fixed;
+        inset: 0;
         display: flex; 
         justify-content: center; 
         align-items: center; 
-        height: 100vh;
-        background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+        z-index: 99999;
+        background: radial-gradient(circle at center, #ffffff 0%, #fff7ed 100%);
       }
-      /* Beautiful Spinner - Optimized */
       .loading-container {
-        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        gap: 40px;
       }
-      .spinner-ring {
-        width: 80px;
-        height: 80px;
-        border: 4px solid #fed7aa;
+      .loader-visual {
+        position: relative;
+        width: 120px;
+        height: 120px;
+      }
+      .loader-ring {
+        position: absolute;
+        inset: 0;
+        border: 2px solid transparent;
         border-top-color: #f97316;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
-        will-change: transform;
-        transform: translateZ(0); /* GPU acceleration */
+        animation: loader-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
       }
-      .spinner-ring-inner {
+      .loader-ring:nth-child(2) {
+        inset: 10px;
+        border-top-color: #fbbf24;
+        animation-duration: 1.5s;
+        animation-direction: reverse;
+      }
+      .loader-ring:nth-child(3) {
+        inset: 20px;
+        border-top-color: #ea580c;
+        animation-duration: 0.8s;
+      }
+      .loader-logo {
         position: absolute;
-        width: 48px;
-        height: 48px;
-        border: 4px solid #fbbf24;
-        border-right-color: #f59e0b;
+        inset: 30px;
+        background: #ffffff;
         border-radius: 50%;
-        animation: spin-reverse 0.8s linear infinite;
-        will-change: transform;
-        transform: translateZ(0); /* GPU acceleration */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(249, 115, 22, 0.1);
+        z-index: 2;
       }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
+      .loader-logo svg {
+        width: 32px;
+        height: 32px;
+        fill: #f97316;
+        animation: loader-pulse 2s ease-in-out infinite;
       }
-      @keyframes spin-reverse {
-        to { transform: rotate(-360deg); }
-      }
-      .loading-content {
-        margin-top: 32px;
+      .loader-text {
         text-align: center;
       }
-      .loading-title {
-        font-size: 24px;
-        font-weight: bold;
-        color: #ea580c;
+      .loader-title {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-size: 32px;
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        color: #1c1917;
         margin: 0;
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        display: flex;
+        align-items: center;
+        gap: 2px;
       }
-      .loading-subtitle {
-        font-size: 14px;
-        color: #78716c;
-        margin: 8px 0 0 0;
+      .loader-title span { color: #f97316; font-style: italic; }
+      .loader-progress {
+        width: 180px;
+        height: 4px;
+        background: #fed7aa;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 16px;
       }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+      .loader-bar {
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(90deg, #f97316, #fbbf24, #f97316);
+        background-size: 200% 100%;
+        border-radius: 10px;
+        animation: loader-progress-anim 2s infinite linear, loader-shimmer 1.5s infinite linear;
+      }
+      @keyframes loader-spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes loader-pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(0.9); opacity: 0.8; }
+      }
+      @keyframes loader-progress-anim {
+        0% { width: 0%; margin-left: 0%; }
+        50% { width: 60%; margin-left: 20%; }
+        100% { width: 0%; margin-left: 100%; }
+      }
+      @keyframes loader-shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
       }
       /* Prevent layout shift */
       img { max-width: 100%; height: auto; }
@@ -166,14 +205,24 @@
   </head>
   <body>
     <div id="root">
-      <!-- Beautiful Loading Spinner -->
+      <!-- Premium Initial Loader -->
       <div class="loading">
         <div class="loading-container">
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring-inner"></div>
-          <div class="loading-content">
-            <h2 class="loading-title">MadeBest</h2>
-            <p class="loading-subtitle">Loading delicious experience...</p>
+          <div class="loader-visual">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-logo">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 9H9V2H7V9H5V2H3V9C3 11.12 4.66 12.84 6.75 12.97V22H9.25V12.97C11.34 12.84 13 11.12 13 9V2H11V9ZM16 6V14H18.5V22H21V2C18.24 2 16 4.24 16 6Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="loader-text">
+            <h2 class="loader-title">Made<span>Best</span></h2>
+            <div class="loader-progress">
+              <div class="loader-bar"></div>
+            </div>
           </div>
         </div>
       </div>
