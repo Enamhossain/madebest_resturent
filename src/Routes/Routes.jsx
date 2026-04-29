@@ -1,32 +1,33 @@
 import { createBrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import Main from "../Layout/Main";
 import Loading from "../Component/Loading";
+import { lazyWithRetry } from "../utils/lazyWithRetry";
 
-// Lazy load components for better performance
-const Home = lazy(() => import("../pages/Home/Home"));
-const Ourmenu = lazy(() => import("../pages/OurMenu/Ourmenu"));
-const Login = lazy(() => import("../pages/Login/Login"));
-const Singup = lazy(() => import("../pages/Singup/Singup"));
-const PrivateRoute = lazy(() => import('./PrivateRoute'));
-const DashBoard = lazy(() => import("../pages/Dashboard/DashBoard"));
-const General = lazy(() => import("../pages/Dashboard/UserDashBoard/General/General"));
-const Contact = lazy(() => import("../pages/Contact/Contact"));
-const ViewCart = lazy(() => import("../Component/ViewCart"));
-const DsOrder = lazy(() => import("../pages/Dashboard/UserDashBoard/order/DsOrder"));
-const Reservations = lazy(() => import("../pages/Dashboard/UserDashBoard/Reservations/Reservations"));
-const CheckOrder = lazy(() => import("../pages/Dashboard/UserDashBoard/CheckOrder/CheckOrder"));
-const AdminGenereal = lazy(() => import("../pages/Dashboard/AdminDashBoard/General/AdminGenereal"));
-const AllOrders = lazy(() => import("../pages/Dashboard/AdminDashBoard/AllOrders/AllOrders"));
-const AllUsers = lazy(() => import("../pages/Dashboard/AdminDashBoard/AllUsers/AllUsers"));
-const Customers = lazy(() => import("../pages/Dashboard/AdminDashBoard/Customers/Customers"));
-const AddItems = lazy(() => import("../pages/Dashboard/AdminDashBoard/AddItems/AddItems"));
-const AdminRoute = lazy(() => import("./AdminRoute"));
-const ManageItems = lazy(() => import("../pages/Dashboard/AdminDashBoard/Manage Booking/ManageBooking"));
-const PaymentSuccess = lazy(() => import("../pages/Payment/PaymentSuccess"));
-const PaymentFailed = lazy(() => import("../pages/Payment/PaymendFailed"));
-const Booking = lazy(() => import("../pages/Home/Booking/Booking"));
-const OurShop = lazy(() => import("../pages/Order/OurShop"));
+// Lazy load components with retry logic to handle deployment updates
+const Home = lazyWithRetry(() => import("../pages/Home/Home"));
+const Ourmenu = lazyWithRetry(() => import("../pages/OurMenu/Ourmenu"));
+const Login = lazyWithRetry(() => import("../pages/Login/Login"));
+const Singup = lazyWithRetry(() => import("../pages/Singup/Singup"));
+const PrivateRoute = lazyWithRetry(() => import('./PrivateRoute'));
+const DashBoard = lazyWithRetry(() => import("../pages/Dashboard/DashBoard"));
+const General = lazyWithRetry(() => import("../pages/Dashboard/UserDashBoard/General/General"));
+const Contact = lazyWithRetry(() => import("../pages/Contact/Contact"));
+const ViewCart = lazyWithRetry(() => import("../Component/ViewCart"));
+const DsOrder = lazyWithRetry(() => import("../pages/Dashboard/UserDashBoard/order/DsOrder"));
+const Reservations = lazyWithRetry(() => import("../pages/Dashboard/UserDashBoard/Reservations/Reservations"));
+const CheckOrder = lazyWithRetry(() => import("../pages/Dashboard/UserDashBoard/CheckOrder/CheckOrder"));
+const AdminGenereal = lazyWithRetry(() => import("../pages/Dashboard/AdminDashBoard/General/AdminGenereal"));
+const AllOrders = lazyWithRetry(() => import("../pages/Dashboard/AdminDashBoard/AllOrders/AllOrders"));
+const AllUsers = lazyWithRetry(() => import("../pages/Dashboard/AdminDashBoard/AllUsers/AllUsers"));
+const Customers = lazyWithRetry(() => import("../pages/Dashboard/AdminDashBoard/Customers/Customers"));
+const AddItems = lazyWithRetry(() => import("../pages/Dashboard/AdminDashBoard/AddItems/AddItems"));
+const AdminRoute = lazyWithRetry(() => import("./AdminRoute"));
+const ManageItems = lazyWithRetry(() => import("../pages/Dashboard/AdminDashBoard/Manage Booking/ManageBooking"));
+const PaymentSuccess = lazyWithRetry(() => import("../pages/Payment/PaymentSuccess"));
+const PaymentFailed = lazyWithRetry(() => import("../pages/Payment/PaymendFailed"));
+const Booking = lazyWithRetry(() => import("../pages/Home/Booking/Booking"));
+const OurShop = lazyWithRetry(() => import("../pages/Order/OurShop"));
 
 // Wrapper component for lazy loading with Suspense
 const LazyWrapper = ({ children }) => {

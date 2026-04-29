@@ -1,109 +1,212 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import useAxiosPublic from '../../../../hooks/axiosPublic';
 import useAxiosSecure from '../../../../hooks/AxiosSecure';
 import swal from 'sweetalert';
-const imageHostKey = import.meta.env.VITE_IMG_HOSTING_KEY
-const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostKey}`
-function AddItems() {
+import { FaUtensils, FaCloudUploadAlt, FaPlus, FaRegFileAlt, FaTags, FaDollarSign } from 'react-icons/fa';
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+const imageHostKey = import.meta.env.VITE_IMG_HOSTING_KEY;
+const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+
+const AddItems = memo(() => {
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
   const axiosPublic = useAxiosPublic();
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      formData.append('image', data.img[0]); // Assuming the input field for the image is named 'img'
+      formData.append('image', data.img[0]);
     
       const res = await axiosPublic.post(imageHostingApi, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(res.data); // <-- Corrected to use 'res' instead of 'response'
+      
       if(res.data.success){
         const menuItem = {
           Title: data.Title,
           description: data.description,
           category: data.category,
           img: res.data.data.display_url,
-          price: data.price,
-        }
-        const menuRes = await axiosSecure.post('/menu', menuItem)
-        console.log(menuRes.data)
+          price: parseFloat(data.price),
+        };
+        
+        const menuRes = await axiosSecure.post('/menu', menuItem);
         if(menuRes.data.insertedId){
-          swal("Success!", "Item added successfully!", "success");
+          swal({
+            title: "Success!",
+            text: "Menu item has been added successfully.",
+            icon: "success",
+            buttons: false,
+            timer: 2000
+          });
           reset();
         }
       }
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading item:', error);
+      swal("Error!", "Failed to add item. Please try again.", "error");
     }
   };
-  
-  
 
   return (
-    <div className='w-full'>
-      {/* Hero Section */}
-      <div className="bg-gray-900 text-white py-12 w-full">
-        <div className="w-full  text-center">
-          <h1 className="text-4xl font-bold ">Add Items</h1>
-          <p className="mt-4 text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper eros vel ultricies sodales.</p>
+    <div className="max-w-4xl mx-auto space-y-8 pb-10">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Add New Dish</h2>
+          <p className="text-gray-500 mt-1">Create a new entry in your restaurant's digital menu.</p>
         </div>
       </div>
 
-      {/* Add Item Section */}
-      <div className="max-w-lg mx-auto mt-8 px-4 ">
-        <h2 className="text-2xl font-bold mb-4 text-center text-orange-500">Add Item</h2>
-        <div className="bg-white shadow-md rounded-lg  p-14">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-4">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">Recipe Name</label>
-              <input type="text" id="Title" {...register('Title', { required: true })} className="mt-1 p-3 block w-full bg-gray-200 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-              {errors.title && <span className="text-red-500">This field is required</span>}
-            </div>
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Recipe Details</label>
-              <textarea id="description" rows="3" {...register('description', { required: true })} className="mt-1 block w-full bg-gray-200 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
-              {errors.description && <span className="text-red-500">This field is required</span>}
-            </div>
-            <div className="mb-4 grid grid-cols-2 gap-4">
-              <div className="w-full">
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
-                <input type="text" id="price" {...register('price', { required: true })} className="mt-1 block p-2 w-full bg-gray-200 border-gray-300 rounded-sm shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                {errors.price && <span className="text-red-500">This field is required</span>}
-              </div>
-              <div className="w-full">
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
-                <select id="category" {...register('category', { required: true })} className="mt-1 block p-2 w-full bg-gray-200 border-gray-300 rounded-sm shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                  <option value="">Select category...</option>
-                  <option value="popular">popular</option>
-                  <option value="Main">Main</option>
-                  <option value="Drinks">Drinks</option>
-                  <option value="pizza">pizza</option>
-                  <option value="salad">salad</option>
-                  <option value="soup">soup</option>
-                  <option value="Dessert">Dessert</option>
-                </select>
-                {errors.category && <span className="text-red-500">This field is required</span>}
-              </div>
-            </div>
-            <fieldset className="w-48 overflow-hidden  mx-auto dark:text-gray-100">
-              <label htmlFor="files" className="block text-sm font-medium">Attachments</label>
-              <div className="flex">
-                <input {...register('img')} type="file" name="img" id="files" className="px-10 py-4 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400" />
-              </div>
-            </fieldset>
-            <div className="flex justify-center mx-auto mt-5">
-              <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add Item</button>
-            </div>
-          </form>
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-orange-50/50 p-6 border-b border-gray-100 flex items-center gap-3">
+          <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
+            <FaUtensils size={18} />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-gray-900">Item Details</h3>
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Basic Information</p>
+          </div>
         </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Recipe Name */}
+            <div className="space-y-2 col-span-full">
+              <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                <FaRegFileAlt className="text-orange-500" />
+                Recipe Name
+              </label>
+              <input 
+                type="text" 
+                placeholder="e.g. Grilled Salmon with Asparagus"
+                {...register('Title', { required: true })} 
+                className={`w-full px-4 py-3 rounded-xl bg-gray-50 border transition-all outline-none focus:ring-4 focus:ring-orange-500/10 ${
+                  errors.Title ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                }`}
+              />
+              {errors.Title && <p className="text-xs font-bold text-red-500">Dish title is required</p>}
+            </div>
+
+            {/* Category */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                <FaTags className="text-orange-500" />
+                Category
+              </label>
+              <select 
+                {...register('category', { required: true })} 
+                className={`w-full px-4 py-3 rounded-xl bg-gray-50 border transition-all outline-none focus:ring-4 focus:ring-orange-500/10 ${
+                  errors.category ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                }`}
+              >
+                <option value="">Select category...</option>
+                <option value="popular">Popular</option>
+                <option value="Main">Main Course</option>
+                <option value="Drinks">Drinks</option>
+                <option value="pizza">Pizza</option>
+                <option value="salad">Salad</option>
+                <option value="soup">Soup</option>
+                <option value="Dessert">Dessert</option>
+              </select>
+              {errors.category && <p className="text-xs font-bold text-red-500">Please select a category</p>}
+            </div>
+
+            {/* Price */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                <FaDollarSign className="text-orange-500" />
+                Price
+              </label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+                <input 
+                  type="number" 
+                  step="0.01"
+                  placeholder="0.00"
+                  {...register('price', { required: true })} 
+                  className={`w-full pl-8 pr-4 py-3 rounded-xl bg-gray-50 border transition-all outline-none focus:ring-4 focus:ring-orange-500/10 ${
+                    errors.price ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                  }`}
+                />
+              </div>
+              {errors.price && <p className="text-xs font-bold text-red-500">Price is required</p>}
+            </div>
+
+            {/* Details */}
+            <div className="space-y-2 col-span-full">
+              <label className="text-sm font-bold text-gray-700">Recipe Details</label>
+              <textarea 
+                rows="4" 
+                placeholder="Describe the ingredients, taste, and preparation..."
+                {...register('description', { required: true })} 
+                className={`w-full px-4 py-3 rounded-xl bg-gray-50 border transition-all outline-none focus:ring-4 focus:ring-orange-500/10 resize-none ${
+                  errors.description ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-orange-500'
+                }`}
+              ></textarea>
+              {errors.description && <p className="text-xs font-bold text-red-500">Description is required</p>}
+            </div>
+
+            {/* Image Upload */}
+            <div className="col-span-full pt-4">
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                  <FaCloudUploadAlt className="text-orange-500 text-lg" />
+                  Item Image
+                </label>
+                <div className="relative group">
+                  <input 
+                    type="file" 
+                    id="img-upload"
+                    {...register('img', { required: true })} 
+                    className="hidden"
+                  />
+                  <label 
+                    htmlFor="img-upload"
+                    className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-3xl cursor-pointer transition-all ${
+                      errors.img ? 'border-red-300 bg-red-50/30' : 'border-gray-200 bg-gray-50/50 hover:bg-orange-50/50 hover:border-orange-300'
+                    }`}
+                  >
+                    <FaCloudUploadAlt className="text-gray-300 group-hover:text-orange-400 mb-2 transition-colors" size={32} />
+                    <p className="text-sm font-bold text-gray-500 group-hover:text-orange-500 transition-colors">
+                      Click to upload image
+                    </p>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-1">PNG, JPG up to 5MB</p>
+                  </label>
+                </div>
+                {errors.img && <p className="text-xs font-bold text-red-500 mt-2">Item image is required</p>}
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-6 border-t border-gray-100 flex justify-end">
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className={`flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-orange-500 text-white font-black text-sm uppercase tracking-wider transition-all shadow-lg shadow-orange-200 hover:bg-orange-600 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed`}
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>Adding Item...</span>
+                </>
+              ) : (
+                <>
+                  <FaPlus />
+                  <span>Add to Menu</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
-}
+});
+
+AddItems.displayName = 'AddItems';
 
 export default AddItems;
